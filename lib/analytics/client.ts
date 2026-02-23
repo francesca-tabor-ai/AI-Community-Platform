@@ -201,4 +201,142 @@ export const analytics = {
       event_name: "payment_succeeded",
       ...props,
     }),
+
+  // Event Platform: User Engagement
+  profileUpdated: (props: { user_id: string; updated_fields: string[] }) =>
+    trackClientEvent({ event_name: "profile_updated", ...props }),
+
+  interestSelected: (props: { user_id: string; interest_name: string }) =>
+    trackClientEvent({ event_name: "interest_selected", ...props }),
+
+  searchPerformed: (props: {
+    user_id?: string | null;
+    search_query: string;
+    search_results_count: number;
+  }) => trackClientEvent({ event_name: "search_performed", ...props, user_id: props.user_id ?? null }),
+
+  // Event Platform: Event Discovery
+  eventViewed: (props: {
+    user_id?: string | null;
+    community_event_id: string;
+    source: "personalized_feed" | "search_results" | "direct_link" | "community_page" | "other";
+  }) =>
+    trackClientEvent({
+      event_name: "event_viewed",
+      ...props,
+      user_id: props.user_id ?? null,
+    }),
+
+  eventCardClicked: (props: {
+    user_id?: string | null;
+    community_event_id: string;
+    position_in_feed?: number;
+  }) =>
+    trackClientEvent({
+      event_name: "event_card_clicked",
+      ...props,
+      user_id: props.user_id ?? null,
+    }),
+
+  recommendationFeedbackProvided: (props: {
+    user_id?: string | null;
+    community_event_id: string;
+    feedback_type: "like" | "dislike" | "more_like_this";
+  }) =>
+    trackClientEvent({
+      event_name: "recommendation_feedback_provided",
+      ...props,
+      user_id: props.user_id ?? null,
+    }),
+
+  // Event Platform: Event Interaction
+  rsvpClicked: (props: { user_id: string; community_event_id: string }) =>
+    trackClientEvent({ event_name: "rsvp_clicked", ...props }),
+
+  rsvpConfirmed: (props: {
+    user_id: string;
+    community_event_id: string;
+    rsvp_status: "going" | "attending" | "interested" | "maybe" | "not_going";
+  }) => trackClientEvent({ event_name: "rsvp_confirmed", ...props }),
+
+  ticketSelected: (props: {
+    user_id: string;
+    community_event_id: string;
+    ticket_type: string;
+    quantity: number;
+  }) => trackClientEvent({ event_name: "ticket_selected", ...props }),
+
+  checkoutInitiated: (props: {
+    user_id: string;
+    community_event_id: string;
+    total_amount: number;
+  }) => trackClientEvent({ event_name: "checkout_initiated", ...props }),
+
+  ticketPurchased: (props: {
+    user_id: string;
+    community_event_id: string;
+    ticket_id: string;
+    amount: number;
+    currency: string;
+    payment_method: string;
+  }) => trackClientEvent({ event_name: "ticket_purchased", ...props }),
+
+  addToCalendarClicked: (props: {
+    user_id?: string | null;
+    community_event_id: string;
+    calendar_type: "google" | "outlook" | "apple" | "other";
+  }) =>
+    trackClientEvent({
+      event_name: "add_to_calendar_clicked",
+      ...props,
+      user_id: props.user_id ?? null,
+    }),
+
+  // Event Platform: Organizer Events (typically server-side)
+  eventCreated: (props: {
+    organizer_id: string;
+    community_event_id: string;
+    event_category?: string;
+    is_paid: boolean;
+  }) =>
+    trackClientEvent({
+      event_name: "event_created",
+      user_id: props.organizer_id,
+      ...props,
+    }),
+
+  eventUpdated: (props: {
+    organizer_id: string;
+    community_event_id: string;
+    updated_fields: string[];
+  }) =>
+    trackClientEvent({
+      event_name: "event_updated",
+      user_id: props.organizer_id,
+      ...props,
+    }),
+
+  aiContentGenerated: (props: {
+    organizer_id: string;
+    community_event_id: string;
+    content_type: "title" | "description" | "agenda" | "other";
+    ai_model_used?: string;
+  }) =>
+    trackClientEvent({
+      event_name: "ai_content_generated",
+      user_id: props.organizer_id,
+      ...props,
+    }),
+
+  promotionalContentGenerated: (props: {
+    organizer_id: string;
+    community_event_id: string;
+    channel: "facebook" | "email" | "twitter" | "linkedin" | "other";
+    ai_model_used?: string;
+  }) =>
+    trackClientEvent({
+      event_name: "promotional_content_generated",
+      user_id: props.organizer_id,
+      ...props,
+    }),
 };

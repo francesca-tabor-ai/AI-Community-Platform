@@ -1,0 +1,114 @@
+import { NextRequest } from "next/server";
+import { z } from "zod";
+import { Prisma } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/lib/api-v1/auth";
+import { badRequest } from "@/lib/api-v1/errors";
+
+const createEventSchema = z.object({
+  title: z.string().min(1).max(255),
+  description: z.string().optional(),
+  start_time: z.string().datetime(),
+  end_time: z.string().datetime(),
+  location: z.string().max(255).optional(),
+  ticket_price: z.number().min(0).optional(),
+  capacity: z.number().int().min(1).optional(),
+});
+
+export async function POST(req: NextRequest) {
+  const authResult = await requireAuth(req);
+  if (authResult instanceof Response) return authResult;
+
+  try {
+    const body = await req.json();
+    const parsed = createEventSchema.safeParse(body);
+
+    if (!parsed.success) {
+      const field_errors: Record<string, string> = {};
+      parsed.error.errors.forEach((e) => {
+        const path = e.path[0]?.toString();
+        if (path) field_errors[path] = e.message;
+      });
+      return badRequest("Validation failed", field_errors);
+    }
+
+    const { title, description, start_time, end_time, location, ticket_price, capacity } =
+      parsed.data;
+
+    const event = await prisma.platformEvent.create({
+      data: {
+        organizerId: authResult.user.id,
+        title,
+        description: description ?? null,
+        startTime: new Date(start_time),
+        endTime: new Date(end_time),
+        location: location ?? null,
+        ticketPrice: ticket_price != null ? new Prisma.Decimal(ticket_price) : null,
+        capacity: capacity ?? null,
+      },
+    });
+
+    return Response.json(
+      {
+        event_id: event.id,
+        organizer_id: event.organizerId,
+        title: event.title,
+        description: event.description,
+        start_time: event.startTime.toISOString(),
+        end_time: event.endTime.toISOString(),
+        location: event.location,
+        ticket_price: event.ticketPrice?.toNumber() ?? null,
+        capacity: event.capacity,
+        created_at: event.createdAt.toISOString(),
+        updated_at: event.updatedAt.toISOString(),
+      },
+      { status: 201 }
+    );
+  } catch {
+    const { apiError } = await import("@/lib/api-v1/errors");
+    return apiError(500, "Internal server error", { code: "INTERNAL_ERROR" });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const authResult = await requireAuth(req);
+  if (authResult instanceof Response) return authResult;
+
+  const { searchParams } = new URL(req.url);
+  const limit = Math.min(parseInt(searchParams.get("limit") ?? "20", 10), 100);
+  const offset = parseInt(searchParams.get("offset") ?? "0", 10);
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
+
+  const where: Prisma.PlatformEventWhereInput = {};
+  if (from) {
+    where.startTime = { ...where.startTime as object, gte: new Date(from) } as Prisma.DateTimeFilter;
+  }
+  if (to) {
+    where.endTime = { ...(where.endTime as object || {}), lte: new Date(to) } as Prisma.DateTimeFilter;
+  }
+
+  const events = await prisma.platformEvent.findMany({
+    where: Object.keys(where).length ? where : undefined,
+    include: { organizer: { select: { id: true, username: true, name: true } } },
+    orderBy: { startTime: "asc" },
+    take: limit,
+    skip: offset,
+  });
+
+  return Response.json(
+    events.map((e) => ({
+      event_id: e.id,
+      organizer_id: e.organizerId,
+      title: e.title,
+      description: e.description,
+      start_time: e.startTime.toISOString(),
+      end_time: e.endTime.toISOString(),
+      location: e.location,
+      ticket_price: e.ticketPrice?.toNumber() ?? null,
+      capacity: e.capacity,
+      created_at: e.createdAt.toISOString(),
+      updated_at: e.updatedAt.toISOString(),
+    }))
+  );
+}
