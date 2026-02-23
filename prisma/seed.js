@@ -25,6 +25,7 @@ async function main() {
   await prisma.creatorPostComment.deleteMany();
   await prisma.creatorPost.deleteMany();
   await prisma.creatorSubscription.deleteMany();
+  await prisma.creatorStripeSubscription.deleteMany();
   await prisma.comment.deleteMany();
   await prisma.post.deleteMany();
   await prisma.eventRsvp.deleteMany();

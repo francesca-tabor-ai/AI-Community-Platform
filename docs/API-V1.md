@@ -2,7 +2,7 @@
 
 RESTful API. Base URL: `/api/v1`.
 
-**Authentication:** JWT in `Authorization: Bearer <token>` header. Exceptions: `POST /users`, `POST /users/register`, `POST /users/login`, `POST /auth/login`.
+**Authentication:** JWT in `Authorization: Bearer <token>` header. Exceptions: `POST /users`, `POST /users/register`, `POST /users/login`, `POST /auth/login`, `POST /auth/register`.
 
 ---
 
@@ -47,6 +47,8 @@ RESTful API. Base URL: `/api/v1`.
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
+| `/auth/register` | POST | Register a new creator. Body: `{email, password, name}`. Returns `201 {user, token}`. |
+| `/auth/login` | POST | Authenticate and get JWT. Body: `{email, password}`. Returns `200 {user, token}`. |
 | `/users/register` | POST | Register a new user. Body: `{email, password, username, role}`. Role: `creator` or `reader`. |
 | `/users/login` | POST | Authenticate and get JWT. Body: `{email, password}`. Returns `{access_token, token_type}`. |
 | `/users/{id}` | GET | Get user profile (requires auth). |
@@ -56,9 +58,10 @@ RESTful API. Base URL: `/api/v1`.
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/posts` | POST | Create a draft post (creators only). Body: `{title, content}`. |
-| `/posts/{id}` | GET | Get a post. Drafts visible only to creator. |
-| `/posts/{id}` | PUT | Update a post (creator owner only). Body: `{title?, content?, status?}`. |
+| `/posts` | GET | List posts for the authenticated creator. Returns `200 [post1, post2, ...]`. |
+| `/posts` | POST | Create a draft post (creators only). Body: `{title, content?}`. Returns `201 {post}`. |
+| `/posts/{id}` | GET | Get a post. Drafts visible only to creator. Returns `200 {post}`. |
+| `/posts/{id}` | PUT | Update a post (creator owner only). Body: `{title?, content?, status?}`. Returns `200 {post}`. |
 | `/posts/{id}/publish` | POST | Publish a draft (creator owner only). Triggers notification job. |
 | `/creators/{creator_id}/posts` | GET | List creator's posts. Query: `status`, `limit`, `offset`. |
 
@@ -73,7 +76,8 @@ RESTful API. Base URL: `/api/v1`.
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/creators/{creator_id}/subscribe` | POST | Subscribe to a creator. |
+| `/subscriptions/subscribe` | POST | Create a paid subscription via Stripe. Body: `{creatorId, stripeToken}`. Returns `201 {subscription}`. Requires auth. |
+| `/creators/{creator_id}/subscribe` | POST | Subscribe to a creator (free follow). |
 | `/creators/{creator_id}/unsubscribe` | POST | Unsubscribe from a creator. |
 | `/users/{user_id}/subscriptions` | GET | List user's subscriptions (own user only). |
 
@@ -92,3 +96,5 @@ RESTful API. Base URL: `/api/v1`.
 ## Environment Variables
 
 - `JWT_SECRET` – Secret for signing JWTs (defaults to `AUTH_SECRET` if unset)
+- `STRIPE_SECRET_KEY` – Stripe API key for paid subscriptions
+- `STRIPE_DEFAULT_PRICE_ID` – Default Stripe Price ID for creator subscriptions (MVP)
