@@ -102,7 +102,7 @@ const USE_CASES = [
       "Increase audience loyalty",
       "Save time with AI automation",
     ],
-    cta: { href: "#", text: "Start Your Creator Community →" },
+    cta: { href: "/signup", text: "Start Your Creator Community →" },
   },
   {
     id: "startups",
@@ -122,7 +122,7 @@ const USE_CASES = [
       "Reduce support workload",
       "Build brand loyalty",
     ],
-    cta: { href: "#", text: "Build Your Startup Community →" },
+    cta: { href: "/signup", text: "Build Your Startup Community →" },
   },
   {
     id: "educators",
@@ -145,7 +145,7 @@ const USE_CASES = [
       "Scale education programs",
       "Monetize courses",
     ],
-    cta: { href: "#", text: "Launch Your Learning Community →" },
+    cta: { href: "/signup", text: "Launch Your Learning Community →" },
   },
   {
     id: "professional",
@@ -169,7 +169,7 @@ const USE_CASES = [
       "Enable collaboration",
       "Strengthen professional networks",
     ],
-    cta: { href: "#", text: "Create Your Professional Community →" },
+    cta: { href: "/signup", text: "Create Your Professional Community →" },
   },
   {
     id: "businesses",
@@ -188,7 +188,7 @@ const USE_CASES = [
       "Improve customer experience",
       "Strengthen brand relationships",
     ],
-    cta: { href: "#", text: "Build Your Brand Community →" },
+    cta: { href: "/signup", text: "Build Your Brand Community →" },
   },
   {
     id: "enterprises",
@@ -208,7 +208,7 @@ const USE_CASES = [
       "Reduce operational costs",
       "Improve organizational knowledge sharing",
     ],
-    cta: { href: "#", text: "Contact Enterprise Sales →" },
+    cta: { href: "/contact", text: "Contact Enterprise Sales →" },
   },
   {
     id: "events",
@@ -227,7 +227,7 @@ const USE_CASES = [
       "Simplify event management",
       "Improve participant experience",
     ],
-    cta: { href: "#", text: "Launch Your Event Community →" },
+    cta: { href: "/signup", text: "Launch Your Event Community →" },
   },
 ];
 
@@ -259,7 +259,7 @@ export default function UseCasesPage() {
             monetizable communities.
           </p>
           <a
-            href="#"
+            href="/signup"
             className="mt-8 inline-block rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
           >
             Get Started Free
@@ -314,7 +314,7 @@ export default function UseCasesPage() {
             ))}
           </ul>
           <a
-            href="#"
+            href="/signup"
             className="mt-8 inline-flex items-center gap-2 font-medium text-teal-400 transition-all duration-200 hover:text-teal-300 hover:gap-3"
           >
             Get Started Free →
@@ -335,13 +335,13 @@ export default function UseCasesPage() {
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
-              href="#"
+              href="/signup"
               className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
             >
               Get Started Free
             </a>
             <a
-              href="#"
+              href="/contact"
               className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
             >
               Book a Demo

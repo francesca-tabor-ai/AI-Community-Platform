@@ -112,7 +112,7 @@ export default function BlogPage() {
             Ready to build your intelligent community?
           </h2>
           <a
-            href="/"
+            href="/signup"
             className="mt-6 inline-block rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
           >
             Get Started Free

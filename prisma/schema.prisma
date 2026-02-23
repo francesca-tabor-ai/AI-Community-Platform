@@ -308,3 +308,20 @@ model Activity {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model ContactSubmission {
+  id           String   @id @default(cuid())
+  firstName    String
+  lastName     String
+  email        String
+  company      String?
+  role         String?
+  inquiryType  String
+  communitySize String?
+  message      String   @db.Text
+  read         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([inquiryType])
+}

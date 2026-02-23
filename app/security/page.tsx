@@ -57,7 +57,7 @@ export default function SecurityPage() {
             infrastructure, advanced access controls, and AI-powered protection.
           </p>
           <a
-            href="#"
+            href="/contact"
             className="mt-8 inline-block rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all hover:bg-teal-400"
           >
             Contact Sales
@@ -265,13 +265,13 @@ export default function SecurityPage() {
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
-              href="#"
+              href="/contact"
               className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all hover:bg-teal-400"
             >
               Contact Sales
             </a>
             <a
-              href="#"
+              href="/contact"
               className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
             >
               Book Security Review

@@ -9,6 +9,7 @@ const FOOTER_LINKS = {
   ],
   developers: [
     { label: "API Docs", href: "/api-docs" },
+    { label: "App Marketplace", href: "/marketplace" },
     { label: "Developers", href: "/developers" },
   ],
   resources: [
@@ -18,6 +19,8 @@ const FOOTER_LINKS = {
   ],
   company: [
     { label: "Contact", href: "/contact" },
+    { label: "Terms", href: "/legal/terms" },
+    { label: "Privacy", href: "/legal/privacy" },
   ],
 };
 

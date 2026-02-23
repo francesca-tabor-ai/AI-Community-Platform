@@ -70,6 +70,16 @@ Communities require constant effort to operate. This limits their potential—an
 
 ---
 
+## Admin Dashboard
+
+The platform includes an admin dashboard at `/admin` for managing contact submissions and viewing platform stats.
+
+1. Set `ADMIN_SECRET` in your environment (use a secure random string).
+2. Ensure `DATABASE_URL` is configured and run `npm run db:push` to create the `ContactSubmission` table.
+3. Visit `/admin` and enter your admin secret to sign in.
+
+Contact form submissions are stored in the database and visible in the admin dashboard, in addition to being emailed via Resend.
+
 ## Getting Started
 
 First, run the development server:

@@ -70,9 +70,9 @@ export default function SignupForm() {
       </button>
       <p className="text-center text-xs text-slate-500">
         By signing up, you agree to our{" "}
-        <a href="#" className="text-teal-400 hover:text-teal-300">Terms</a>
+        <a href="/legal/terms" className="text-teal-400 hover:text-teal-300">Terms</a>
         {" "}and{" "}
-        <a href="#" className="text-teal-400 hover:text-teal-300">Privacy Policy</a>.
+        <a href="/legal/privacy" className="text-teal-400 hover:text-teal-300">Privacy Policy</a>.
       </p>
     </form>
   );

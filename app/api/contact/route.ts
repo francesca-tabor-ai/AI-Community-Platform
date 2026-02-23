@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
+import { prisma } from "@/lib/prisma";
 
 const CONTACT_EMAIL = "info@francescatabor.com";
 
@@ -36,6 +37,26 @@ export async function POST(req: NextRequest) {
     }
 
     const data = parsed.data;
+
+    // Store submission for admin dashboard (best effort - don't block email)
+    try {
+      if (process.env.DATABASE_URL) {
+        await prisma.contactSubmission.create({
+          data: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            company: data.company,
+            role: data.role,
+            inquiryType: data.inquiryType,
+            communitySize: data.communitySize,
+            message: data.message,
+          },
+        });
+      }
+    } catch (dbErr) {
+      console.error("Failed to store contact submission:", dbErr);
+    }
 
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {

@@ -88,7 +88,7 @@ export default function EnterprisePage() {
               Contact Sales
             </a>
             <a
-              href="#"
+              href="/contact"
               className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
             >
               Book Enterprise Demo
@@ -369,7 +369,7 @@ export default function EnterprisePage() {
               Contact Sales
             </a>
             <a
-              href="#"
+              href="/contact"
               className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
             >
               Book Enterprise Demo

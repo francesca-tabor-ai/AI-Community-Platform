@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import LoginForm from "./LoginForm";
 
 export const metadata: Metadata = {
@@ -12,9 +13,9 @@ export default function LoginPage() {
       <section className="flex min-h-screen flex-col items-center justify-center px-6 py-24">
         <div className="w-full max-w-md">
           <div className="text-center">
-            <a href="/" className="text-2xl font-bold text-white">
+            <Link href="/" className="text-2xl font-bold text-white">
               AI Community Platform
-            </a>
+            </Link>
             <h1 className="mt-8 text-3xl font-bold text-white">Welcome back</h1>
             <p className="mt-2 text-slate-400">
               Log in to access your communities
@@ -25,9 +26,9 @@ export default function LoginPage() {
           </div>
           <p className="mt-8 text-center text-sm text-slate-500">
             Don&apos;t have an account?{" "}
-            <a href="/signup" className="font-medium text-teal-400 hover:text-teal-300">
+            <Link href="/signup" className="font-medium text-teal-400 hover:text-teal-300">
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </section>

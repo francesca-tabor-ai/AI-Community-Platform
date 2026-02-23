@@ -3,17 +3,50 @@
 import { useState } from "react";
 
 export default function EnterpriseContactForm() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("submitting");
+    setErrorMessage("");
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const name = (formData.get("name") as string)?.trim() || "";
+    const [firstName, ...lastParts] = name.split(/\s+/);
+    const lastName = lastParts.join(" ") || firstName;
+
+    const payload = {
+      firstName,
+      lastName,
+      email: formData.get("email"),
+      company: formData.get("company") || undefined,
+      role: formData.get("role") || undefined,
+      inquiryType: "enterprise",
+      communitySize: formData.get("communitySize") || undefined,
+      message: formData.get("message") || "Enterprise inquiry",
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to send");
+      setStatus("success");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+      setErrorMessage(err instanceof Error ? err.message : "Something went wrong.");
+    }
+  };
 
   return (
     <form
       className="mt-10 grid gap-6 sm:grid-cols-2"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setStatus("submitting");
-        // Placeholder - wire to your backend/API
-        setTimeout(() => setStatus("success"), 1000);
-      }}
+      onSubmit={handleSubmit}
     >
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-slate-300">
@@ -91,10 +124,16 @@ export default function EnterpriseContactForm() {
           id="message"
           name="message"
           rows={4}
+          required
           className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
           placeholder="Tell us about your community needs..."
         />
       </div>
+      {status === "error" && (
+        <div className="sm:col-span-2 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {errorMessage}
+        </div>
+      )}
       <div className="sm:col-span-2">
         <button
           type="submit"

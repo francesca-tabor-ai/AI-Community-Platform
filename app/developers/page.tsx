@@ -26,18 +26,24 @@ export default function DevelopersPage() {
             workflows, and extend functionality with our API.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a
-              href="#"
+            <Link
+              href="/api-docs"
               className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
             >
               View API Docs
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/marketplace"
+              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
+            >
+              App Marketplace
+            </Link>
+            <Link
+              href="/signup"
               className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
             >
               Get API Key
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -135,20 +141,21 @@ curl -X GET https://api.yourplatform.com/v1/communities \\
           </h2>
           <div className="mt-10 flex flex-wrap gap-4">
             {[
-              { label: "API Reference", href: "#" },
-              { label: "Authentication Guide", href: "#" },
-              { label: "Webhooks", href: "#" },
-              { label: "Rate Limits", href: "#" },
-              { label: "Changelog", href: "#" },
-              { label: "Status Page", href: "#" },
+              { label: "API Reference", href: "/api-docs" },
+              { label: "App Marketplace", href: "/marketplace" },
+              { label: "Authentication Guide", href: "/help/account-security" },
+              { label: "Webhooks", href: "/api-docs" },
+              { label: "Rate Limits", href: "/api-docs" },
+              { label: "Changelog", href: "/blog" },
+              { label: "Status Page", href: "/contact" },
             ].map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 className="rounded-lg border border-slate-600 px-5 py-2.5 text-slate-300 hover:border-teal-500/50 hover:text-teal-400"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -164,12 +171,12 @@ curl -X GET https://api.yourplatform.com/v1/communities \\
             Get your API key and start integrating.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a
-              href="#"
+            <Link
+              href="/signup"
               className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
             >
               Get API Key
-            </a>
+            </Link>
             <a
               href="/contact"
               className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"

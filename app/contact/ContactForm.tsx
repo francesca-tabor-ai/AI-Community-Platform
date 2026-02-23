@@ -53,6 +53,8 @@ export default function ContactForm() {
 
       setStatus("success");
       form.reset();
+      // Reset to idle after 5s so user can send another message
+      setTimeout(() => setStatus("idle"), 5000);
     } catch (err) {
       setStatus("error");
       setErrorMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -189,6 +191,11 @@ export default function ContactForm() {
               ? "Message sent! We'll be in touch."
               : "Send Message"}
         </button>
+        {status === "success" && (
+          <p className="mt-2 text-sm text-teal-400">
+            Thank you! We typically respond within 24 hours.
+          </p>
+        )}
         <p className="mt-4 text-sm text-slate-500">
           All submissions are sent to info@francescatabor.com. We typically respond within 24 hours.
         </p>

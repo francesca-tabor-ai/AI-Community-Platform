@@ -96,7 +96,7 @@ export default function FeaturesPage() {
             — powered by AI from the ground up.
           </p>
           <a
-            href="#"
+            href="/signup"
             className="mt-8 inline-block rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
           >
             Get Started Free
@@ -164,7 +164,7 @@ export default function FeaturesPage() {
           "Improve member experience",
           "Increase engagement",
         ]}
-        cta={{ href: "#", text: "See AI Assistant in Action →" }}
+        cta={{ href: "/help/ai-assistant-overview", text: "See AI Assistant in Action →" }}
       />
 
       {/* Community Management */}
@@ -379,13 +379,13 @@ export default function FeaturesPage() {
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
-              href="#"
+              href="/signup"
               className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
             >
               Get Started Free
             </a>
             <a
-              href="#"
+              href="/contact"
               className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
             >
               Book a Demo

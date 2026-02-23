@@ -36,7 +36,7 @@ export default function LoginForm() {
           <label htmlFor="password" className="block text-sm font-medium text-slate-300">
             Password
           </label>
-          <a href="#" className="text-sm text-teal-400 hover:text-teal-300">
+          <a href="/contact" className="text-sm text-teal-400 hover:text-teal-300">
             Forgot password?
           </a>
         </div>
