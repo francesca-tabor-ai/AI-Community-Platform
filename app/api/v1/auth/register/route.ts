@@ -57,10 +57,25 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const token = await signToken({
+    const access_token = await signShortLivedToken({
       userId: user.id,
       email: user.email!,
       role: "creator",
+    });
+
+    const refreshToken = generateRefreshToken();
+    const expiresAt = getRefreshTokenExpiry();
+    await prisma.vibeNetRefreshToken.create({
+      data: { userId: user.id, token: refreshToken, expiresAt },
+    });
+
+    const cookieStore = await cookies();
+    cookieStore.set(REFRESH_TOKEN_COOKIE, refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/",
     });
 
     return Response.json(
@@ -71,7 +86,7 @@ export async function POST(req: NextRequest) {
           name: user.name,
         },
         token: {
-          access_token: token,
+          access_token,
           token_type: "Bearer",
         },
       },
