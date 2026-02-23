@@ -20,6 +20,12 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // Clear existing data (optional - comment out for additive seeding)
+  await prisma.platformEventSubmissionScore.deleteMany();
+  await prisma.platformEventSubmission.deleteMany();
+  await prisma.platformEventTeamMember.deleteMany();
+  await prisma.platformEventTeam.deleteMany();
+  await prisma.platformEventJudge.deleteMany();
+  await prisma.aIInsight.deleteMany();
   await prisma.platformEventRsvp.deleteMany();
   await prisma.platformEvent.deleteMany();
   await prisma.creatorPostComment.deleteMany();
