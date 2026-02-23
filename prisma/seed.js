@@ -4,12 +4,25 @@ require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
 const { hash } = require("bcryptjs");
 
+const dbUrl = process.env.DATABASE_URL || "";
+if (dbUrl.includes("railway.internal")) {
+  console.error(
+    "\n❌ DATABASE_URL uses postgres.railway.internal, which is only reachable from within Railway.\n" +
+      "   For local seeding, use the PUBLIC database URL from your Railway dashboard.\n" +
+      "   (PostgreSQL service → Variables or Connect → copy the public URL)\n"
+  );
+  process.exit(1);
+}
+
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Seeding database...");
 
   // Clear existing data (optional - comment out for additive seeding)
+  await prisma.creatorPostComment.deleteMany();
+  await prisma.creatorPost.deleteMany();
+  await prisma.creatorSubscription.deleteMany();
   await prisma.comment.deleteMany();
   await prisma.post.deleteMany();
   await prisma.eventRsvp.deleteMany();
@@ -35,6 +48,8 @@ async function main() {
     data: {
       email: "alice@example.com",
       name: "Alice Chen",
+      username: "alice",
+      role: "creator",
       password: hashedPassword,
       profile: {
         create: {
@@ -51,6 +66,8 @@ async function main() {
     data: {
       email: "bob@example.com",
       name: "Bob Martinez",
+      username: "bob",
+      role: "reader",
       password: hashedPassword,
       profile: {
         create: {
@@ -66,6 +83,8 @@ async function main() {
     data: {
       email: "carol@example.com",
       name: "Carol Williams",
+      username: "carol",
+      role: "creator",
       password: hashedPassword,
       profile: {
         create: {
