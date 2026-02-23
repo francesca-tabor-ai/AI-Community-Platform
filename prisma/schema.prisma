@@ -255,6 +255,7 @@ model CreatorStripeSubscription {
   @@index([subscriberEmail])
 }
 
+model Profile {
   id          String   @id @default(cuid())
   userId      String   @unique
   displayName String?
