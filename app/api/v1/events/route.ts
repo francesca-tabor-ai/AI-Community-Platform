@@ -81,15 +81,11 @@ export async function GET(req: NextRequest) {
   const to = searchParams.get("to");
 
   const where: Prisma.PlatformEventWhereInput = {};
-  if (from) {
-    where.startTime = { ...where.startTime as object, gte: new Date(from) } as Prisma.DateTimeFilter;
-  }
-  if (to) {
-    where.endTime = { ...(where.endTime as object || {}), lte: new Date(to) } as Prisma.DateTimeFilter;
-  }
+  if (from) where.startTime = { gte: new Date(from) };
+  if (to) where.endTime = { lte: new Date(to) };
 
   const events = await prisma.platformEvent.findMany({
-    where: Object.keys(where).length ? where : undefined,
+    where: Object.keys(where).length > 0 ? where : undefined,
     include: { organizer: { select: { id: true, username: true, name: true } } },
     orderBy: { startTime: "asc" },
     take: limit,

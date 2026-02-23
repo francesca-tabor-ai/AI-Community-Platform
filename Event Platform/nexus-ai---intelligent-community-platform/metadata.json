@@ -1,0 +1,7 @@
+{
+  "name": "Nexus AI - Intelligent Community Platform",
+  "description": "The world's most intelligent community and event platform. Discover, create, and grow meaningful communities using AI-native assistance.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

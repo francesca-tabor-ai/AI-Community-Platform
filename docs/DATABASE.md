@@ -180,6 +180,7 @@ Migrations are managed with **Prisma Migrate** (not Alembic/Flyway).
 
 ## Related Documents
 
+- [ARCHITECTURE.md](./ARCHITECTURE.md) – Platform architecture, spec-to-schema mapping
 - [prisma/schema.prisma](../prisma/schema.prisma) – Current schema definition
 - [DEPLOYMENT.md](../DEPLOYMENT.md) – Deployment (includes `prisma migrate deploy`)
-- [docs/INFRASTRUCTURE.md](./INFRASTRUCTURE.md) – AWS RDS and backup strategy
+- [INFRASTRUCTURE.md](./INFRASTRUCTURE.md) – AWS RDS and backup strategy

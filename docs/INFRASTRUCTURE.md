@@ -1,30 +1,33 @@
 # Infrastructure & DevOps Specification
 
-This document defines the cloud architecture, deployment pipeline, environments, monitoring, and backup strategy for the AI Community Platform when deployed on AWS. The platform is currently deployed on Railway; this spec describes the target production-grade AWS architecture.
+This document defines the cloud architecture, deployment pipeline, environments, monitoring, and backup strategy for the AI Community Platform. The platform is currently deployed on Railway; this spec describes the target production-grade cloud architecture. The primary reference is **AWS**; alternatives for GCP and Azure are noted where applicable.
 
 ---
 
-## Cloud Architecture (AWS)
+## Cloud Architecture
 
-The platform will be deployed on **Amazon Web Services** for high availability, scalability, and cost-effectiveness. **Note:** The database requires PostgreSQL with **pgvector** extension; RDS must be configured accordingly.
+The platform targets a major cloud provider (AWS, GCP, or Azure) for high availability, fault tolerance, and cost-effectiveness. **Note:** The database requires PostgreSQL with **pgvector** extension.
 
 ### Core Components
 
-| Component | Service | Purpose |
-|-----------|---------|---------|
-| **Compute** | Amazon EKS | Orchestrate containerized microservices; automated scaling and self-healing |
-| **Compute** | AWS Fargate | Serverless compute for background jobs and specific microservices |
-| **Networking** | VPC | Isolated network environment |
-| **Networking** | Application Load Balancer (ALB) | Distribute traffic, high availability |
-| **Networking** | Route 53 | DNS and traffic routing |
-| **Database** | Amazon RDS for PostgreSQL | Core database (must enable pgvector extension) |
-| **Storage** | Amazon S3 | Static assets, user uploads, backups |
-| **Storage** | EBS | Block storage for EKS worker nodes |
-| **Messaging** | Amazon SQS | Asynchronous tasks (emails, analytics events) |
-| **Security** | IAM, KMS, WAF | Access control, encryption, web firewall |
-| **Monitoring** | CloudWatch, CloudTrail, OpenSearch | Metrics, audit logs, log aggregation |
+| Component | AWS | GCP | Azure | Purpose |
+|-----------|-----|-----|-------|---------|
+| **VPC** | VPC | VPC | VNet | Isolated network environment |
+| **Compute** | EKS | GKE | AKS | Kubernetes orchestration; scaling, self-healing |
+| **Compute** | Fargate | Cloud Run | Container Apps | Serverless containers |
+| **Serverless** | Lambda | Cloud Functions | Azure Functions | Event-driven tasks (image processing, notifications) |
+| **Load Balancer** | ALB | GCLB | Azure LB | Distribute traffic, high availability |
+| **CDN** | CloudFront | Cloud CDN | Azure CDN | Static assets, reduced latency |
+| **DNS** | Route 53 | Cloud DNS | Azure DNS | Domain management, traffic routing |
+| **Database** | RDS PostgreSQL | Cloud SQL PostgreSQL | Azure Database for PostgreSQL | Core app data (pgvector required) |
+| **NoSQL** | DynamoDB | Firestore | Cosmos DB | User logs, AI chat history, flexible storage |
+| **Caching** | ElastiCache Redis | Memorystore Redis | Azure Cache for Redis | Session management, high-speed retrieval |
+| **Storage** | S3 | Cloud Storage | Blob Storage | Static assets, user uploads, backups |
+| **Messaging** | SQS | Pub/Sub | Service Bus | Async communication, background tasks |
+| **Security** | IAM, KMS, WAF | Cloud IAM, Secret Manager | Azure AD, Key Vault | Access control, secrets, firewall |
+| **Secrets** | Secrets Manager | Secret Manager | Key Vault | API keys, DB credentials |
 
-### Architecture Diagram
+### Architecture Diagram (AWS)
 
 ```mermaid
 graph TD
@@ -63,14 +66,30 @@ graph TD
 
 ## Deployment Pipeline (CI/CD)
 
-Implemented with **GitHub Actions** and **Terraform** for infrastructure-as-code.
+Implemented with **GitHub Actions**, **Terraform**, and **Helm** for infrastructure-as-code. Alternatives: Jenkins, GitLab CI/CD, AWS CodePipeline, Cloud Build, Azure DevOps Pipelines.
 
-### Stages
+### CI Stages
 
-1. **Source** – Push to `main` / `develop` or open pull request → triggers pipeline  
-2. **Build** – Frontend: lint, test, build. Backend: lint, test, build Docker images → push to **Amazon ECR**  
-3. **Test** – Integration tests (dev env), E2E tests, security scanning (SAST/DAST)  
-4. **Deploy** – Terraform for IaC, `kubectl apply` for Kubernetes; rolling updates, automated rollback on failure  
+1. **Source** – Code pushed to Git (GitHub/GitLab/Bitbucket) triggers the pipeline  
+2. **Build** – Compile code, build Docker images for each microservice  
+3. **Unit Tests** – Automated unit tests for code quality  
+4. **Static Code Analysis** – Identify bugs and security vulnerabilities (SAST)  
+5. **Image Scanning** – Scan Docker images for known CVEs  
+6. **Artifact Storage** – Push images to container registry (ECR/GCR/ACR)  
+
+### CD Stages
+
+1. **Deploy to Staging** – Deploy latest successful build to staging  
+2. **Integration Tests** – Run against deployed staging environment  
+3. **UAT** – Product owners and QA perform manual validation  
+4. **Deploy to Production** – Upon UAT approval, deploy to prod with rolling updates and automated rollback on failure  
+
+### Tools
+
+- **CI/CD:** GitHub Actions, Jenkins, GitLab CI/CD, or cloud-native (CodePipeline, Cloud Build, Azure DevOps)  
+- **Containerization:** Docker  
+- **Orchestration:** Kubernetes (EKS/GKE/AKS)  
+- **Configuration:** Helm for deploying Kubernetes applications  
 
 ### Pipeline Flow
 
@@ -84,20 +103,36 @@ Implemented with **GitHub Actions** and **Terraform** for infrastructure-as-code
 
 ## Environments
 
-| Environment | Purpose | Deployment | Access |
-|-------------|---------|------------|--------|
-| **Development** | Feature testing, bug fixes | Auto on successful build | Dev team |
-| **Staging** | UAT, performance testing, prod-like | Manual approval after merge to `develop` | Dev, QA, Product |
-| **Production** | Live end-users | Manual approval after merge to `main` | Restricted, automated deploys + emergency access |
+Three distinct environments ensure a smooth development and deployment workflow.
+
+| Environment | Purpose | Characteristics | Access |
+|-------------|---------|-----------------|--------|
+| **Development** | Local dev and testing | Lightweight; local DB or mocked services; rapid iteration | Dev team |
+| **Staging** | Integration testing, UAT, performance testing | Mirrors production; realistic data (anonymized if sensitive) | Dev, QA, Product |
+| **Production** | Live end-users | Highly available, scalable, secure; real user data | Restricted; automated deploys and emergency access only |
 
 ---
 
 ## Monitoring & Alerting
 
-- **Metrics:** Application (CPU, memory, latency, errors), infrastructure (DB, SQS), business (users, posts, subscriptions)
-- **Logging:** Centralized in OpenSearch; JSON format; DEBUG/INFO/WARN/ERROR/FATAL; request/correlation IDs
-- **Alerts:** CloudWatch alarms (errors, disk, CPU); OpenSearch alerts (patterns); PagerDuty (critical), Slack (awareness), email (non-urgent)
-- **Dashboards:** Grafana or CloudWatch dashboards for real-time visibility
+### Metrics
+
+| Category | Examples |
+|----------|----------|
+| **Application** | Request rates, error rates, latency, response times per microservice |
+| **System** | CPU, memory, disk I/O, network traffic |
+| **Database** | Query performance, connection counts, disk usage, replication status |
+| **AI/ML** | Model inference latency, accuracy, data drift |
+| **Business** | User sign-ups, event creation rates, RSVPs, ticket purchases, subscriptions |
+
+### Tools
+
+| Function | Options |
+|----------|---------|
+| **Monitoring** | Prometheus (time-series), Grafana (dashboards), or CloudWatch / Cloud Monitoring / Azure Monitor |
+| **Logging** | ELK (Elasticsearch, Logstash, Kibana) or cloud-native (CloudWatch Logs, Cloud Logging, Azure Monitor Logs) |
+| **Alerting** | Alertmanager (Prometheus), PagerDuty, Opsgenie, or cloud-native alerting; notify via email, SMS, Slack |
+| **Tracing** | Jaeger or OpenTelemetry for distributed tracing across microservices |
 
 ---
 
@@ -105,15 +140,17 @@ Implemented with **GitHub Actions** and **Terraform** for infrastructure-as-code
 
 | Component | Strategy |
 |-----------|----------|
-| **RDS PostgreSQL** | Automated backups (e.g. 30 days), PITR, manual snapshots pre-deploy, cross-region replication for DR |
-| **S3** | Versioning, cross-region replication, lifecycle policies (e.g. Glacier for older data) |
-| **EKS/Fargate** | Stateless services; configs and manifests in Git |
+| **Database** | Automated daily backups (7–30 day retention), PITR, manual snapshots before major deploys, cross-region replication for DR |
+| **Object Storage** | Versioning, cross-region backup of critical user uploads (e.g. event images) |
+| **Configuration** | Version-control all IaC (Kubernetes manifests, Helm charts, Terraform) in Git |
+| **Compute** | Stateless services; new instances launch from images; no local persistent state |
 
-**Disaster Recovery:**
+### Disaster Recovery
+
 - **RTO:** Maximum acceptable downtime (e.g. 4 hours)
 - **RPO:** Maximum acceptable data loss (e.g. 15 minutes)
-- Multi-AZ deployment for critical components
-- Regular DR drills
+- **Plan:** Document steps to restore the platform after a major outage or data center failure
+- **Testing:** Periodically test backup and recovery procedures to validate effectiveness
 
 ---
 
@@ -130,5 +167,7 @@ Implemented with **GitHub Actions** and **Terraform** for infrastructure-as-code
 
 ## Related Documents
 
+- [ARCHITECTURE.md](./ARCHITECTURE.md) – Platform architecture and service mapping
+- [DATABASE.md](./DATABASE.md) – Database design, indexing, migrations
 - [DEPLOYMENT.md](../DEPLOYMENT.md) – Current Railway deployment (quick start)
 - [README.md](../README.md) – Project overview and local development

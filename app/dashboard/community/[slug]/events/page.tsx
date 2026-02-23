@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { format } from "date-fns";
+import { useSession } from "next-auth/react";
+import { analytics } from "@/lib/analytics";
 
 type Event = {
   id: string;
@@ -19,6 +21,7 @@ type Event = {
 export default function CommunityEventsPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const { data: session } = useSession();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +36,21 @@ export default function CommunityEventsPage() {
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [slug]);
+
+  const reportedEventIds = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    if (events.length === 0) return;
+    const userId = session?.user?.id ?? null;
+    events.forEach((e) => {
+      if (reportedEventIds.current.has(e.id)) return;
+      reportedEventIds.current.add(e.id);
+      analytics.eventViewed({
+        user_id: userId,
+        community_event_id: e.id,
+        source: "community_page",
+      });
+    });
+  }, [events, session?.user?.id]);
 
   if (loading) {
     return (

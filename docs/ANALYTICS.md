@@ -1,25 +1,29 @@
 # Analytics Infrastructure
 
-This document describes the analytics event tracking schema, data pipeline, and dashboard data models implemented for the Creator Publishing Platform.
+This document describes the analytics event tracking schema, data pipeline, and dashboard data models implemented for the Creator Publishing Platform and AI-Augmented Event Platform.
 
 ## Event Tracking Schema
 
 ### Core Event Properties (all events)
 
-| Property    | Type      | Description                          |
-|-------------|-----------|--------------------------------------|
-| `event_id`  | String    | Unique identifier for each event    |
-| `event_name`| String    | Descriptive name of the event        |
-| `timestamp` | ISO 8601  | UTC when the event occurred          |
-| `user_id`   | String?   | User performing the action (if any)  |
-| `session_id`| String    | User session identifier              |
-| `platform`  | String    | `web`, `mobile_ios`, `mobile_android`|
-| `device_type`| String   | `desktop`, `tablet`, `phone`         |
-| `browser`   | String    | Browser name and version             |
-| `os`        | String    | Operating system                     |
-| `referrer`  | String?   | Previous page URL                    |
+| Property       | Type      | Description                          |
+|----------------|-----------|--------------------------------------|
+| `event_id`     | String    | Unique identifier for each event    |
+| `event_name`   | String    | Descriptive name of the event        |
+| `timestamp`    | ISO 8601  | UTC when the event occurred          |
+| `user_id`      | String?   | User performing the action (if any)  |
+| `session_id`   | String    | User session identifier              |
+| `platform`     | String    | `web`, `mobile_ios`, `mobile_android`|
+| `device_type`  | String    | `desktop`, `tablet`, `phone`         |
+| `browser`      | String    | Browser name and version             |
+| `os`           | String    | Operating system                     |
+| `referrer`     | String?   | Previous page URL                    |
+| `referrer_url` | String?   | Referring URL (alias)                |
+| `page_url`     | String?   | Page where event occurred            |
 
 ### Implemented Events
+
+#### Creator / Community Platform
 
 1. **user_registered** – New user signup  
    - `email`, `username?`, `role` (creator|reader), `registration_source?`
@@ -41,6 +45,44 @@ This document describes the analytics event tracking schema, data pipeline, and 
 
 7. **payment_succeeded** – Successful subscription payment  
    - `creator_id`, `subscription_id`, `amount`, `currency`, `payment_method_type`, `is_renewal`
+
+#### Event Platform (AI-Augmented)
+
+8. **profile_updated** – User updates profile  
+   - `updated_fields` (array of field names)
+
+9. **interest_selected** – User selects an interest  
+   - `interest_name`
+
+10. **search_performed** – User performs search  
+    - `search_query`, `search_results_count`
+
+11. **event_viewed** – User views an event  
+    - `community_event_id`, `source` (personalized_feed|search_results|direct_link|community_page|other)
+
+12. **event_card_clicked** – User clicks event card  
+    - `community_event_id`, `position_in_feed?`
+
+13. **recommendation_feedback_provided** – Feedback on recommendations  
+    - `community_event_id`, `feedback_type` (like|dislike|more_like_this)
+
+14. **rsvp_clicked** – User clicks RSVP button  
+    - `community_event_id`
+
+15. **rsvp_confirmed** – User confirms RSVP  
+    - `community_event_id`, `rsvp_status` (going|attending|interested|maybe|not_going)
+
+16. **ticket_selected**, **checkout_initiated**, **ticket_purchased**, **add_to_calendar_clicked** – Ticketing and calendar actions
+
+17. **event_created** – Organizer creates event  
+    - `organizer_id`, `community_event_id`, `event_category?`, `is_paid`
+
+18. **event_updated** – Organizer updates event  
+    - `organizer_id`, `community_event_id`, `updated_fields`
+
+19. **ai_content_generated**, **promotional_content_generated** – AI-assisted organizer actions
+
+See `Specification/Data-Engineer-Event-Platform-Analytics-Infrastructure.md` for the full Event Platform spec.
 
 ## Current Architecture
 
