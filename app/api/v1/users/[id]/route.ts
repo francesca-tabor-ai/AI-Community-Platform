@@ -66,7 +66,7 @@ export async function PUT(
   }
 
   const body = await req.json().catch(() => ({}));
-  const updates: { username?: string; bio?: string } = {};
+  const updates: Record<string, unknown> = {};
 
   if (body.username !== undefined) {
     if (typeof body.username !== "string" || body.username.length < 2) {
@@ -84,10 +84,16 @@ export async function PUT(
     }
     updates.username = body.username;
   }
-
-  if (body.bio !== undefined) {
-    updates.bio =
-      typeof body.bio === "string" ? body.bio : String(body.bio ?? "");
+  if (body.bio !== undefined) updates.bio = typeof body.bio === "string" ? body.bio : String(body.bio ?? "");
+  if (body.headline !== undefined) updates.headline = typeof body.headline === "string" ? body.headline : null;
+  if (body.location !== undefined) updates.location = typeof body.location === "string" ? body.location : null;
+  if (body.industry !== undefined) updates.industry = typeof body.industry === "string" ? body.industry : null;
+  if (body.profilePhotoUrl !== undefined) updates.image = body.profilePhotoUrl;
+  if (body.openTo !== undefined) updates.openTo = Array.isArray(body.openTo) ? body.openTo : [];
+  if (body.firstName !== undefined || body.lastName !== undefined) {
+    const fn = body.firstName ?? "";
+    const ln = body.lastName ?? "";
+    updates.name = [fn, ln].filter(Boolean).join(" ").trim() || null;
   }
 
   const user = await prisma.user.update({
@@ -99,8 +105,12 @@ export async function PUT(
     id: user.id,
     email: user.email,
     username: user.username,
+    headline: user.headline,
     bio: user.bio,
-    role: user.role,
-    updated_at: user.updatedAt.toISOString(),
+    location: user.location,
+    industry: user.industry,
+    profilePhotoUrl: user.image,
+    openTo: user.openTo ?? [],
+    updatedAt: user.updatedAt.toISOString(),
   });
 }
