@@ -32,7 +32,8 @@ export async function GET(
   });
 
   const hasMore = messages.length > limit;
-  const list = (hasMore ? messages.slice(0, limit) : messages).reverse();
+  const batch = hasMore ? messages.slice(0, limit) : messages;
+  const list = [...batch].reverse();
 
   return Response.json({
     messages: list.map((m) => ({
@@ -42,7 +43,7 @@ export async function GET(
       content: m.content,
       createdAt: m.createdAt.toISOString(),
     })),
-    nextCursor: hasMore ? list[list.length - 1]?.id : null,
+    nextCursor: hasMore ? batch[batch.length - 1]?.id : null,
   });
 }
 

@@ -32,6 +32,15 @@ async function main() {
   await prisma.creatorPost.deleteMany();
   await prisma.creatorSubscription.deleteMany();
   await prisma.creatorStripeSubscription.deleteMany();
+  await prisma.vibeNetSavedOpportunity.deleteMany();
+  await prisma.vibeNetOpportunity.deleteMany();
+  await prisma.vibeNetMessage.deleteMany();
+  await prisma.vibeNetConversationParticipant.deleteMany();
+  await prisma.vibeNetConversation.deleteMany();
+  await prisma.vibeNetMatch.deleteMany();
+  await prisma.vibeNetConnection.deleteMany();
+  await prisma.vibeNetSkill.deleteMany();
+  await prisma.vibeNetRefreshToken.deleteMany();
   await prisma.comment.deleteMany();
   await prisma.post.deleteMany();
   await prisma.eventRsvp.deleteMany();
@@ -294,6 +303,33 @@ async function main() {
       targetType: "Community",
       targetId: community.id,
       metadata: { name: community.name },
+    },
+  });
+
+  // VibeNet — skills, opportunities, sample match
+  await prisma.vibeNetSkill.createMany({
+    data: [
+      { userId: alice.id, name: "AI" },
+      { userId: alice.id, name: "Community Building" },
+      { userId: bob.id, name: "AI" },
+      { userId: bob.id, name: "Developer Relations" },
+      { userId: carol.id, name: "Product" },
+      { userId: carol.id, name: "Community Strategy" },
+    ],
+  });
+  await prisma.vibeNetOpportunity.createMany({
+    data: [
+      { title: "Senior AI Engineer", type: "job", description: "Build the future of AI platforms." },
+      { title: "Community Manager", type: "job", description: "Lead engagement for a growing community." },
+      { title: "AI Hackathon 2025", type: "event", description: "48-hour hackathon with $10k prizes." },
+    ],
+  });
+  await prisma.vibeNetMatch.create({
+    data: {
+      userId: alice.id,
+      matchedUserId: bob.id,
+      score: 85,
+      reason: "Shared skills in AI. Same industry focus.",
     },
   });
 
