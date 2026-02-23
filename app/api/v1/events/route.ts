@@ -8,13 +8,18 @@ import { trackEvent } from "@/lib/analytics/track";
 import type { EventCreatedEvent } from "@/lib/analytics/events";
 
 const createEventSchema = z.object({
-  title: z.string().min(1).max(255),
+  name: z.string().min(1).max(255).optional(),
+  title: z.string().min(1).max(255).optional(),
   description: z.string().optional(),
-  start_time: z.string().datetime(),
-  end_time: z.string().datetime(),
+  start_date: z.string().datetime().optional(),
+  end_date: z.string().datetime().optional(),
+  start_time: z.string().datetime().optional(),
+  end_time: z.string().datetime().optional(),
   location: z.string().max(255).optional(),
   ticket_price: z.number().min(0).optional(),
   capacity: z.number().int().min(1).optional(),
+  rules: z.record(z.unknown()).optional(),
+  settings: z.record(z.unknown()).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -34,19 +39,28 @@ export async function POST(req: NextRequest) {
       return badRequest("Validation failed", field_errors);
     }
 
-    const { title, description, start_time, end_time, location, ticket_price, capacity } =
-      parsed.data;
+    const d = parsed.data;
+    const title = d.name ?? d.title ?? "";
+    const startTime = d.start_date || d.start_time
+      ? new Date(d.start_date ?? d.start_time!)
+      : new Date();
+    const endTime = d.end_date || d.end_time
+      ? new Date(d.end_date ?? d.end_time!)
+      : new Date(Date.now() + 86400000);
 
     const event = await prisma.platformEvent.create({
       data: {
         organizerId: authResult.user.id,
         title,
-        description: description ?? null,
-        startTime: new Date(start_time),
-        endTime: new Date(end_time),
-        location: location ?? null,
-        ticketPrice: ticket_price != null ? new Prisma.Decimal(ticket_price) : null,
-        capacity: capacity ?? null,
+        description: d.description ?? null,
+        startTime,
+        endTime,
+        location: d.location ?? null,
+        ticketPrice: d.ticket_price != null ? new Prisma.Decimal(d.ticket_price) : null,
+        capacity: d.capacity ?? null,
+        rules: (d.rules ?? {}) as object,
+        settings: (d.settings ?? {}) as object,
+        status: "draft",
       },
     });
 
@@ -57,22 +71,13 @@ export async function POST(req: NextRequest) {
       user_id: authResult.user.id,
       organizer_id: authResult.user.id,
       community_event_id: event.id,
-      is_paid: (ticket_price ?? 0) > 0,
+      is_paid: (d.ticket_price ?? 0) > 0,
     } as EventCreatedEvent);
 
     return Response.json(
       {
         event_id: event.id,
-        organizer_id: event.organizerId,
-        title: event.title,
-        description: event.description,
-        start_time: event.startTime.toISOString(),
-        end_time: event.endTime.toISOString(),
-        location: event.location,
-        ticket_price: event.ticketPrice?.toNumber() ?? null,
-        capacity: event.capacity,
-        created_at: event.createdAt.toISOString(),
-        updated_at: event.updatedAt.toISOString(),
+        message: "Event created",
       },
       { status: 201 }
     );

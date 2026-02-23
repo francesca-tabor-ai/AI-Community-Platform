@@ -6,13 +6,18 @@ import { requireAuth } from "@/lib/api-v1/auth";
 import { notFound, forbidden, badRequest } from "@/lib/api-v1/errors";
 
 const updateEventSchema = z.object({
+  name: z.string().min(1).max(255).optional(),
   title: z.string().min(1).max(255).optional(),
   description: z.string().optional(),
   start_time: z.string().datetime().optional(),
   end_time: z.string().datetime().optional(),
+  start_date: z.string().datetime().optional(),
+  end_date: z.string().datetime().optional(),
   location: z.string().max(255).optional(),
   ticket_price: z.number().min(0).optional(),
   capacity: z.number().int().min(1).optional(),
+  rules: z.record(z.unknown()).optional(),
+  settings: z.record(z.unknown()).optional(),
 });
 
 export async function GET(
@@ -32,12 +37,17 @@ export async function GET(
 
   return Response.json({
     event_id: event.id,
-    organizer_id: event.organizerId,
+    name: event.title,
     title: event.title,
     description: event.description,
+    start_date: event.startTime.toISOString(),
+    end_date: event.endTime.toISOString(),
     start_time: event.startTime.toISOString(),
     end_time: event.endTime.toISOString(),
     location: event.location,
+    status: event.status,
+    rules: (event.rules as object) ?? {},
+    settings: (event.settings as object) ?? {},
     ticket_price: event.ticketPrice?.toNumber() ?? null,
     capacity: event.capacity,
     created_at: event.createdAt.toISOString(),
@@ -73,15 +83,20 @@ export async function PUT(
       return badRequest("Validation failed", field_errors);
     }
 
+    const u = parsed.data;
     const updates: Prisma.PlatformEventUpdateInput = {};
-    if (parsed.data.title !== undefined) updates.title = parsed.data.title;
-    if (parsed.data.description !== undefined) updates.description = parsed.data.description;
-    if (parsed.data.start_time !== undefined) updates.startTime = new Date(parsed.data.start_time);
-    if (parsed.data.end_time !== undefined) updates.endTime = new Date(parsed.data.end_time);
-    if (parsed.data.location !== undefined) updates.location = parsed.data.location;
-    if (parsed.data.ticket_price !== undefined)
-      updates.ticketPrice = new Prisma.Decimal(parsed.data.ticket_price);
-    if (parsed.data.capacity !== undefined) updates.capacity = parsed.data.capacity;
+    if (u.name !== undefined || u.title !== undefined) updates.title = u.name ?? u.title;
+    if (u.description !== undefined) updates.description = u.description;
+    if (u.start_time !== undefined || u.start_date !== undefined)
+      updates.startTime = new Date(u.start_time ?? u.start_date!);
+    if (u.end_time !== undefined || u.end_date !== undefined)
+      updates.endTime = new Date(u.end_time ?? u.end_date!);
+    if (u.location !== undefined) updates.location = u.location;
+    if (u.ticket_price !== undefined)
+      updates.ticketPrice = new Prisma.Decimal(u.ticket_price);
+    if (u.capacity !== undefined) updates.capacity = u.capacity;
+    if (u.rules !== undefined) updates.rules = u.rules as object;
+    if (u.settings !== undefined) updates.settings = u.settings as object;
 
     const updated = await prisma.platformEvent.update({
       where: { id: eventId },
@@ -90,16 +105,7 @@ export async function PUT(
 
     return Response.json({
       event_id: updated.id,
-      organizer_id: updated.organizerId,
-      title: updated.title,
-      description: updated.description,
-      start_time: updated.startTime.toISOString(),
-      end_time: updated.endTime.toISOString(),
-      location: updated.location,
-      ticket_price: updated.ticketPrice?.toNumber() ?? null,
-      capacity: updated.capacity,
-      created_at: updated.createdAt.toISOString(),
-      updated_at: updated.updatedAt.toISOString(),
+      message: "Event updated",
     });
   } catch {
     const { apiError } = await import("@/lib/api-v1/errors");
