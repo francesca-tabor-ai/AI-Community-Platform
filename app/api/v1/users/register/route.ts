@@ -8,7 +8,7 @@ const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   username: z.string().min(2).max(50).regex(/^[a-zA-Z0-9_-]+$/),
-  role: z.enum(["creator", "reader"]),
+  role: z.enum(["creator", "reader"]).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       return badRequest("Validation failed", field_errors);
     }
 
-    const { email, password, username, role } = parsed.data;
+    const { email, password, username, role = "reader" } = parsed.data;
 
     const existingEmail = await prisma.user.findUnique({
       where: { email },
@@ -54,11 +54,8 @@ export async function POST(req: NextRequest) {
     });
 
     return Response.json({
-      id: user.id,
-      email: user.email,
-      username: user.username,
-      role: user.role,
-      created_at: user.createdAt.toISOString(),
+      user_id: user.id,
+      message: "User registered successfully",
     });
   } catch {
     return apiError(500, "Internal server error", {

@@ -45,9 +45,12 @@ The platform targets a major cloud provider (AWS, GCP, or Azure) for high availa
 | **NoSQL** | DynamoDB | Firestore | Cosmos DB | User logs, AI chat history, flexible storage |
 | **Caching** | ElastiCache Redis | Memorystore Redis | Azure Cache for Redis | Session management, high-speed retrieval |
 | **Storage** | S3 | Cloud Storage | Blob Storage | Static assets, user uploads, backups |
-| **Messaging** | SQS | Pub/Sub | Service Bus | Async communication, background tasks |
+| **Messaging** | MSK/SQS | Pub/Sub | Event Hubs | Async microservice comms; Kafka for streaming, SQS for queues |
+| **API** | API Gateway | API Gateway | API Management | API exposure, throttling, authentication |
 | **Security** | IAM, KMS, WAF | Cloud IAM, Secret Manager | Azure AD, Key Vault | Access control, secrets, firewall |
 | **Secrets** | Secrets Manager | Secret Manager | Key Vault | API keys, DB credentials |
+| **CI/CD** | CodePipeline, CodeBuild, ECR | Cloud Build, Artifact Registry | Azure DevOps, ACR | Build, test, deploy; container registry |
+| **AI/ML** | SageMaker, Comprehend, Rekognition | Vertex AI | Azure ML | Hosting models; managed AI for NLP, vision |
 
 ### Architecture Diagram (AWS)
 
@@ -101,17 +104,26 @@ Implemented with **GitHub Actions**, **Terraform**, and **Helm** for infrastruct
 
 ### CD Stages
 
-1. **Deploy to Staging** – Deploy latest successful build to staging  
-2. **Integration Tests** – Run against deployed staging environment  
+1. **Deploy to Staging** – Deploy latest successful build to staging (CodeDeploy, ArgoCD, or FluxCD)  
+2. **Integration Tests** – Run integration, E2E, API, and security tests against staging; performance/load tests  
 3. **UAT** – Product owners and QA perform manual validation  
-4. **Deploy to Production** – Upon UAT approval, deploy to prod with rolling updates and automated rollback on failure  
+4. **Deploy to Production** – Upon approval, use blue/green or canary releases to minimize downtime; update Kubernetes manifests and apply to EKS  
+5. **Monitor & Rollback** – Monitor metrics and logs post-deploy; automated rollback on critical errors or performance degradation  
 
 ### Tools
 
-- **CI/CD:** GitHub Actions, Jenkins, GitLab CI/CD, or cloud-native (CodePipeline, Cloud Build, Azure DevOps)  
-- **Containerization:** Docker  
-- **Orchestration:** Kubernetes (EKS/GKE/AKS)  
-- **Configuration:** Helm for deploying Kubernetes applications  
+- **CI/CD:** GitHub Actions, CodePipeline, Jenkins, GitLab CI/CD, or cloud-native (Cloud Build, Azure DevOps)  
+- **Build:** CodeBuild, Jenkins, or GitHub Actions  
+- **Registry:** ECR, GCR, or ACR for container images  
+- **Deploy:** CodeDeploy, ArgoCD, FluxCD for GitOps; Helm for Kubernetes applications  
+
+### CI/CD Principles
+
+- **Automation First** – Automate build, test, and deployment  
+- **Fast Feedback** – Quick feedback on code quality and issues  
+- **Version Control Everything** – Code, IaC, and pipeline definitions in Git  
+- **Small, Frequent Releases** – Continuous delivery to reduce risk and accelerate innovation  
+- **Security Integration** – Integrate SAST and DAST early in the pipeline  
 
 ### Pipeline Flow
 
@@ -142,8 +154,14 @@ Three distinct environments ensure a smooth development and deployment workflow.
 | Environment | Purpose | Configuration |
 |-------------|---------|---------------|
 | **Development (Local)** | Local dev and testing | **MVP:** Docker Compose (app, PostgreSQL, Redis). **Scale:** Lightweight; local DB or mocked services. |
-| **Staging** | Pre-production testing | Full AWS environment identical to production; own database and services. Final QA before release. |
+| **Staging** | Pre-production testing | Full environment identical to production; own database and services. Integration tests, performance tests, UAT. Data anonymization for sensitive data. |
 | **Production** | Live end-users | Highly available, scalable, secure; real user data; stricter access controls. |
+
+### Environment Management
+
+- **IaC:** Use Terraform or CloudFormation to define and provision infrastructure for all environments; ensures consistency and repeatability.
+- **Configuration:** Use Ansible or Kubernetes ConfigMaps/Secrets for environment-specific configuration.
+- **Secrets:** Store API keys, DB credentials, and similar in AWS Secrets Manager or HashiCorp Vault.
 
 ---
 
@@ -157,7 +175,7 @@ Three distinct environments ensure a smooth development and deployment workflow.
 | **System** | CPU, memory, disk I/O, network traffic |
 | **Database** | Query performance, connection counts, disk usage, replication status |
 | **AI/ML** | Model inference latency, accuracy, data drift |
-| **Business** | User sign-ups, event creation rates, RSVPs, ticket purchases, subscriptions |
+| **Business** | User sign-ups, event creation rates, RSVPs, ticket purchases, subscriptions, AI feature usage |
 
 ### Tools
 
@@ -166,7 +184,13 @@ Three distinct environments ensure a smooth development and deployment workflow.
 | **Monitoring** | Prometheus (time-series), Grafana (dashboards), or CloudWatch / Cloud Monitoring / Azure Monitor |
 | **Logging** | ELK (Elasticsearch, Logstash, Kibana) or cloud-native (CloudWatch Logs, Cloud Logging, Azure Monitor Logs) |
 | **Alerting** | Alertmanager (Prometheus), PagerDuty, Opsgenie, or cloud-native alerting; notify via email, SMS, Slack |
-| **Tracing** | Jaeger or OpenTelemetry for distributed tracing across microservices |
+| **Tracing** | Jaeger, OpenTelemetry, or AWS X-Ray for distributed tracing across microservices |
+
+### Alerting Best Practices
+
+- **Threshold-Based Alerts** – Alerts when metrics exceed thresholds (e.g. error rate > 5%, CPU > 80%).
+- **Anomaly Detection** – Use AI-powered anomaly detection for unusual patterns in metrics or logs.
+- **Runbooks** – Document runbooks for common alerts with diagnosis and resolution steps.
 
 ### MVP Monitoring Setup
 
@@ -181,10 +205,11 @@ Three distinct environments ensure a smooth development and deployment workflow.
 
 | Component | Strategy |
 |-----------|----------|
-| **Database** | Automated daily backups (7–30 day retention), PITR, manual snapshots before major deploys, cross-region replication for DR |
-| **Object Storage** | Versioning, cross-region backup of critical user uploads (e.g. event images) |
+| **Database** | Automated daily snapshots (7–30 day retention); PITR; periodic logical backups (`pg_dump`) for cross-region restores; manual snapshots before major deploys; cross-region replication for DR |
+| **Object Storage** | S3 versioning; cross-region replication for critical data (e.g. user uploads, event images) |
 | **Configuration** | Version-control all IaC (Kubernetes manifests, Helm charts, Terraform) in Git |
-| **Compute** | Stateless services; new instances launch from images; no local persistent state |
+| **Container Images** | Store images in ECR (or GCR/ACR); registry provides durability |
+| **Compute** | Stateless services; new instances launch from images; automate restoration where possible |
 
 ### MVP Backup Configuration
 
@@ -196,7 +221,9 @@ Three distinct environments ensure a smooth development and deployment workflow.
 
 - **RTO:** Maximum acceptable downtime (e.g. 4 hours)
 - **RPO:** Maximum acceptable data loss (e.g. 15 minutes)
-- **Plan:** Document steps to restore the platform after a major outage or data center failure
+- **Plan:** Document procedures for recovering from major outages
+- **Multi-AZ / Multi-Region:** Deploy critical services across multiple Availability Zones; consider multi-region for regional outages
+- **Automated Restoration:** Automate database and application restoration where possible
 - **Testing:** Periodically test backup and recovery procedures to validate effectiveness
 
 ---

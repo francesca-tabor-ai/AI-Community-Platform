@@ -4,31 +4,13 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/api-v1/auth";
 import { badRequest } from "@/lib/api-v1/errors";
 
-function splitName(name: string | null): { first_name: string | null; last_name: string | null } {
-  if (!name) return { first_name: null, last_name: null };
-  const parts = name.trim().split(/\s+/);
-  if (parts.length === 0) return { first_name: null, last_name: null };
-  if (parts.length === 1) return { first_name: parts[0], last_name: null };
-  return {
-    first_name: parts[0],
-    last_name: parts.slice(1).join(" "),
-  };
-}
-
 export async function GET(req: NextRequest) {
   const authResult = await requireAuth(req);
   if (authResult instanceof Response) return authResult;
 
   const user = await prisma.user.findUnique({
     where: { id: authResult.user.id },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      name: true,
-      image: true,
-      bio: true,
-    },
+    include: { profile: true },
   });
 
   if (!user) {
@@ -36,23 +18,27 @@ export async function GET(req: NextRequest) {
     return notFound("User not found");
   }
 
-  const { first_name, last_name } = splitName(user.name);
+  const profileData = (user.profileData as Record<string, unknown>) ?? {};
+  const profile = {
+    ...profileData,
+    displayName: user.profile?.displayName ?? user.name,
+    bio: user.bio ?? user.profile?.bio,
+    avatarUrl: user.image ?? user.profile?.avatarUrl,
+    skills: profileData.skills,
+    interests: profileData.interests,
+  };
 
   return Response.json({
     user_id: user.id,
     username: user.username,
     email: user.email,
-    first_name,
-    last_name,
-    profile_picture_url: user.image,
+    profile,
   });
 }
 
 const updateSchema = z.object({
   username: z.string().min(2).max(50).regex(/^[a-zA-Z0-9_-]+$/).optional(),
-  first_name: z.string().max(50).optional(),
-  last_name: z.string().max(50).optional(),
-  profile_picture_url: z.string().url().nullable().optional(),
+  profile: z.record(z.unknown()).optional(),
 });
 
 export async function PUT(req: NextRequest) {
@@ -72,7 +58,7 @@ export async function PUT(req: NextRequest) {
       return badRequest("Validation failed", field_errors);
     }
 
-    const updates: { username?: string; name?: string; image?: string | null } = {};
+    const updates: { username?: string; profileData?: object } = {};
 
     if (parsed.data.username !== undefined) {
       const existing = await prisma.user.findUnique({
@@ -85,30 +71,22 @@ export async function PUT(req: NextRequest) {
       updates.username = parsed.data.username;
     }
 
-    if (parsed.data.first_name !== undefined || parsed.data.last_name !== undefined) {
-      const fn = parsed.data.first_name ?? "";
-      const ln = parsed.data.last_name ?? "";
-      updates.name = [fn, ln].filter(Boolean).join(" ").trim() || undefined;
+    if (parsed.data.profile !== undefined) {
+      const current = (await prisma.user.findUnique({
+        where: { id: authResult.user.id },
+        select: { profileData: true },
+      }))?.profileData as Record<string, unknown> | null;
+      updates.profileData = { ...(current ?? {}), ...parsed.data.profile };
     }
 
-    if (parsed.data.profile_picture_url !== undefined) {
-      updates.image = parsed.data.profile_picture_url;
-    }
-
-    const user = await prisma.user.update({
+    await prisma.user.update({
       where: { id: authResult.user.id },
       data: updates,
     });
 
-    const { first_name, last_name } = splitName(user.name);
-
     return Response.json({
-      user_id: user.id,
-      username: user.username,
-      email: user.email,
-      first_name,
-      last_name,
-      profile_picture_url: user.image,
+      user_id: authResult.user.id,
+      message: "Profile updated",
     });
   } catch {
     const { apiError } = await import("@/lib/api-v1/errors");

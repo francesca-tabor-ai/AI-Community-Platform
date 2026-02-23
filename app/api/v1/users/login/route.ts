@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
     return Response.json({
       access_token,
-      token_type: "Bearer",
+      token_type: "bearer",
     });
   } catch {
     return apiError(500, "Internal server error", {
