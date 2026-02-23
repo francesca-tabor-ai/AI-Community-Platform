@@ -304,6 +304,10 @@ model Subscription {
 
   subscriber User             @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
   tier       SubscriptionTier @relation(fields: [tierId], references: [id], onDelete: Cascade)
+
+  @@index([subscriberId])
+  @@index([communityId])
+  @@index([status])
 }
 
 model Activity {
