@@ -368,6 +368,7 @@ export default function FeaturesPage() {
       </LazySection>
 
       {/* CTA Section */}
+      <LazySection delay={80}>
       <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <h2 className="text-4xl font-bold text-white sm:text-5xl">
