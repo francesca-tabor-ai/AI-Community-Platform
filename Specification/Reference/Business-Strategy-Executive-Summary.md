@@ -1,6 +1,6 @@
 # Business Strategy — Executive Summary
 
-> Quick reference for the Creator Publishing Platform. Full strategy: [`Specification/Community/CEO Agent: Business Strategy for a Creator Publishing Platform.md`](../Community/CEO%20Agent%20Business%20Strategy%20for%20a%20Creator%20Publishing%20Platform.md)
+> Quick reference for the Creator Publishing Platform. Full strategy: [`Specification/Community/CEO Agent: Business Strategy for a Creator Publishing Platform.md`](../Community/CEO%20Agent%3A%20Business%20Strategy%20for%20a%20Creator%20Publishing%20Platform.md)
 
 ## Core Model
 

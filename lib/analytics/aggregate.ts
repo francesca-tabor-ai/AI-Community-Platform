@@ -86,7 +86,9 @@ async function countSubscribersForCreator(creatorId: string): Promise<number> {
     select: { id: true },
   });
   if (!community) return 0;
-  return prisma.member.count({ where: { communityId: community.id } });
+  return prisma.subscription.count({
+    where: { communityId: community.id, status: "active" },
+  });
 }
 
 export type PlatformDailyKpis = {
@@ -155,7 +157,17 @@ export async function getPlatformDailyKpis(
   for (const row of byDate.values()) {
     row.total_users = totalUsers;
     row.dau = dauByDate.get(row.date)?.size ?? 0;
-    row.mau = 0;
+    const windowEnd = new Date(row.date);
+    windowEnd.setHours(23, 59, 59, 999);
+    const windowStart = new Date(windowEnd);
+    windowStart.setDate(windowStart.getDate() - 30);
+    const mauSet = new Set<string>();
+    for (const e of events) {
+      if (!e.userId) continue;
+      const t = new Date(e.timestamp);
+      if (t >= windowStart && t <= windowEnd) mauSet.add(e.userId);
+    }
+    row.mau = mauSet.size;
   }
 
   return Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date));
