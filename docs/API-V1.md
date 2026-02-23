@@ -11,10 +11,12 @@ RESTful API. Base URL: `/api/v1`.
 ### User Service
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/users` | POST | Create user. Body: `{username, email, password, first_name?, last_name?}`. |
-| `/users/me` | GET | Get current user profile. |
-| `/users/me` | PUT | Update profile. Body: `{username?, first_name?, last_name?, profile_picture_url?}`. |
-| `/auth/login` | POST | Login. Body: `{email, password}`. Returns `{access_token, token_type}`. |
+| `/users/register` | POST | Register. Body: `{email, password, username}`. Returns `{user_id, message}`. |
+| `/users/login` | POST | Login. Body: `{email, password}`. Returns `{access_token, token_type: "bearer"}`. |
+| `/users/me` | GET | Get current user. Returns `{user_id, username, email, profile}`. |
+| `/users/me` | PUT | Update profile. Body: `{username?, profile?}`. Returns `{user_id, message}`. |
+| `/users` | POST | Create user (legacy). Body: `{username, email, password, first_name?, last_name?}`. |
+| `/auth/login` | POST | Login (legacy). Body: `{email, password}`. |
 
 ### Event Service
 | Endpoint | Method | Description |
