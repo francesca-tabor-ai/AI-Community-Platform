@@ -4,6 +4,18 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth, requireCreator } from "@/lib/api-v1/auth";
 import { notFound, forbidden, badRequest } from "@/lib/api-v1/errors";
 
+function toPostResponse(post: { id: string; creatorId: string; title: string; content: string; status: string; createdAt: Date; updatedAt: Date; publishedAt: Date | null }) {
+  return {
+    id: post.id,
+    title: post.title,
+    content: post.content,
+    published: post.status === "published",
+    authorId: post.creatorId,
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  };
+}
+
 const updatePostSchema = z.object({
   title: z.string().min(1).max(500).optional(),
   content: z.string().min(1).optional(),
@@ -29,14 +41,7 @@ export async function GET(
     return forbidden("Draft posts are only visible to the creator");
   }
 
-  return Response.json({
-    id: post.id,
-    creator_id: post.creatorId,
-    title: post.title,
-    content: post.content,
-    status: post.status,
-    published_at: post.publishedAt?.toISOString() ?? null,
-  });
+  return Response.json({ post: toPostResponse(post) });
 }
 
 export async function PUT(
@@ -79,14 +84,7 @@ export async function PUT(
       data: updateData,
     });
 
-    return Response.json({
-      id: updated.id,
-      creator_id: updated.creatorId,
-      title: updated.title,
-      content: updated.content,
-      status: updated.status,
-      updated_at: updated.updatedAt.toISOString(),
-    });
+    return Response.json({ post: toPostResponse(updated) });
   } catch {
     return Response.json(
       { detail: "Internal server error", code: "INTERNAL_ERROR" },

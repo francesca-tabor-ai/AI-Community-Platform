@@ -41,8 +41,15 @@ export async function POST(req: NextRequest) {
     });
 
     return Response.json({
-      access_token,
-      token_type: "Bearer",
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      },
+      token: {
+        access_token,
+        token_type: "Bearer",
+      },
     });
   } catch {
     return apiError(500, "Internal server error", {

@@ -4,10 +4,34 @@ import { prisma } from "@/lib/prisma";
 import { requireCreator } from "@/lib/api-v1/auth";
 import { badRequest } from "@/lib/api-v1/errors";
 
+function toPostResponse(post: { id: string; creatorId: string; title: string; content: string; status: string; createdAt: Date; updatedAt: Date; publishedAt: Date | null }) {
+  return {
+    id: post.id,
+    title: post.title,
+    content: post.content,
+    published: post.status === "published",
+    authorId: post.creatorId,
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  };
+}
+
 const createPostSchema = z.object({
   title: z.string().min(1).max(500),
-  content: z.string().min(1),
+  content: z.string().optional(),
 });
+
+export async function GET(req: NextRequest) {
+  const authResult = await requireCreator(req);
+  if (authResult instanceof Response) return authResult;
+
+  const posts = await prisma.creatorPost.findMany({
+    where: { creatorId: authResult.user.id },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return Response.json(posts.map(toPostResponse));
+}
 
 export async function POST(req: NextRequest) {
   const authResult = await requireCreator(req);
@@ -32,19 +56,13 @@ export async function POST(req: NextRequest) {
       data: {
         creatorId: authResult.user.id,
         title,
-        content,
+        content: content ?? "",
         status: "draft",
       },
     });
 
     return Response.json(
-      {
-        id: post.id,
-        creator_id: post.creatorId,
-        title: post.title,
-        status: post.status,
-        created_at: post.createdAt.toISOString(),
-      },
+      { post: toPostResponse(post) },
       { status: 201 }
     );
   } catch {

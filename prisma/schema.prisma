@@ -132,6 +132,7 @@ model User {
   creatorPostComments CreatorPostComment[]
   creatorSubscriptionsAsSubscriber CreatorSubscription[] @relation("CreatorSubscriptionSubscriber")
   creatorSubscriptionsAsCreator   CreatorSubscription[] @relation("CreatorSubscriptionCreator")
+  creatorStripeSubscriptions     CreatorStripeSubscription[]
   articles            Article[]
   articleRevisions    ArticleRevision[]
   approvedRevisions   ArticleRevision[] @relation("ArticleRevisionApprover")
@@ -238,7 +239,22 @@ model CreatorSubscription {
   @@index([creatorId])
 }
 
-model Profile {
+// Paid subscriptions via Stripe (creator publishing MVP)
+model CreatorStripeSubscription {
+  id                    String   @id @default(cuid())
+  creatorId             String
+  subscriberEmail       String
+  stripeSubscriptionId String   @unique
+  status                String   @default("active")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  creator User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([creatorId])
+  @@index([subscriberEmail])
+}
+
   id          String   @id @default(cuid())
   userId      String   @unique
   displayName String?
