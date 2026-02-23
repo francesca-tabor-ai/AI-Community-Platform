@@ -177,34 +177,32 @@ export default function Home() {
 
       {/* CTA */}
       <LazySection delay={80}>
-        <section className="border-t border-slate-200 bg-slate-50 py-24">
-          <div className="mx-auto max-w-4xl px-6 text-center">
-            <h2 className="text-4xl font-bold text-slate-900 sm:text-5xl">
-              Ready to build your intelligent community?
+        <section className="relative overflow-hidden border-t border-slate-200 py-24">
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(71,85,105,0.06)_0%,rgba(15,23,42,0.04)_100%)]" />
+          <div className="relative mx-auto max-w-4xl px-6 text-center">
+            <h2 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+              Ready to build an intelligent community?
             </h2>
-            <p className="mt-6 text-lg text-slate-600">
-              Start for free. No credit card required.
+            <p className="mx-auto mt-6 max-w-xl text-lg text-slate-600">
+              Launch your community in minutes.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/signup"
-                className="gradient-accent rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-violet-500/30 active:scale-[0.98]"
+                className="rounded-xl bg-violet-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-600/25 transition-all duration-200 hover:bg-violet-700 hover:shadow-violet-600/30 active:scale-[0.98]"
               >
                 Get Started Free
               </Link>
               <Link
                 href="/contact"
-                className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-all duration-200 hover:scale-[1.02] hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98]"
+                className="rounded-xl border border-slate-200 bg-white px-8 py-4 text-base font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
               >
                 Book a Demo
               </Link>
-              <Link
-                href="/pricing"
-                className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-all duration-200 hover:scale-[1.02] hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98]"
-              >
-                View Pricing
-              </Link>
             </div>
+            <p className="mt-6 text-sm text-slate-500">
+              No credit card required.
+            </p>
           </div>
         </section>
       </LazySection>

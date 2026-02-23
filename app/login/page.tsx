@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Suspense } from "react";
 import LoginForm from "./LoginForm";
 
@@ -14,7 +15,8 @@ export default function LoginPage() {
       <section className="flex min-h-screen flex-col items-center justify-center px-6 py-24">
         <div className="w-full max-w-md">
           <div className="text-center">
-            <Link href="/" className="text-2xl font-bold text-slate-900 transition-colors hover:text-violet-600">
+            <Link href="/" className="flex items-center justify-center gap-2.5 text-2xl font-bold text-slate-900 transition-colors hover:text-violet-600">
+              <Image src="/logo.svg" alt="" width={36} height={36} className="shrink-0" />
               AI Community Platform
             </Link>
             <h1 className="mt-8 text-3xl font-bold text-slate-900">Welcome back</h1>

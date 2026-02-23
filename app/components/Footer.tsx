@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const FOOTER_LINKS = {
   product: [
@@ -29,7 +30,20 @@ export default function Footer() {
   return (
     <footer className="border-t border-slate-200 bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-6xl px-6 py-16">
-        <div className="flex flex-col gap-12 sm:flex-row sm:flex-wrap sm:gap-x-16">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2.5 text-slate-900 transition-colors hover:text-violet-600"
+        >
+          <Image
+            src="/logo.svg"
+            alt="AI Community Platform"
+            width={28}
+            height={28}
+            className="shrink-0"
+          />
+          <span className="font-semibold">AI Community Platform</span>
+        </Link>
+        <div className="mt-12 flex flex-col gap-12 sm:flex-row sm:flex-wrap sm:gap-x-16">
           <div>
             <h3 className="font-semibold text-slate-900">Product</h3>
             <ul className="mt-4 space-y-3">

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
@@ -26,9 +27,17 @@ export default function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link
           href="/"
-          className="text-lg font-semibold text-slate-900 transition-colors hover:text-violet-600"
+          className="flex items-center gap-2.5 text-lg font-semibold text-slate-900 transition-colors hover:text-violet-600"
         >
-          AI Community Platform
+          <Image
+            src="/logo.svg"
+            alt="AI Community Platform"
+            width={32}
+            height={32}
+            className="shrink-0"
+            priority
+          />
+          <span>AI Community Platform</span>
         </Link>
 
         {/* Desktop Nav */}
