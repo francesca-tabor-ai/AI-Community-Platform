@@ -4,6 +4,8 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/api-v1/auth";
 import { badRequest } from "@/lib/api-v1/errors";
+import { trackEvent } from "@/lib/analytics/track";
+import type { EventCreatedEvent } from "@/lib/analytics/events";
 
 const createEventSchema = z.object({
   title: z.string().min(1).max(255),
@@ -47,6 +49,16 @@ export async function POST(req: NextRequest) {
         capacity: capacity ?? null,
       },
     });
+
+    trackEvent({
+      event_id: crypto.randomUUID(),
+      event_name: "event_created",
+      timestamp: new Date().toISOString(),
+      user_id: authResult.user.id,
+      organizer_id: authResult.user.id,
+      community_event_id: event.id,
+      is_paid: (ticket_price ?? 0) > 0,
+    } as EventCreatedEvent);
 
     return Response.json(
       {

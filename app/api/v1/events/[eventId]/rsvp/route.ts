@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/api-v1/auth";
 import { notFound, badRequest } from "@/lib/api-v1/errors";
+import { trackEvent } from "@/lib/analytics/track";
+import type { RsvpConfirmedEvent } from "@/lib/analytics/events";
 
 export async function POST(
   req: NextRequest,
@@ -44,6 +46,15 @@ export async function POST(
     },
     update: { status: status as "attending" | "interested" },
   });
+
+  trackEvent({
+    event_id: crypto.randomUUID(),
+    event_name: "rsvp_confirmed",
+    timestamp: new Date().toISOString(),
+    user_id: authResult.user.id,
+    community_event_id: eventId,
+    rsvp_status: status as "attending" | "interested",
+  } as RsvpConfirmedEvent);
 
   return Response.json({
     rsvp_id: rsvp.id,
