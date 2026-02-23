@@ -23,17 +23,43 @@ export default function ArticlesPage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchMode, setSearchMode] = useState<"keyword" | "semantic">("keyword");
+
+  const loadArticles = (query?: string) => {
+    setLoading(true);
+    const params = new URLSearchParams();
+    if (query && query.trim()) {
+      params.set("q", query.trim());
+      params.set("mode", searchMode);
+      fetch(`/api/search?${params}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Search failed");
+          return res.json();
+        })
+        .then(setArticles)
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+    } else {
+      fetch("/api/articles?status=published")
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to load articles");
+          return res.json();
+        })
+        .then(setArticles)
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+    }
+  };
 
   useEffect(() => {
-    fetch("/api/articles?status=published")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load articles");
-        return res.json();
-      })
-      .then(setArticles)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    loadArticles();
   }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    loadArticles(searchQuery);
+  };
 
   if (loading) {
     return (
@@ -72,6 +98,42 @@ export default function ArticlesPage() {
             New Article
           </Link>
         </div>
+
+        <form onSubmit={handleSearch} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search articles..."
+            className="flex-1 rounded-xl border border-slate-300 px-4 py-2.5 text-slate-900 shadow-sm focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+          />
+          <select
+            value={searchMode}
+            onChange={(e) => setSearchMode(e.target.value as "keyword" | "semantic")}
+            className="rounded-xl border border-slate-300 px-4 py-2.5 text-slate-700"
+          >
+            <option value="keyword">Keyword</option>
+            <option value="semantic">Semantic (AI)</option>
+          </select>
+          <button
+            type="submit"
+            className="rounded-xl border border-violet-600 bg-violet-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-700"
+          >
+            Search
+          </button>
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery("");
+                loadArticles();
+              }}
+              className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50"
+            >
+              Clear
+            </button>
+          )}
+        </form>
 
         <div className="mt-12 space-y-6">
           {articles.map((a) => (

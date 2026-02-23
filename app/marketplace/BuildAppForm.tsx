@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 
 const inputClass =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 disabled:opacity-50";
+  "mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-500 shadow-sm focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200 disabled:opacity-50";
 
-const labelClass = "block text-sm font-medium text-slate-300";
-const helperClass = "mt-1.5 text-xs text-slate-500";
+const labelClass = "block text-sm font-medium text-slate-700";
+const helperClass = "mt-1.5 text-xs text-slate-600";
 
 const DEVELOPER_TYPES = [
   { value: "individual", label: "Individual developer" },
@@ -110,21 +110,21 @@ export default function BuildAppForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-teal-500/30 bg-teal-500/5 p-12 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-500/20 text-3xl text-teal-400">
+      <div className="rounded-2xl border border-violet-200 bg-violet-50 p-12 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-violet-100 text-3xl text-violet-600">
           ✓
         </div>
-        <h3 className="mt-6 text-xl font-semibold text-white">Application received</h3>
-        <p className="mt-3 max-w-md mx-auto text-slate-400">
+        <h3 className="mt-6 text-xl font-semibold text-slate-900">Application received</h3>
+        <p className="mt-3 max-w-md mx-auto text-slate-600">
           Thanks for your interest in building on the AI Community Platform. Our team will review your application
           and get back to you within 5–7 business days.
         </p>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-slate-600">
           We&apos;ll send next steps to the email you provided.
         </p>
         <Link
           href="/marketplace"
-          className="mt-8 inline-block rounded-xl bg-teal-500 px-6 py-3 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
+          className="mt-8 inline-block rounded-xl bg-violet-500 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-violet-600"
         >
           Back to Marketplace
         </Link>
@@ -137,13 +137,13 @@ export default function BuildAppForm() {
       {/* Section 1: Contact & Company */}
       <section>
         <div className="mb-8">
-          <span className="inline-flex items-center justify-center rounded-full bg-teal-500/20 px-3 py-1 text-xs font-semibold text-teal-400">
+          <span className="inline-flex items-center justify-center rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-600">
             Step 1
           </span>
-          <h2 className="mt-3 text-2xl font-bold text-white">
+          <h2 className="mt-3 text-2xl font-bold text-slate-900">
             Contact & Company
           </h2>
-          <p className="mt-1 text-slate-400">
+          <p className="mt-1 text-slate-600">
             Tell us who you are and how to reach you.
           </p>
         </div>
@@ -173,9 +173,9 @@ export default function BuildAppForm() {
                     name="developerType"
                     value={opt.value}
                     required
-                    className="h-4 w-4 border-slate-600 bg-slate-800 text-teal-500 focus:ring-teal-500"
+                    className="h-4 w-4 border-slate-300 bg-white text-violet-600 focus:ring-violet-500"
                   />
-                  <span className="text-slate-300">{opt.label}</span>
+                  <span className="text-slate-700">{opt.label}</span>
                 </label>
               ))}
             </div>
@@ -199,15 +199,15 @@ export default function BuildAppForm() {
       </section>
 
       {/* Section 2: App Overview */}
-      <section className="border-t border-slate-800/50 pt-16">
+      <section className="border-t border-slate-200 pt-16">
         <div className="mb-8">
-          <span className="inline-flex items-center justify-center rounded-full bg-teal-500/20 px-3 py-1 text-xs font-semibold text-teal-400">
+          <span className="inline-flex items-center justify-center rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-600">
             Step 2
           </span>
-          <h2 className="mt-3 text-2xl font-bold text-white">
+          <h2 className="mt-3 text-2xl font-bold text-slate-900">
             App overview
           </h2>
-          <p className="mt-1 text-slate-400">
+          <p className="mt-1 text-slate-600">
             Describe your app and how it helps communities.
           </p>
         </div>
@@ -252,9 +252,9 @@ export default function BuildAppForm() {
                     name="integrationType"
                     value={opt.value}
                     required
-                    className="mt-1 h-4 w-4 border-slate-600 bg-slate-800 text-teal-500 focus:ring-teal-500"
+                    className="mt-1 h-4 w-4 border-slate-300 bg-white text-violet-600 focus:ring-violet-500"
                   />
-                  <span className="text-slate-300">{opt.label}</span>
+                  <span className="text-slate-700">{opt.label}</span>
                 </label>
               ))}
             </div>
@@ -263,15 +263,15 @@ export default function BuildAppForm() {
       </section>
 
       {/* Section 3: Technical Details */}
-      <section className="border-t border-slate-800/50 pt-16">
+      <section className="border-t border-slate-200 pt-16">
         <div className="mb-8">
-          <span className="inline-flex items-center justify-center rounded-full bg-teal-500/20 px-3 py-1 text-xs font-semibold text-teal-400">
+          <span className="inline-flex items-center justify-center rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-600">
             Step 3
           </span>
-          <h2 className="mt-3 text-2xl font-bold text-white">
+          <h2 className="mt-3 text-2xl font-bold text-slate-900">
             Technical details
           </h2>
-          <p className="mt-1 text-slate-400">
+          <p className="mt-1 text-slate-600">
             How will your app integrate with our platform?
           </p>
         </div>
@@ -319,15 +319,15 @@ export default function BuildAppForm() {
       </section>
 
       {/* Section 4: Agreement */}
-      <section className="border-t border-slate-800/50 pt-16">
+      <section className="border-t border-slate-200 pt-16">
         <div className="mb-8">
-          <span className="inline-flex items-center justify-center rounded-full bg-teal-500/20 px-3 py-1 text-xs font-semibold text-teal-400">
+          <span className="inline-flex items-center justify-center rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-600">
             Step 4
           </span>
-          <h2 className="mt-3 text-2xl font-bold text-white">
+          <h2 className="mt-3 text-2xl font-bold text-slate-900">
             Agreement
           </h2>
-          <p className="mt-1 text-slate-400">
+          <p className="mt-1 text-slate-600">
             Review and accept our marketplace terms.
           </p>
         </div>
@@ -349,15 +349,15 @@ export default function BuildAppForm() {
               type="checkbox"
               name="agreeTerms"
               required
-              className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-800 text-teal-500 focus:ring-teal-500"
+              className="mt-1 h-4 w-4 rounded border-slate-300 bg-white text-violet-600 focus:ring-violet-500"
             />
-            <span className="text-slate-300">
+            <span className="text-slate-700">
               I agree to the{" "}
-              <Link href="/contact" className="text-teal-400 underline hover:text-teal-300">
+              <Link href="/contact" className="font-medium text-violet-600 underline transition-colors hover:text-violet-700">
                 Marketplace Partner Agreement
               </Link>{" "}
               and{" "}
-              <Link href="/contact" className="text-teal-400 underline hover:text-teal-300">
+              <Link href="/contact" className="font-medium text-violet-600 underline transition-colors hover:text-violet-700">
                 Developer Terms of Service
               </Link>
               . I confirm that my app will comply with security best practices, privacy requirements, and platform guidelines.
@@ -367,20 +367,20 @@ export default function BuildAppForm() {
       </section>
 
       {status === "error" && (
-        <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {errorMessage}
         </div>
       )}
 
-      <div className="flex flex-col gap-4 border-t border-slate-800/50 pt-8 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-slate-500">
+      <div className="flex flex-col gap-4 border-t border-slate-200 pt-8 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-slate-600">
           Applications are typically reviewed within 5–7 business days. Questions?{" "}
-          <Link href="/contact" className="text-teal-400 hover:text-teal-300">Contact us</Link>.
+          <Link href="/contact" className="font-medium text-violet-600 transition-colors hover:text-violet-700">Contact us</Link>.
         </p>
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="shrink-0 rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400 disabled:opacity-50"
+          className="shrink-0 rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-violet-600 disabled:opacity-50"
         >
           {status === "submitting" ? "Submitting..." : "Submit application"}
         </button>

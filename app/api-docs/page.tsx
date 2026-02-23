@@ -143,61 +143,61 @@ const REST_ENDPOINTS = [
 ];
 
 const METHOD_COLORS: Record<string, string> = {
-  GET: "bg-emerald-500/20 text-emerald-400 border-emerald-500/40",
-  POST: "bg-blue-500/20 text-blue-400 border-blue-500/40",
-  PATCH: "bg-amber-500/20 text-amber-400 border-amber-500/40",
-  DELETE: "bg-rose-500/20 text-rose-400 border-rose-500/40",
+  GET: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  POST: "bg-blue-100 text-blue-700 border-blue-200",
+  PATCH: "bg-amber-100 text-amber-700 border-amber-200",
+  DELETE: "bg-rose-100 text-rose-700 border-rose-200",
 };
 
 const CRUD_COLORS: Record<string, string> = {
-  Create: "text-blue-400",
-  Read: "text-emerald-400",
-  Update: "text-amber-400",
-  Delete: "text-rose-400",
+  Create: "text-blue-600",
+  Read: "text-emerald-600",
+  Update: "text-amber-600",
+  Delete: "text-rose-600",
 };
 
 export default function ApiDocsPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-16">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(45,212,191,0.15),transparent)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a22_1px,transparent_1px),linear-gradient(to_bottom,#0f172a22_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(139,92,246,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_0.5px,transparent_0.5px),linear-gradient(to_bottom,#e2e8f0_0.5px,transparent_0.5px)] bg-[size:4rem_4rem]" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            API <span className="bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent">Documentation</span>
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            API <span className="text-gradient-accent">Documentation</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
             REST API reference for the AI Community Platform. Entities, endpoints, and full CRUD operations.
           </p>
           <div className="mt-8">
-            <pre className="inline-block rounded-xl border border-slate-700/50 bg-slate-900/50 px-6 py-3 text-sm text-slate-300">
-              Base URL: <span className="text-teal-400">/api</span> (current) · <span className="text-teal-400">/api/v1</span> (REST)
+            <pre className="inline-block rounded-xl border border-slate-200 bg-slate-50 px-6 py-3 text-sm text-slate-700">
+              Base URL: <span className="text-violet-600 font-medium">/api</span> (current) · <span className="text-violet-600 font-medium">/api/v1</span> (REST)
             </pre>
           </div>
         </div>
       </section>
 
       {/* Entities */}
-      <section id="entities" className="border-t border-slate-800/50 py-20">
+      <section id="entities" className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Entities
           </h2>
-          <p className="mt-4 max-w-2xl text-slate-400">
+          <p className="mt-4 max-w-2xl text-slate-600">
             Core data models in the platform. All REST endpoints operate on these entities.
           </p>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {ENTITIES.map((entity) => (
               <div
                 key={entity.name}
-                className="rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6"
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
               >
-                <h3 className="font-semibold text-teal-400">{entity.name}</h3>
-                <p className="mt-2 text-sm text-slate-400">{entity.description}</p>
+                <h3 className="font-semibold text-violet-600">{entity.name}</h3>
+                <p className="mt-2 text-sm text-slate-600">{entity.description}</p>
                 <div className="mt-4">
                   <p className="text-xs font-medium uppercase tracking-wider text-slate-500">Fields</p>
-                  <p className="mt-1 font-mono text-xs text-slate-400">{entity.fields.join(", ")}</p>
+                  <p className="mt-1 font-mono text-xs text-slate-600">{entity.fields.join(", ")}</p>
                 </div>
               </div>
             ))}
@@ -206,41 +206,41 @@ export default function ApiDocsPage() {
       </section>
 
       {/* API Endpoints */}
-      <section id="endpoints" className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section id="endpoints" className="border-t border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             API Endpoints
           </h2>
-          <p className="mt-4 max-w-2xl text-slate-400">
+          <p className="mt-4 max-w-2xl text-slate-600">
             All available endpoints with HTTP method and CRUD operation. Requires{" "}
-            <code className="rounded bg-slate-700/50 px-1.5 py-0.5 text-teal-400">Authorization: Bearer YOUR_API_KEY</code>{" "}
+            <code className="rounded bg-violet-50 px-1.5 py-0.5 font-mono text-sm text-violet-700">Authorization: Bearer YOUR_API_KEY</code>{" "}
             for v1 endpoints.
           </p>
-          <div className="mt-10 overflow-x-auto">
+          <div className="mt-10 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
             <table className="w-full min-w-[640px] border-collapse">
               <thead>
-                <tr className="border-b border-slate-700/50">
-                  <th className="py-4 pr-4 text-left text-sm font-medium text-slate-400">Method</th>
-                  <th className="py-4 pr-4 text-left text-sm font-medium text-slate-400">Path</th>
-                  <th className="py-4 pr-4 text-left text-sm font-medium text-slate-400">CRUD</th>
-                  <th className="py-4 pr-4 text-left text-sm font-medium text-slate-400">Entity</th>
-                  <th className="py-4 text-left text-sm font-medium text-slate-400">Description</th>
+                <tr className="border-b border-slate-200 bg-slate-50">
+                  <th className="py-4 pr-4 text-left text-sm font-medium text-slate-600">Method</th>
+                  <th className="py-4 pr-4 text-left text-sm font-medium text-slate-600">Path</th>
+                  <th className="py-4 pr-4 text-left text-sm font-medium text-slate-600">CRUD</th>
+                  <th className="py-4 pr-4 text-left text-sm font-medium text-slate-600">Entity</th>
+                  <th className="py-4 text-left text-sm font-medium text-slate-600">Description</th>
                 </tr>
               </thead>
               <tbody>
                 {REST_ENDPOINTS.map((ep, i) => (
-                  <tr key={i} className="border-b border-slate-800/50">
+                  <tr key={i} className="border-b border-slate-100 last:border-0">
                     <td className="py-4 pr-4">
-                      <span className={`inline-block rounded border px-2 py-0.5 text-xs font-mono font-semibold ${METHOD_COLORS[ep.method] ?? "bg-slate-600/20 text-slate-400"}`}>
+                      <span className={`inline-block rounded border px-2 py-0.5 text-xs font-mono font-semibold ${METHOD_COLORS[ep.method] ?? "bg-slate-100 text-slate-600 border-slate-200"}`}>
                         {ep.method}
                       </span>
                     </td>
-                    <td className="py-4 pr-4 font-mono text-sm text-slate-300">{ep.path}</td>
-                    <td className={`py-4 pr-4 text-sm font-medium ${CRUD_COLORS[ep.crud] ?? "text-slate-400"}`}>
+                    <td className="py-4 pr-4 font-mono text-sm text-slate-700">{ep.path}</td>
+                    <td className={`py-4 pr-4 text-sm font-medium ${CRUD_COLORS[ep.crud] ?? "text-slate-600"}`}>
                       {ep.crud}
                     </td>
-                    <td className="py-4 pr-4 text-sm text-slate-400">{ep.entity ?? "—"}</td>
-                    <td className="py-4 text-sm text-slate-400">
+                    <td className="py-4 pr-4 text-sm text-slate-600">{ep.entity ?? "—"}</td>
+                    <td className="py-4 text-sm text-slate-600">
                       {ep.description}
                       {ep.body && (
                         <span className="mt-1 block font-mono text-xs text-slate-500">Body: {ep.body}</span>
@@ -251,20 +251,20 @@ export default function ApiDocsPage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-6 text-sm text-slate-500">
-            <strong>Live now:</strong> <code className="text-teal-400">/api/contact</code>, <code className="text-teal-400">/api/chat</code>.
+          <p className="mt-6 text-sm text-slate-600">
+            <strong>Live now:</strong> <code className="rounded bg-slate-100 px-1 text-violet-600">/api/contact</code>, <code className="rounded bg-slate-100 px-1 text-violet-600">/api/chat</code>.
             REST v1 endpoints are documented for the planned API. API access requires Business or Enterprise plan.
           </p>
         </div>
       </section>
 
       {/* CRUD Summary */}
-      <section id="crud" className="border-t border-slate-800/50 py-20">
+      <section id="crud" className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             CRUD Operations
           </h2>
-          <p className="mt-4 max-w-2xl text-slate-400">
+          <p className="mt-4 max-w-2xl text-slate-600">
             Standard REST semantics for each entity.
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -274,12 +274,12 @@ export default function ApiDocsPage() {
               { name: "Update", method: "PATCH", color: "amber", desc: "Partially update a resource" },
               { name: "Delete", method: "DELETE", color: "rose", desc: "Remove a resource" },
             ].map((op) => (
-              <div key={op.name} className="rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6">
+              <div key={op.name} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-slate-300 hover:shadow-md">
                 <span className={`inline-block rounded border px-2 py-0.5 text-xs font-mono font-semibold ${METHOD_COLORS[op.method]}`}>
                   {op.method}
                 </span>
-                <h3 className="mt-3 font-semibold text-white">{op.name}</h3>
-                <p className="mt-1 text-sm text-slate-400">{op.desc}</p>
+                <h3 className="mt-3 font-semibold text-slate-900">{op.name}</h3>
+                <p className="mt-1 text-sm text-slate-600">{op.desc}</p>
               </div>
             ))}
           </div>
@@ -287,24 +287,24 @@ export default function ApiDocsPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
+      <section className="border-t border-slate-200 bg-slate-50 py-24">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Ready to integrate?
           </h2>
-          <p className="mt-6 text-lg text-slate-400">
+          <p className="mt-6 text-lg text-slate-600">
             Get your API key and start building.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/developers"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-violet-600"
             >
               Developer Hub
             </Link>
             <Link
               href="/pricing"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
+              className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
             >
               View Pricing
             </Link>

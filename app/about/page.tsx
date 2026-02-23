@@ -14,10 +14,10 @@ function ContentSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className="border-t border-slate-800/50 py-20">
+    <section className="border-t border-slate-200 py-20">
       <div className="mx-auto max-w-6xl px-6">
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">{title}</h2>
-        <div className="mt-6 max-w-3xl space-y-4 text-lg text-slate-400">
+        <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">{title}</h2>
+        <div className="mt-6 max-w-3xl space-y-4 text-lg leading-relaxed text-slate-600">
           {children}
         </div>
       </div>
@@ -46,19 +46,19 @@ const VALUES = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(45,212,191,0.15),transparent)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a22_1px,transparent_1px),linear-gradient(to_bottom,#0f172a22_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(139,92,246,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_0.5px,transparent_0.5px),linear-gradient(to_bottom,#e2e8f0_0.5px,transparent_0.5px)] bg-[size:4rem_4rem]" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
             Building the Future of{" "}
-            <span className="bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent">
+            <span className="text-gradient-accent">
               Intelligent Communities
             </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
             We&apos;re creating the world&apos;s first AI-native platform designed
             to power communities, knowledge, and collaboration at global scale.
           </p>
@@ -83,15 +83,15 @@ export default function AboutPage() {
         <p>We envision a future where every community is intelligent.</p>
         <ul className="space-y-2">
           <li className="flex items-center gap-3">
-            <span className="text-teal-500">•</span> Where knowledge is
+            <span className="text-violet-500">•</span> Where knowledge is
             instantly accessible.
           </li>
           <li className="flex items-center gap-3">
-            <span className="text-teal-500">•</span> Where engagement is
+            <span className="text-violet-500">•</span> Where engagement is
             effortless.
           </li>
           <li className="flex items-center gap-3">
-            <span className="text-teal-500">•</span> Where communities grow and
+            <span className="text-violet-500">•</span> Where communities grow and
             sustain themselves with AI assistance.
           </li>
         </ul>
@@ -102,15 +102,15 @@ export default function AboutPage() {
       </ContentSection>
 
       {/* The Problem */}
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-t border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Communities Today Are Limited
           </h2>
-          <p className="mt-6 max-w-3xl text-lg text-slate-400">
+          <p className="mt-6 max-w-3xl text-lg text-slate-600">
             Most community platforms provide infrastructure, but not intelligence.
           </p>
-          <p className="mt-4 text-slate-400">
+          <p className="mt-4 text-slate-600">
             Community owners face constant challenges:
           </p>
           <ul className="mt-4 space-y-2">
@@ -120,34 +120,34 @@ export default function AboutPage() {
               "Fragmented knowledge",
               "Limited scalability",
             ].map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-slate-400">
+              <li key={i} className="flex items-center gap-3 text-slate-600">
                 <span className="text-amber-500">•</span> {item}
               </li>
             ))}
           </ul>
-          <p className="mt-6 text-slate-400">
+          <p className="mt-6 text-slate-600">
             Communities require constant effort to operate.
           </p>
-          <p className="mt-2 font-medium text-teal-400">
+          <p className="mt-2 font-medium text-violet-600">
             This limits their potential.
           </p>
         </div>
       </section>
 
       {/* Our Solution */}
-      <section className="border-t border-slate-800/50 py-20">
+      <section className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             AI-Native From the Ground Up
           </h2>
-          <p className="mt-6 max-w-3xl text-lg text-slate-400">
+          <p className="mt-6 max-w-3xl text-lg text-slate-600">
             We built the AI Community Platform from scratch with AI at its core.
           </p>
-          <p className="mt-4 text-slate-400">
+          <p className="mt-4 text-slate-600">
             Instead of simply hosting communities, our platform actively helps
             them operate, grow, and improve.
           </p>
-          <p className="mt-4 text-slate-400">AI assists with:</p>
+          <p className="mt-4 text-slate-600">AI assists with:</p>
           <ul className="mt-4 space-y-2">
             {[
               "Answering questions",
@@ -156,21 +156,21 @@ export default function AboutPage() {
               "Improving engagement",
               "Providing personalized experiences",
             ].map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-slate-400">
-                <span className="text-teal-500">✓</span> {item}
+              <li key={i} className="flex items-center gap-3 text-slate-600">
+                <span className="text-violet-500">✓</span> {item}
               </li>
             ))}
           </ul>
-          <p className="mt-6 font-medium text-teal-400">
+          <p className="mt-6 font-medium text-violet-600">
             Communities become intelligent systems.
           </p>
         </div>
       </section>
 
       {/* Our Beliefs */}
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-t border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Our Core Beliefs
           </h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
@@ -194,10 +194,10 @@ export default function AboutPage() {
             ].map((belief, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6"
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
               >
-                <h3 className="font-semibold text-white">{belief.title}</h3>
-                <p className="mt-2 text-slate-400">{belief.desc}</p>
+                <h3 className="font-semibold text-slate-900">{belief.title}</h3>
+                <p className="mt-2 text-slate-600">{belief.desc}</p>
               </div>
             ))}
           </div>
@@ -205,12 +205,12 @@ export default function AboutPage() {
       </section>
 
       {/* What We're Building */}
-      <section className="border-t border-slate-800/50 py-20">
+      <section className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Intelligent Infrastructure for Communities
           </h2>
-          <p className="mt-6 max-w-3xl text-slate-400">
+          <p className="mt-6 max-w-3xl text-slate-600">
             We are building a platform that enables:
           </p>
           <ul className="mt-6 space-y-3">
@@ -221,24 +221,24 @@ export default function AboutPage() {
               "AI-driven engagement and discovery",
               "Monetization and business models",
             ].map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-slate-400">
-                <span className="text-teal-500">✓</span> {item}
+              <li key={i} className="flex items-center gap-3 text-slate-600">
+                <span className="text-violet-500">✓</span> {item}
               </li>
             ))}
           </ul>
-          <p className="mt-8 font-medium text-teal-400">
+          <p className="mt-8 font-medium text-violet-600">
             Our platform becomes the operating system for communities.
           </p>
         </div>
       </section>
 
       {/* Who We Serve */}
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-t border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Supporting Communities Worldwide
           </h2>
-          <p className="mt-6 text-slate-400">
+          <p className="mt-6 text-slate-600">
             Our platform is designed for:
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -253,25 +253,25 @@ export default function AboutPage() {
             ].map((item, i) => (
               <span
                 key={i}
-                className="rounded-full border border-teal-500/30 bg-teal-500/5 px-5 py-2.5 text-sm font-medium text-teal-400"
+                className="rounded-full border border-violet-200 bg-violet-50 px-5 py-2.5 text-sm font-medium text-violet-700"
               >
                 {item}
               </span>
             ))}
           </div>
-          <p className="mt-8 text-slate-400">
+          <p className="mt-8 text-slate-600">
             Anyone building a community can benefit.
           </p>
         </div>
       </section>
 
       {/* Long-Term Vision */}
-      <section className="border-t border-slate-800/50 py-20">
+      <section className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Building the Future of AI-Powered Communities
           </h2>
-          <p className="mt-6 max-w-3xl text-slate-400">
+          <p className="mt-6 max-w-3xl text-slate-600">
             We are creating a platform where:
           </p>
           <ul className="mt-6 space-y-3">
@@ -281,33 +281,33 @@ export default function AboutPage() {
               "AI assists every member",
               "Communities grow intelligently",
             ].map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-slate-400">
-                <span className="text-teal-500">✓</span> {item}
+              <li key={i} className="flex items-center gap-3 text-slate-600">
+                <span className="text-violet-500">✓</span> {item}
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-slate-400">
+          <p className="mt-8 text-slate-600">
             This represents a fundamental evolution in how communities operate.
           </p>
         </div>
       </section>
 
       {/* Company Values */}
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-t border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Our Values
           </h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map((value, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6"
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
               >
-                <h3 className="text-lg font-semibold text-teal-400">
+                <h3 className="text-lg font-semibold text-violet-600">
                   {value.name}
                 </h3>
-                <p className="mt-2 text-slate-400">{value.desc}</p>
+                <p className="mt-2 text-slate-600">{value.desc}</p>
               </div>
             ))}
           </div>
@@ -315,31 +315,31 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section (Placeholder) */}
-      <section className="border-t border-slate-800/50 py-20">
+      <section className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Our Team
           </h2>
-          <p className="mt-6 max-w-3xl text-slate-400">
+          <p className="mt-6 max-w-3xl text-slate-600">
             We are a team of engineers, designers, and builders focused on
             creating the future of intelligent communities.
           </p>
-          <p className="mt-4 rounded-2xl border border-dashed border-slate-600 bg-slate-800/20 px-6 py-12 text-center text-slate-500">
+          <p className="mt-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 py-12 text-center text-slate-500">
             (Add team member profiles here)
           </p>
         </div>
       </section>
 
       {/* Join Us */}
-      <section className="border-t border-slate-800/50 py-20">
+      <section className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Join Us in Building the Future
           </h2>
-          <p className="mt-6 max-w-3xl text-lg text-slate-400">
+          <p className="mt-6 max-w-3xl text-lg text-slate-600">
             We&apos;re just getting started.
           </p>
-          <p className="mt-4 text-slate-400">
+          <p className="mt-4 text-slate-600">
             Whether you&apos;re a creator, organization, or innovator, we invite
             you to build with us.
           </p>
@@ -347,21 +347,21 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
+      <section className="border-t border-slate-200 bg-slate-50 py-24">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-4xl font-bold text-white sm:text-5xl">
+          <h2 className="text-4xl font-bold text-slate-900 sm:text-5xl">
             Start building your intelligent community today
           </h2>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/signup"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all hover:bg-teal-400"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/20 transition-colors hover:bg-violet-600"
             >
               Get Started Free
             </a>
             <a
               href="/contact"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
+              className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
             >
               Contact Us
             </a>

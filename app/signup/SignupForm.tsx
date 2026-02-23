@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const inputClass =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500";
+  "mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-500 shadow-sm focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200";
 
 export default function SignupForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
@@ -59,12 +59,12 @@ export default function SignupForm() {
       className="space-y-6"
     >
       {error && (
-        <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="name" className="block text-sm font-medium text-slate-700">
           Full Name
         </label>
         <input
@@ -78,7 +78,7 @@ export default function SignupForm() {
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="email" className="block text-sm font-medium text-slate-700">
           Email
         </label>
         <input
@@ -92,7 +92,7 @@ export default function SignupForm() {
         />
       </div>
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="password" className="block text-sm font-medium text-slate-700">
           Password
         </label>
         <input
@@ -105,22 +105,22 @@ export default function SignupForm() {
           className={inputClass}
           placeholder="••••••••"
         />
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-slate-600">
           At least 8 characters
         </p>
       </div>
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-xl bg-teal-500 py-3.5 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400 disabled:opacity-50"
+        className="w-full rounded-xl bg-violet-500 py-3.5 text-base font-semibold text-white transition-colors hover:bg-violet-600 disabled:opacity-50"
       >
         {status === "submitting" ? "Creating account..." : "Create account"}
       </button>
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-slate-600">
         By signing up, you agree to our{" "}
-        <a href="/legal/terms" className="text-teal-400 hover:text-teal-300">Terms</a>
+        <a href="/legal/terms" className="font-medium text-violet-600 transition-colors hover:text-violet-700">Terms</a>
         {" "}and{" "}
-        <a href="/legal/privacy" className="text-teal-400 hover:text-teal-300">Privacy Policy</a>.
+        <a href="/legal/privacy" className="font-medium text-violet-600 transition-colors hover:text-violet-700">Privacy Policy</a>.
       </p>
     </form>
   );

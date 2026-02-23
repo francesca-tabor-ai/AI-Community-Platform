@@ -59,7 +59,7 @@ export async function PATCH(
 
   const article = await prisma.article.findUnique({
     where: { slug },
-    include: { community: { select: { id: true } } },
+    include: { community: { select: { id: true, articleApprovalRequired: true } } },
   });
 
   if (!article) {
@@ -92,18 +92,28 @@ export async function PATCH(
     status?: "draft" | "published";
   } = {};
   if (body.title !== undefined) updateData.title = body.title.trim();
-  if (body.body !== undefined) updateData.body = body.body;
   if (body.status !== undefined) updateData.status = body.status;
 
-  if (body.body !== undefined && body.body !== article.body) {
+  const needsApproval =
+    article.community?.articleApprovalRequired ?? false;
+  const bodyChanged = body.body !== undefined && body.body !== article.body;
+
+  if (bodyChanged && body.body !== undefined) {
+    const revisionData = {
+      articleId: article.id,
+      body: body.body,
+      authorId: userId,
+      changeSummary: body.changeSummary ?? "Edited content",
+      ...(needsApproval
+        ? {}
+        : { approvedAt: new Date(), approvedById: userId }),
+    };
     await prisma.articleRevision.create({
-      data: {
-        articleId: article.id,
-        body: body.body,
-        authorId: userId,
-        changeSummary: body.changeSummary ?? "Edited content",
-      },
+      data: revisionData,
     });
+    if (!needsApproval) {
+      updateData.body = body.body;
+    }
   }
 
   const updated = await prisma.article.update({

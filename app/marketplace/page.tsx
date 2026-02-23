@@ -204,26 +204,26 @@ function AppCard({
   return (
     <Link
       href={app.href}
-      className="group relative flex flex-col rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6 transition-all duration-200 hover:border-teal-500/40 hover:bg-slate-800/40 hover:shadow-lg hover:shadow-teal-500/5"
+      className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-200 hover:border-violet-200 hover:shadow-md"
     >
       {app.popular && (
-        <span className="absolute right-4 top-4 rounded-full bg-teal-500/20 px-2.5 py-0.5 text-xs font-medium text-teal-400">
+        <span className="absolute right-4 top-4 rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-medium text-violet-700">
           Popular
         </span>
       )}
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-slate-600/50 bg-slate-900/50 text-2xl">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-2xl">
           {app.icon}
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="font-semibold text-white group-hover:text-teal-400">{app.name}</h3>
-          <p className="mt-0.5 text-sm font-medium text-teal-400/90">{app.tagline}</p>
+          <h3 className="font-semibold text-slate-900 transition-colors group-hover:text-violet-600">{app.name}</h3>
+          <p className="mt-0.5 text-sm font-medium text-violet-600">{app.tagline}</p>
         </div>
       </div>
       {!compact && (
-        <p className="mt-4 line-clamp-3 text-sm text-slate-400">{app.description}</p>
+        <p className="mt-4 line-clamp-3 text-sm text-slate-600">{app.description}</p>
       )}
-      <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-400 opacity-0 transition-opacity group-hover:opacity-100">
+      <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-violet-600 opacity-0 transition-opacity group-hover:opacity-100">
         Install app →
       </span>
     </Link>
@@ -241,28 +241,28 @@ export default function MarketplacePage() {
   const featuredApps = APPS.filter((app) => app.featured);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(45,212,191,0.15),transparent)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a22_1px,transparent_1px),linear-gradient(to_bottom,#0f172a22_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(139,92,246,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_0.5px,transparent_0.5px),linear-gradient(to_bottom,#e2e8f0_0.5px,transparent_0.5px)] bg-[size:4rem_4rem]" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            App <span className="bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent">Marketplace</span>
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            App <span className="text-gradient-accent">Marketplace</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
             Extend your community with powerful integrations. Automate workflows, connect your stack, and build advanced experiences—no code required.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/marketplace/apply"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-violet-600"
             >
               Build an App
             </Link>
             <a
               href="#apps"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
+              className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
             >
               Browse Apps
             </a>
@@ -271,12 +271,12 @@ export default function MarketplacePage() {
       </section>
 
       {/* Featured */}
-      <section className="border-y border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-y border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             Featured Integrations
           </h2>
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-600">
             Most popular for advanced workflows
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -288,12 +288,12 @@ export default function MarketplacePage() {
       </section>
 
       {/* All Apps with Filter */}
-      <section id="apps" className="border-t border-slate-800/50 py-20">
+      <section id="apps" className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             All Apps
           </h2>
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-600">
             Browse by category to find the right integration
           </p>
 
@@ -305,8 +305,8 @@ export default function MarketplacePage() {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
                   selectedCategory === cat.id
-                    ? "bg-teal-500 text-slate-950"
-                    : "border border-slate-600 text-slate-400 hover:border-teal-500/50 hover:text-teal-400"
+                    ? "bg-violet-500 text-white"
+                    : "border border-slate-200 bg-white text-slate-600 hover:border-violet-200 hover:text-violet-700"
                 }`}
               >
                 {cat.label}
@@ -322,9 +322,9 @@ export default function MarketplacePage() {
           </div>
 
           {filteredApps.length === 0 && (
-            <p className="mt-12 text-center text-slate-500">
+            <p className="mt-12 text-center text-slate-600">
               No apps in this category yet.{" "}
-              <Link href="/developers" className="text-teal-400 hover:text-teal-300">
+              <Link href="/developers" className="font-medium text-violet-600 transition-colors hover:text-violet-700">
                 Build the first one
               </Link>
             </p>
@@ -333,24 +333,24 @@ export default function MarketplacePage() {
       </section>
 
       {/* Build CTA */}
-      <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
+      <section className="border-t border-slate-200 bg-slate-50 py-24">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             Have an integration idea?
           </h2>
-          <p className="mt-6 text-lg text-slate-400">
+          <p className="mt-6 text-lg text-slate-600">
             Build custom apps with our API. Publish to the marketplace and help thousands of communities.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/marketplace/apply"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-violet-600"
             >
               Apply to Build an App
             </Link>
             <Link
               href="/contact"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
+              className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
             >
               Partner With Us
             </Link>

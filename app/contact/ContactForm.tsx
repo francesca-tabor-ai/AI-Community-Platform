@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const inputClass =
-  "mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500";
+  "mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-500 shadow-sm focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200";
 
 const INQUIRY_TYPES = [
   { value: "customer-support", label: "Customer Support Request" },
@@ -65,7 +65,7 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-slate-300">
+          <label htmlFor="firstName" className="block text-sm font-medium text-slate-700">
             First Name
           </label>
           <input
@@ -78,7 +78,7 @@ export default function ContactForm() {
           />
         </div>
         <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-slate-300">
+          <label htmlFor="lastName" className="block text-sm font-medium text-slate-700">
             Last Name
           </label>
           <input
@@ -92,7 +92,7 @@ export default function ContactForm() {
         </div>
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="email" className="block text-sm font-medium text-slate-700">
           Email Address
         </label>
         <input
@@ -106,7 +106,7 @@ export default function ContactForm() {
       </div>
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <label htmlFor="company" className="block text-sm font-medium text-slate-300">
+          <label htmlFor="company" className="block text-sm font-medium text-slate-700">
             Company Name <span className="text-slate-500">(optional)</span>
           </label>
           <input
@@ -118,7 +118,7 @@ export default function ContactForm() {
           />
         </div>
         <div>
-          <label htmlFor="role" className="block text-sm font-medium text-slate-300">
+          <label htmlFor="role" className="block text-sm font-medium text-slate-700">
             Role <span className="text-slate-500">(optional)</span>
           </label>
           <input
@@ -131,7 +131,7 @@ export default function ContactForm() {
         </div>
       </div>
       <div>
-        <label htmlFor="inquiryType" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="inquiryType" className="block text-sm font-medium text-slate-700">
           Request Type
         </label>
         <select
@@ -149,7 +149,7 @@ export default function ContactForm() {
         </select>
       </div>
       <div>
-        <label htmlFor="communitySize" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="communitySize" className="block text-sm font-medium text-slate-700">
           Community Size <span className="text-slate-500">(optional)</span>
         </label>
         <select id="communitySize" name="communitySize" className={inputClass}>
@@ -162,7 +162,7 @@ export default function ContactForm() {
         </select>
       </div>
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="message" className="block text-sm font-medium text-slate-700">
           Message
         </label>
         <textarea
@@ -175,7 +175,7 @@ export default function ContactForm() {
         />
       </div>
       {status === "error" && (
-        <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {errorMessage}
         </div>
       )}
@@ -183,7 +183,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400 disabled:opacity-50"
+          className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-violet-600 disabled:opacity-50"
         >
           {status === "submitting"
             ? "Sending..."
@@ -192,11 +192,11 @@ export default function ContactForm() {
               : "Send Message"}
         </button>
         {status === "success" && (
-          <p className="mt-2 text-sm text-teal-400">
+          <p className="mt-2 text-sm text-violet-600">
             Thank you! We typically respond within 24 hours.
           </p>
         )}
-        <p className="mt-4 text-sm text-slate-500">
+        <p className="mt-4 text-sm text-slate-600">
           All submissions are sent to info@francescatabor.com. We typically respond within 24 hours.
         </p>
       </div>

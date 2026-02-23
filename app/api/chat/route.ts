@@ -48,6 +48,23 @@ Keep responses concise, helpful, and friendly. When relevant, guide users to spe
 async function searchArticles(query: string, limit: number = 5) {
   if (!query || query.trim().length < 2) return [];
   const q = query.trim();
+
+  const { generateEmbedding, embeddingToVectorLiteral } = await import("@/lib/embeddings");
+  const queryEmbedding = await generateEmbedding(q);
+  if (queryEmbedding) {
+    const vectorLiteral = embeddingToVectorLiteral(queryEmbedding);
+    const rows = await prisma.$queryRawUnsafe<
+      Array<{ slug: string; title: string; summary: string | null; body: string }>
+    >(
+      `SELECT slug, title, summary, body FROM "Article"
+       WHERE status = 'published' AND embedding IS NOT NULL
+       ORDER BY embedding <=> $1::vector LIMIT $2`,
+      vectorLiteral,
+      limit
+    );
+    return rows;
+  }
+
   const words = q.split(/\s+/).filter((w) => w.length > 1);
   if (words.length === 0) return [];
 

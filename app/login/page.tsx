@@ -10,26 +10,26 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       <section className="flex min-h-screen flex-col items-center justify-center px-6 py-24">
         <div className="w-full max-w-md">
           <div className="text-center">
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href="/" className="text-2xl font-bold text-slate-900 transition-colors hover:text-violet-600">
               AI Community Platform
             </Link>
-            <h1 className="mt-8 text-3xl font-bold text-white">Welcome back</h1>
-            <p className="mt-2 text-slate-400">
+            <h1 className="mt-8 text-3xl font-bold text-slate-900">Welcome back</h1>
+            <p className="mt-2 text-slate-600">
               Log in to access your communities
             </p>
           </div>
           <div className="mt-10">
-            <Suspense fallback={<div className="h-48 animate-pulse rounded-lg bg-slate-800/50" />}>
+            <Suspense fallback={<div className="h-48 animate-pulse rounded-lg bg-slate-100" />}>
               <LoginForm />
             </Suspense>
           </div>
-          <p className="mt-8 text-center text-sm text-slate-500">
+          <p className="mt-8 text-center text-sm text-slate-600">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="font-medium text-teal-400 hover:text-teal-300">
+            <Link href="/signup" className="font-medium text-violet-600 transition-colors hover:text-violet-700">
               Sign up
             </Link>
           </p>

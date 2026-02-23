@@ -15,12 +15,20 @@ export default function DashboardLayout({
           >
             Community Dashboard
           </Link>
-          <Link
-            href="/"
-            className="rounded-lg px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
-          >
-            ← Back to site
-          </Link>
+          <nav className="flex items-center gap-4">
+            <Link
+              href="/dashboard/moderation"
+              className="rounded-lg px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
+            >
+              Moderation
+            </Link>
+            <Link
+              href="/"
+              className="rounded-lg px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
+            >
+              ← Back to site
+            </Link>
+          </nav>
         </div>
       </header>
       <main className="mx-auto max-w-7xl px-6 py-8">{children}</main>
