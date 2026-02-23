@@ -47,12 +47,12 @@ export async function sendEmail(params: SendEmailParams): Promise<SendResult> {
       to: [params.to],
       subject: params.subject,
       html: params.html,
-      reply_to: params.replyTo,
+      replyTo: params.replyTo,
       text: params.text,
     });
 
     if (error) {
-      return { success: false, error: error.message, id: data?.id };
+      return { success: false, error: error.message };
     }
 
     return { success: true, id: data?.id };

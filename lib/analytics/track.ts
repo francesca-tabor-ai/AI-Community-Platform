@@ -3,6 +3,7 @@
  * Use for events that occur on the server (e.g. post_published, payment_succeeded).
  */
 
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import type { AnalyticsEvent } from "./events";
 
@@ -31,7 +32,7 @@ export async function trackEvent(
     device_type,
     browser,
     os,
-  } as unknown as Record<string, unknown>;
+  } as unknown as Prisma.InputJsonValue;
 
   try {
     await prisma.analyticsEvent.create({

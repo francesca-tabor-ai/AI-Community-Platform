@@ -5,6 +5,7 @@
  */
 
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { analyticsEventSchema } from "@/lib/analytics/events";
 
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
     }
 
     const event = parsed.data;
-    const payload = event as unknown as Record<string, unknown>;
+    const payload = event as unknown as Prisma.InputJsonValue;
 
     await prisma.analyticsEvent.create({
       data: {

@@ -60,7 +60,11 @@ export async function processEmailQueue(): Promise<ProcessResult> {
 
     // Immediate retries (up to 3 attempts within this run)
     for (let i = 0; i < IMMEDIATE_RETRIES && !success; i++) {
-      const sendResult = await trySendEmail(job);
+      const sendResult = await trySendEmail({
+        ...job,
+        templateData: (job.templateData ?? {}) as object,
+        metadata: (job.metadata != null ? job.metadata : null) as object | null,
+      });
       if (sendResult.success) {
         success = true;
         break;

@@ -148,6 +148,7 @@ export const analytics = {
     trackClientEvent({
       event_name: "post_viewed",
       ...props,
+      user_id: props.user_id ?? null,
     }),
 
   postPublished: (props: {
