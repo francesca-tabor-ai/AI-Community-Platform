@@ -139,12 +139,24 @@ model User {
 
   organizedPlatformEvents PlatformEvent[] @relation("PlatformEventOrganizer")
   platformEventRsvps     PlatformEventRsvp[]
+  platformEventJudges    PlatformEventJudge[]
+  platformEventTeamMembers PlatformEventTeamMember[]
+  platformEventSubmissions PlatformEventSubmission[]
+  platformEventScoresAsJudge PlatformEventSubmissionScore[]
+  aiInsightsGenerated    AIInsight[]
 }
 
 // AI-Augmented Event Platform: standalone events (API v1)
 enum PlatformEventRsvpStatus {
   attending
   interested
+}
+
+enum PlatformEventStatus {
+  draft
+  published
+  active
+  completed
 }
 
 model PlatformEvent {
@@ -157,14 +169,122 @@ model PlatformEvent {
   location    String?
   ticketPrice Decimal? @db.Decimal(10, 2)
   capacity    Int?
+  status      PlatformEventStatus @default(draft)
+  rules       Json?    @default("{}")
+  settings    Json?    @default("{}")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  organizer User               @relation("PlatformEventOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
-  rsvps    PlatformEventRsvp[]
+  organizer    User                     @relation("PlatformEventOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  rsvps        PlatformEventRsvp[]
+  teams        PlatformEventTeam[]
+  submissions  PlatformEventSubmission[]
+  judges       PlatformEventJudge[]
 
   @@index([organizerId])
   @@index([startTime])
+  @@index([status])
+}
+
+model PlatformEventJudge {
+  id      String   @id @default(cuid())
+  eventId String
+  userId  String
+  createdAt DateTime @default(now())
+
+  event PlatformEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+model PlatformEventTeam {
+  id          String   @id @default(cuid())
+  eventId     String
+  name        String
+  description String?  @db.Text
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  event    PlatformEvent             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  members  PlatformEventTeamMember[]
+  submissions PlatformEventSubmission[]
+
+  @@index([eventId])
+}
+
+model PlatformEventTeamMember {
+  id     String   @id @default(cuid())
+  teamId String
+  userId String
+  role   String   @default("member")
+  joinedAt DateTime @default(now())
+
+  team PlatformEventTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+model PlatformEventSubmission {
+  id             String   @id @default(cuid())
+  eventId        String
+  teamId         String?
+  submitterId    String
+  title          String
+  description    String?  @db.Text
+  submissionUrl  String?
+  files          String[] @default([])
+  status         String   @default("submitted")
+  judgingScores  Json?    @default("{}")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  event  PlatformEvent            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  team   PlatformEventTeam?       @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  submitter User                  @relation(fields: [submitterId], references: [id], onDelete: Cascade)
+  scores PlatformEventSubmissionScore[]
+
+  @@index([eventId])
+  @@index([teamId])
+  @@index([submitterId])
+}
+
+model PlatformEventSubmissionScore {
+  id            String   @id @default(cuid())
+  submissionId String
+  judgeId      String
+  criteriaId   String
+  score        Int
+  comments     String?  @db.Text
+  createdAt    DateTime @default(now())
+
+  submission PlatformEventSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  judge      User                    @relation(fields: [judgeId], references: [id], onDelete: Cascade)
+
+  @@unique([submissionId, judgeId, criteriaId])
+  @@index([submissionId])
+  @@index([judgeId])
+}
+
+model AIInsight {
+  id                 String    @id @default(cuid())
+  entityType         String
+  entityId           String
+  insightType        String
+  data               Json      @default("{}")
+  generatedAt        DateTime  @default(now())
+  generatedByUserId   String?
+
+  generatedBy User? @relation(fields: [generatedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([insightType])
 }
 
 model PlatformEventRsvp {
