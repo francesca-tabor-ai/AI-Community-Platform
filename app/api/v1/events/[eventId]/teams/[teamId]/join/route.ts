@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/api-v1/auth";
-import { notFound, conflict } from "@/lib/api-v1/errors";
+import { requireAuth } from "@/lib/api-v1/auth";
 
 export async function POST(
   req: NextRequest,

@@ -4,6 +4,7 @@ This document maps the [Security Engineer Agent specification](../Specification/
 
 **Related specs:**
 - [Platform Security Strategy](../Specification/Community/Security%20Engineer%20Agent%3A%20Platform%20Security%20Strategy.md) — STRIDE table, Cloudflare edge, AWS infra, Stripe payments
+- [Security Engineer Agent Response](../Specification/Community/Security%20Engineer%20Agent%20Response.md) — assets, threat actors, attack vectors table, Zero Trust, CI/CD, AI/prompt injection
 - [AI-Augmented Event Platform Security](../Specification/Community/Security%20Engineer%20Agent%3A%20AI-Augmented%20Event%20Platform%20Security.md) — event-specific threats (malicious event creation, AI model poisoning, organizer identity verification)
 
 **Last updated:** February 2025

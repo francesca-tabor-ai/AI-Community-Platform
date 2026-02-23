@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/api-v1/auth";
-import { notFound, forbidden, badRequest } from "@/lib/api-v1/errors";
+import { notFound, forbidden, badRequest, conflict } from "@/lib/api-v1/errors";
 
 const schema = z.object({
   user_id: z.string().min(1),
