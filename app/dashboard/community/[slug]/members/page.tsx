@@ -3,6 +3,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { format } from "date-fns";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/app/components/ui/table";
+import { Badge } from "@/app/components/ui/badge";
+import { Skeleton } from "@/app/components/ui/skeleton";
 
 type Member = {
   id: string;
@@ -15,12 +25,6 @@ type Member = {
     image: string | null;
     profile: { displayName: string | null } | null;
   };
-};
-
-const roleColors: Record<string, string> = {
-  owner: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  moderator: "bg-teal-500/20 text-teal-400 border-teal-500/30",
-  member: "bg-slate-500/20 text-slate-400 border-slate-500/30",
 };
 
 export default function CommunityMembersPage() {
@@ -43,8 +47,16 @@ export default function CommunityMembersPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-teal-500 border-t-transparent" />
+      <div className="space-y-8">
+        <div>
+          <Skeleton className="h-9 w-48" />
+          <Skeleton className="mt-2 h-5 w-64" />
+        </div>
+        <div className="space-y-2">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <Skeleton key={i} className="h-16 w-full" />
+          ))}
+        </div>
       </div>
     );
   }
