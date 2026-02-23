@@ -106,6 +106,57 @@ RESTful API. Base URL: `/api/v1`.
 }
 ```
 
+---
+
+## VibeNet — AI-Powered Professional Networking
+
+### Auth
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/auth/register` | POST | Create account. Returns JWT + refresh token (httpOnly cookie). |
+| `/auth/login` | POST | Authenticate. Returns short-lived JWT (15min) + refresh token (httpOnly cookie). |
+| `/auth/refresh` | POST | Refresh access token using refresh token cookie. |
+| `/auth/logout` | POST | Invalidate refresh token. |
+
+### User Service
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/users/:id` | GET | Get user profile (headline, bio, location, industry, openTo, skills). |
+| `/users/:id` | PUT | Update profile (own user only). |
+| `/users/:id/skills` | POST | Add skill. Body: `{name}`. |
+| `/users/:id/skills/:skillId` | DELETE | Remove skill. |
+| `/users/:id/connections` | GET | List accepted connections. |
+| `/users/:id/connections` | POST | Send connection request. Body: `{userId}`. |
+| `/connections/:id` | PUT | Accept/decline connection. Body: `{status: "accepted"|"declined"}`. |
+
+### Matching Service
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/matches` | GET | Get top matches (paginated). |
+| `/matches/:id/reason` | GET | Get AI explanation for match. |
+| `/matches/:id/feedback` | POST | Submit match quality feedback. Body: `{rating?, helpful?, comment?}`. |
+| `/matches/refresh` | POST | Trigger manual match refresh. |
+
+### Messaging Service
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/conversations` | GET | List conversations. |
+| `/conversations` | POST | Start conversation. Body: `{userId}`. |
+| `/conversations/:id/messages` | GET | Get messages (paginated, cursor). |
+| `/conversations/:id/messages` | POST | Send message. Body: `{content}`. |
+| `/conversations/:id/read` | PUT | Mark as read. |
+
+### Opportunity Service
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/opportunities` | GET | Personalized feed. Query: `limit`, `offset`. |
+| `/opportunities/:id` | GET | Get opportunity detail. |
+| `/opportunities/:id/save` | POST | Save opportunity. |
+| `/opportunities/:id/save` | DELETE | Unsave opportunity. |
+| `/opportunities/saved` | GET | Get saved opportunities. |
+
+---
+
 ## Environment Variables
 
 - `JWT_SECRET` – Secret for signing JWTs (defaults to `AUTH_SECRET` if unset)
