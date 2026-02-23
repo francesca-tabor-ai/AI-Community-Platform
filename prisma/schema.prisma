@@ -97,13 +97,21 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+enum ApiUserRole {
+  creator
+  reader
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String?   @unique
   emailVerified DateTime?
   name          String?
+  username      String?   @unique
   image         String?
   password      String?
+  role          ApiUserRole?
+  bio           String?   @db.Text
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -119,6 +127,68 @@ model User {
   eventRsvps  EventRsvp[]
   subscriptions Subscription[]
   activities  Activity[]
+
+  creatorPosts        CreatorPost[]
+  creatorPostComments CreatorPostComment[]
+  creatorSubscriptionsAsSubscriber CreatorSubscription[] @relation("CreatorSubscriptionSubscriber")
+  creatorSubscriptionsAsCreator   CreatorSubscription[] @relation("CreatorSubscriptionCreator")
+}
+
+// Creator publishing platform: standalone posts by creators (API v1)
+model CreatorPost {
+  id          String   @id @default(cuid())
+  creatorId   String
+  title       String
+  content     String   @db.Text
+  status      PostStatus @default(draft)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  creator  User                 @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  comments CreatorPostComment[]
+
+  @@index([creatorId])
+  @@index([status, publishedAt])
+}
+
+model CreatorPostComment {
+  id               String   @id @default(cuid())
+  postId           String
+  userId           String
+  parentCommentId  String?
+  content          String   @db.Text
+  createdAt        DateTime @default(now())
+
+  post           CreatorPost         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentComment  CreatorPostComment? @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies        CreatorPostComment[] @relation("CommentReplies")
+
+  @@index([postId])
+  @@index([userId])
+  @@index([parentCommentId])
+}
+
+enum CreatorSubscriptionStatus {
+  active
+  cancelled
+}
+
+model CreatorSubscription {
+  id           String                  @id @default(cuid())
+  subscriberId String
+  creatorId    String
+  status       CreatorSubscriptionStatus @default(active)
+  subscribedAt DateTime               @default(now())
+  cancelledAt DateTime?
+
+  subscriber User @relation("CreatorSubscriptionSubscriber", fields: [subscriberId], references: [id], onDelete: Cascade)
+  creator    User @relation("CreatorSubscriptionCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@unique([subscriberId, creatorId])
+  @@index([subscriberId])
+  @@index([creatorId])
 }
 
 model Profile {
