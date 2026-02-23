@@ -5,6 +5,7 @@ import {
   canAdminCommunity,
 } from "@/lib/community-auth";
 import { trackEvent } from "@/lib/analytics/track";
+import type { PostPublishedEvent } from "@/lib/analytics/events";
 import { enqueueEmailBatch } from "@/lib/email";
 
 /**
@@ -69,7 +70,10 @@ export async function PATCH(
       post_id: postId,
       post_title: updated.title,
       post_type: updated.type === "article" ? "article" : "post",
-    });
+    } as Omit<
+      PostPublishedEvent,
+      "session_id" | "platform" | "device_type" | "browser" | "os"
+    >);
 
     // Enqueue new post notifications to community members + subscribers
     try {
