@@ -1,8 +1,47 @@
-# API v1 - Creator Publishing Platform
+# API v1 - Creator Publishing & AI-Augmented Event Platform
 
-RESTful API for the Creator Publishing Platform. Base URL: `/api/v1`.
+RESTful API. Base URL: `/api/v1`.
 
-**Authentication:** All endpoints require JWT in the `Authorization: Bearer <token>` header, except `POST /users/register` and `POST /users/login`.
+**Authentication:** JWT in `Authorization: Bearer <token>` header. Exceptions: `POST /users`, `POST /users/register`, `POST /users/login`, `POST /auth/login`.
+
+---
+
+## AI-Augmented Event Platform
+
+### User Service
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/users` | POST | Create user. Body: `{username, email, password, first_name?, last_name?}`. |
+| `/users/me` | GET | Get current user profile. |
+| `/users/me` | PUT | Update profile. Body: `{username?, first_name?, last_name?, profile_picture_url?}`. |
+| `/auth/login` | POST | Login. Body: `{email, password}`. Returns `{access_token, token_type}`. |
+
+### Event Service
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/events` | POST | Create event. Body: `{title, description?, start_time, end_time, location?, ticket_price?, capacity?}`. |
+| `/events` | GET | List events. Query: `from`, `to`, `limit`, `offset`. |
+| `/events/{eventId}` | GET | Get event. |
+| `/events/{eventId}` | PUT | Update event (organizer only). |
+| `/events/{eventId}` | DELETE | Delete event (organizer only). |
+| `/events/{eventId}/rsvp` | POST | RSVP. Body: `{status?: "attending"\|"interested"}`. |
+
+### Community Service
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/communities` | POST | Create community. Body: `{name, description?}`. |
+| `/communities` | GET | List public communities. Query: `limit`, `offset`. |
+| `/communities/{communityId}` | GET | Get community. |
+| `/communities/{communityId}/join` | POST | Join community. |
+
+### Recommendation Service
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/recommendations/events` | GET | Personalized event recommendations. |
+
+---
+
+## Creator Publishing Platform
 
 ## User Management
 
