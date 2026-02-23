@@ -1,4 +1,5 @@
 import * as jose from "jose";
+import { randomBytes } from "crypto";
 import { prisma } from "@/lib/prisma";
 
 const JWT_SECRET = new TextEncoder().encode(
@@ -7,6 +8,7 @@ const JWT_SECRET = new TextEncoder().encode(
 
 const issuer = "ai-community-platform";
 const expiresIn = "7d";
+const shortExpiresIn = "15m";
 
 export type JwtPayload = {
   sub: string;
@@ -28,6 +30,32 @@ export async function signToken(payload: {
     .setIssuedAt()
     .setExpirationTime(expiresIn)
     .sign(JWT_SECRET);
+}
+
+/** Short-lived JWT (15min) for VibeNet auth flow */
+export async function signShortLivedToken(payload: {
+  userId: string;
+  email: string;
+  role: string;
+}): Promise<string> {
+  return new jose.SignJWT({ email: payload.email, role: payload.role })
+    .setProtectedHeader({ alg: "HS256" })
+    .setSubject(payload.userId)
+    .setIssuer(issuer)
+    .setIssuedAt()
+    .setExpirationTime(shortExpiresIn)
+    .sign(JWT_SECRET);
+}
+
+export function generateRefreshToken(): string {
+  return randomBytes(32).toString("hex");
+}
+
+const REFRESH_TOKEN_DAYS = 30;
+export function getRefreshTokenExpiry(): Date {
+  const d = new Date();
+  d.setDate(d.getDate() + REFRESH_TOKEN_DAYS);
+  return d;
 }
 
 export async function verifyToken(token: string): Promise<JwtPayload | null> {

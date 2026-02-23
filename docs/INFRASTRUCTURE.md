@@ -133,6 +133,22 @@ Implemented with **GitHub Actions**, **Terraform**, and **Helm** for infrastruct
 | **Staging** | Merge PR to `develop` | Build + Test → Manual approval → Deploy to `staging` |
 | **Production** | Merge PR to `main` | Build + Test → Manual approval → Deploy to `prod` |
 
+### EKS Pipeline Example (GitHub Actions + Helm + Canary)
+
+```
+Developer Push → GitHub → GitHub Actions CI/CD
+  1. Lint + TypeScript Check
+  2. Unit Tests (Jest)
+  3. Integration Tests
+  4. Docker Build + Push to ECR
+  5. Deploy to Staging (Helm)
+  6. Smoke Tests (Playwright)
+  7. Manual Approval Gate
+  8. Deploy to Production (Canary 10% → 100%)
+```
+
+**Canary strategy:** New version receives 10% of traffic for 30 minutes. If error rate < 0.5%, promote to 100%. If error rate > 1%, automatic rollback.
+
 ### MVP Pipeline Flow (Simplified)
 
 1. **Commit** – Developer pushes to a feature branch.
@@ -153,9 +169,9 @@ Three distinct environments ensure a smooth development and deployment workflow.
 
 | Environment | Purpose | Configuration |
 |-------------|---------|---------------|
-| **Development (Local)** | Local dev and testing | **MVP:** Docker Compose (app, PostgreSQL, Redis). **Scale:** Lightweight; local DB or mocked services. |
-| **Staging** | Pre-production testing | Full environment identical to production; own database and services. Integration tests, performance tests, UAT. Data anonymization for sensitive data. |
-| **Production** | Live end-users | Highly available, scalable, secure; real user data; stricter access controls. |
+| **Development (Local)** | Local dev and testing | **MVP:** Docker Compose (app, PostgreSQL, Redis). **EKS:** `docker-compose`; manual trigger. |
+| **Staging** | Integration testing | Trigger: push to `develop`. EKS with 1 replica per service. Own database and services. |
+| **Production** | Live platform | Trigger: merge to `main` + manual approval. EKS with 3+ replicas per service. High availability, strict access controls. |
 
 ### Environment Management
 
@@ -192,6 +208,18 @@ Three distinct environments ensure a smooth development and deployment workflow.
 - **Anomaly Detection** – Use AI-powered anomaly detection for unusual patterns in metrics or logs.
 - **Runbooks** – Document runbooks for common alerts with diagnosis and resolution steps.
 
+### Reference Observability Stack
+
+**Stack:** Prometheus (metrics) + Grafana (dashboards) + Loki (logs) + Jaeger (tracing) + PagerDuty (on-call)
+
+| Alert Condition | Severity | Action |
+|-----------------|----------|--------|
+| API error rate > 1% | P2 | Investigate; consider rollback |
+| API P99 latency > 2s | P2 | Performance investigation |
+| Pod crash loop | P1 | Immediate response |
+| Database connection pool > 80% | P2 | Scale or optimize connections |
+| Disk usage > 80% | P2 | Add capacity or clean up |
+
 ### MVP Monitoring Setup
 
 - **Metrics & Dashboards:** CloudWatch for CPU, memory, DB connections, etc. Dashboards for system health.
@@ -217,9 +245,17 @@ Three distinct environments ensure a smooth development and deployment workflow.
 - **S3:** Enable versioning on user-upload buckets to protect against accidental deletions or overwrites.
 - **IaC:** Define all infrastructure in **Terraform**. Store Terraform state in an S3 bucket with versioning enabled for quick, reliable recreation.
 
+### EKS Production Backup (Reference)
+
+- Automated RDS snapshots every 6 hours; 30-day retention
+- Point-in-time recovery enabled (5-minute granularity)
+- Cross-region backup replication (e.g. to `us-west-2`)
+- **RTO target:** 1 hour | **RPO target:** 15 minutes
+- Disaster recovery runbook tested quarterly
+
 ### Disaster Recovery
 
-- **RTO:** Maximum acceptable downtime (e.g. 4 hours)
+- **RTO:** Maximum acceptable downtime (e.g. 1–4 hours)
 - **RPO:** Maximum acceptable data loss (e.g. 15 minutes)
 - **Plan:** Document procedures for recovering from major outages
 - **Multi-AZ / Multi-Region:** Deploy critical services across multiple Availability Zones; consider multi-region for regional outages

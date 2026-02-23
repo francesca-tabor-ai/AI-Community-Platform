@@ -1,9 +1,16 @@
 import { NextRequest } from "next/server";
 import { hash } from "bcryptjs";
+import { cookies } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { signToken } from "@/lib/api-v1/jwt";
+import {
+  signShortLivedToken,
+  generateRefreshToken,
+  getRefreshTokenExpiry,
+} from "@/lib/api-v1/jwt";
 import { badRequest, conflict, apiError } from "@/lib/api-v1/errors";
+
+const REFRESH_TOKEN_COOKIE = "refresh_token";
 
 const registerSchema = z.object({
   email: z.string().email(),
