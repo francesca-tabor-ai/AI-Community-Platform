@@ -92,7 +92,17 @@ On each deploy, Railway will:
 
 ---
 
-## 7. Verify the Deployment
+## 7. Seed the Database (Optional)
+
+To add demo data (users, a sample community, posts, events):
+
+```bash
+npm run db:seed
+```
+
+**Note:** Use the **public** `DATABASE_URL` from Railway (in `.env` or `.env.local`)—`postgres.railway.internal` is not reachable from your local machine. The seed creates 3 demo users (alice@example.com, bob@example.com, carol@example.com) with password `demo1234`.
+
+## 8. Verify the Deployment
 
 - Visit the generated domain.
 - Open `/admin` and sign in with `ADMIN_SECRET`.
@@ -109,3 +119,10 @@ Use the **public** `DATABASE_URL` from the Railway dashboard (not `postgres.rail
 3. Add it to `.env.local` as `DATABASE_URL`.
 
 `postgres.railway.internal` only works inside Railway’s private network.
+
+
+---
+
+## Future: AWS Deployment
+
+For production-grade AWS deployment (EKS, RDS, S3, SQS, etc.), CI/CD pipelines, and multi-environment setup, see **[docs/INFRASTRUCTURE.md](./docs/INFRASTRUCTURE.md)**. That document describes the target cloud architecture, GitHub Actions pipeline design, monitoring, backup, and disaster recovery strategy.

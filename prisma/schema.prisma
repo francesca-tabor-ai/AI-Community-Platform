@@ -325,3 +325,81 @@ model ContactSubmission {
   @@index([createdAt])
   @@index([inquiryType])
 }
+
+// Email queue: database-backed message queue for reliable email delivery
+model EmailJob {
+  id             String   @id @default(cuid())
+  emailType      String
+  recipientEmail String
+  recipientName  String?
+  templateData   Json
+  metadata       Json?
+  status         EmailJobStatus @default(pending)
+  attempts       Int      @default(0)
+  maxAttempts    Int      @default(7)
+  lastError      String?  @db.Text
+  scheduledAt    DateTime @default(now())
+  startedAt     DateTime?
+  completedAt   DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([status, scheduledAt])
+  @@index([emailType])
+}
+
+enum EmailJobStatus {
+  pending
+  processing
+  completed
+  failed
+  dead
+}
+
+// Email feedback: bounces, complaints for list hygiene
+model EmailFeedback {
+  id             String   @id @default(cuid())
+  email          String
+  type           EmailFeedbackType
+  espEventId     String?
+  rawPayload     Json?
+  processed      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([email])
+  @@index([type])
+  @@index([processed])
+}
+
+enum EmailFeedbackType {
+  bounce
+  complaint
+  delivered
+}
+
+// Unsubscribe tracking for CAN-SPAM/GDPR compliance
+model EmailUnsubscribe {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+// Analytics: raw event storage for product analytics and dashboards
+model AnalyticsEvent {
+  id         String   @id @default(cuid())
+  eventId    String   @unique
+  eventName  String
+  timestamp  DateTime
+  userId     String?
+  sessionId  String
+  payload    Json
+  createdAt  DateTime @default(now())
+
+  @@index([eventName])
+  @@index([userId])
+  @@index([timestamp])
+  @@index([eventName, timestamp])
+}

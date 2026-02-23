@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PostViewTracker } from "@/app/components/PostViewTracker";
 
 const POSTS: Record<
   string,
@@ -90,6 +91,11 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
+      <PostViewTracker
+        postId={slug}
+        creatorId="platform"
+        postTitle={post.title}
+      >
       <article className="mx-auto max-w-3xl px-6 py-32">
         <Link
           href="/blog"
@@ -110,6 +116,7 @@ export default async function BlogPostPage({ params }: Props) {
           ))}
         </div>
       </article>
+      </PostViewTracker>
 
       <section className="border-t border-slate-800/50 py-16">
         <div className="mx-auto max-w-3xl px-6 text-center">

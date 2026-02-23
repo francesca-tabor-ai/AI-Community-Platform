@@ -37,3 +37,6 @@ prisma/*.db-journal
 
 # Vercel
 .vercel
+
+# Embedded reference repos (nested .git)
+Reference/community-admin

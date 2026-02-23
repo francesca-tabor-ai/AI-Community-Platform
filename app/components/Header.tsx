@@ -47,6 +47,12 @@ export default function Header() {
 
         <div className="hidden items-center gap-4 md:flex">
           <Link
+            href="/dashboard"
+            className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
+          >
+            Dashboard
+          </Link>
+          <Link
             href="/login"
             className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
           >
@@ -97,6 +103,13 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-lg px-4 py-3 text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-white"
+            >
+              Dashboard
+            </Link>
             <div className="mt-4 flex gap-3 border-t border-slate-800/50 pt-4">
               <Link
                 href="/login"
