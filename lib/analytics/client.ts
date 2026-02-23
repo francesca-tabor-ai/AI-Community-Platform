@@ -87,6 +87,8 @@ function buildBasePayload<E extends AnalyticsEvent>(event: E): E {
     browser: detectBrowser(),
     os: detectOS(),
     referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+    referrer_url: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+    page_url: typeof window !== "undefined" ? window.location.href : undefined,
   };
   return { ...event, ...base } as E;
 }
