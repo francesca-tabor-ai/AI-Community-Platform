@@ -1,0 +1,310 @@
+// Prisma schema for AI Community Platform
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+enum MemberRole {
+  owner
+  moderator
+  member
+}
+
+enum CommunityVisibility {
+  public
+  private
+}
+
+enum SpaceType {
+  general
+  announcements
+  questions
+}
+
+enum PostType {
+  post
+  article
+}
+
+enum PostStatus {
+  draft
+  published
+}
+
+enum NotificationType {
+  new_comment
+  mention
+  new_post
+  member_join
+}
+
+enum EventType {
+  online
+  in_person
+}
+
+enum RsvpStatus {
+  going
+  maybe
+  not_going
+}
+
+enum SubscriptionStatus {
+  active
+  cancelled
+  past_due
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String  @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  profile  Profile?
+
+  posts       Post[]
+  comments    Comment[]
+  memberships Member[]
+  notifications Notification[]
+  createdCommunities Community[] @relation("CommunityOwner")
+  eventRsvps  EventRsvp[]
+  subscriptions Subscription[]
+  activities  Activity[]
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  displayName String?
+  avatarUrl   String?
+  bio         String?  @db.Text
+  website     String?
+  twitter     String?
+  youtube     String?
+  isCreator   Boolean  @default(false)
+  creatorTagline String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Community {
+  id          String             @id @default(cuid())
+  name        String
+  slug        String             @unique
+  description String?            @db.Text
+  imageUrl    String?
+  ownerId     String
+  visibility  CommunityVisibility @default(public)
+  isPaid      Boolean            @default(false)
+  defaultTierId String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  owner  User     @relation("CommunityOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  spaces Space[]
+  members Member[]
+  posts  Post[]   @relation("CommunityPosts")
+  events Event[]
+  subscriptionTiers SubscriptionTier[]
+}
+
+model Space {
+  id          String    @id @default(cuid())
+  communityId String
+  name        String
+  slug        String
+  description String?   @db.Text
+  type        SpaceType @default(general)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  posts     Post[]
+
+  @@unique([communityId, slug])
+}
+
+model Member {
+  id          String     @id @default(cuid())
+  userId      String
+  communityId String
+  role        MemberRole @default(member)
+  joinedAt    DateTime   @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, communityId])
+}
+
+model Post {
+  id        String     @id @default(cuid())
+  spaceId   String
+  communityId String
+  authorId  String
+  title     String
+  body      String     @db.Text
+  type      PostType   @default(post)
+  status    PostStatus @default(draft)
+  embedding Unsupported("vector(1536)")?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  space     Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  community Community @relation("CommunityPosts", fields: [communityId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  authorId  String
+  body      String   @db.Text
+  parentId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies Comment[] @relation("CommentReplies")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  targetId  String
+  title     String?
+  message   String?          @db.Text
+  read      Boolean         @default(false)
+  createdAt DateTime        @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Event {
+  id           String    @id @default(cuid())
+  communityId  String
+  creatorId    String
+  title        String
+  description  String?   @db.Text
+  startAt      DateTime
+  endAt        DateTime
+  location     String?
+  type         EventType @default(online)
+  imageUrl     String?
+  maxAttendees Int?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  community Community  @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  rsvps    EventRsvp[]
+}
+
+model EventRsvp {
+  id        String     @id @default(cuid())
+  eventId   String
+  userId    String
+  status    RsvpStatus @default(going)
+  createdAt DateTime   @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+}
+
+model SubscriptionTier {
+  id          String   @id @default(cuid())
+  communityId String
+  name        String
+  price       Int
+  interval    String
+  benefits    String?  @db.Text
+  stripePriceId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  community     Community      @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  subscriberId         String
+  communityId          String
+  tierId               String
+  status               SubscriptionStatus @default(active)
+  stripeSubscriptionId String?
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  subscriber User             @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+  tier       SubscriptionTier @relation(fields: [tierId], references: [id], onDelete: Cascade)
+}
+
+model Activity {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String
+  targetType String
+  targetId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
