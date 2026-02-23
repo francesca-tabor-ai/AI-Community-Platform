@@ -5,6 +5,7 @@ import {
   canAdminCommunity,
 } from "@/lib/community-auth";
 import { trackEvent } from "@/lib/analytics/track";
+import type { CommentSubmittedEvent } from "@/lib/analytics/events";
 
 /**
  * POST - Create a comment on a post
@@ -74,7 +75,10 @@ export async function POST(
     post_id: postId,
     comment_id: comment.id,
     parent_comment_id: comment.parentId ?? undefined,
-  });
+  } as Omit<
+    CommentSubmittedEvent,
+    "session_id" | "platform" | "device_type" | "browser" | "os"
+  >);
 
   return NextResponse.json({
     id: comment.id,

@@ -82,14 +82,20 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  let body: { title: string; body: string; spaceId?: string; type?: "post" | "article" };
+  let body: {
+    title: string;
+    body: string;
+    spaceId?: string;
+    type?: "post" | "article";
+    status?: "draft" | "published";
+  };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { title, body: content } = body;
+  const { title, body: content, status: postStatus } = body;
   if (!title || typeof title !== "string" || title.trim().length === 0) {
     return NextResponse.json({ error: "Title is required" }, { status: 400 });
   }
@@ -113,12 +119,14 @@ export async function POST(
     return NextResponse.json({ error: "Space not found" }, { status: 404 });
   }
 
+  const status = postStatus === "published" ? "published" : "draft";
+
   const post = await prisma.post.create({
     data: {
       title: title.trim(),
       body: content ?? "",
       type: body.type ?? "post",
-      status: "draft",
+      status,
       spaceId,
       communityId: community.id,
       authorId: userId,

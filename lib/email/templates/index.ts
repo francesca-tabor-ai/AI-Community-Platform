@@ -88,7 +88,7 @@ function renderNewPostNotification(
   const creator = (data.creator_name as string) || "A creator";
   const title = (data.post_title as string) || "New post";
   const url = (data.post_url as string) || "#";
-  const community = (data.community_name as string) | undefined;
+  const community = (data.community_name as string) || undefined;
 
   const subject = `${creator} published: ${title}`;
   const content = `
@@ -186,7 +186,7 @@ function renderEventReminder(
   const title = (data.event_title as string) || "Upcoming event";
   const url = (data.event_url as string) || "#";
   const startAt = (data.start_at as string) || "";
-  const creator = (data.creator_name as string) | undefined;
+  const creator = (data.creator_name as string) ?? undefined;
 
   const subject = `Reminder: ${title}`;
   const content = `

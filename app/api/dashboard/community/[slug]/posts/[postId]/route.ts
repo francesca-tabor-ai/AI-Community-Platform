@@ -5,6 +5,7 @@ import {
   canAdminCommunity,
 } from "@/lib/community-auth";
 import { trackEvent } from "@/lib/analytics/track";
+import { enqueueEmailBatch } from "@/lib/email";
 
 /**
  * PATCH - Update a post (e.g. publish draft)
@@ -69,6 +70,87 @@ export async function PATCH(
       post_title: updated.title,
       post_type: updated.type === "article" ? "article" : "post",
     });
+
+    // Enqueue new post notifications to community members + subscribers
+    try {
+      const communityData = await prisma.community.findUnique({
+        where: { id: community.id },
+        select: { name: true, slug: true },
+      });
+      const authorData = await prisma.user.findUnique({
+        where: { id: updated.authorId },
+        select: { name: true, profile: { select: { displayName: true } } },
+      });
+      const creatorName =
+        authorData?.profile?.displayName || authorData?.name || "A creator";
+      const appUrl =
+        process.env.NEXT_PUBLIC_APP_URL ||
+        (process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : "http://localhost:3000");
+      const postUrl = `${appUrl}/community/${communityData?.slug ?? community.id}/post/${postId}`;
+
+      const members = await prisma.member.findMany({
+        where: {
+          communityId: community.id,
+          userId: { not: updated.authorId },
+        },
+        include: {
+          user: {
+            select: { email: true, name: true, profile: { select: { displayName: true } } },
+          },
+        },
+      });
+      const subscribers = await prisma.subscription.findMany({
+        where: {
+          communityId: community.id,
+          subscriberId: { not: updated.authorId },
+          status: "active",
+        },
+        include: {
+          subscriber: {
+            select: { email: true, name: true, profile: { select: { displayName: true } } },
+          },
+        },
+      });
+
+      const seenEmails = new Set<string>();
+      const messages: Array<{
+        email_type: "new_post_notification";
+        recipient_email: string;
+        recipient_name?: string;
+        template_data: Record<string, unknown>;
+        metadata?: Record<string, string>;
+      }> = [];
+
+      for (const m of [...members, ...subscribers]) {
+        const user = "user" in m ? m.user : m.subscriber;
+        const email = user?.email;
+        if (!email || seenEmails.has(email)) continue;
+        seenEmails.add(email);
+
+        messages.push({
+          email_type: "new_post_notification",
+          recipient_email: email,
+          recipient_name:
+            user?.profile?.displayName || user?.name || undefined,
+          template_data: {
+            creator_name: creatorName,
+            post_title: updated.title,
+            post_url: postUrl,
+            community_name: communityData?.name,
+          },
+          metadata: { user_id: "user" in m ? m.userId : m.subscriberId, post_id: postId },
+        });
+      }
+
+      if (messages.length > 0) {
+        await enqueueEmailBatch(messages);
+      }
+    } catch (emailErr) {
+      console.error("[posts/publish] Failed to enqueue email notifications:", emailErr);
+      // Don't fail the publish - email is best-effort
+    }
   }
 
   return NextResponse.json(updated);

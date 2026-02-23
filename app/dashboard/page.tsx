@@ -70,8 +70,14 @@ export default function DashboardPage() {
         <div className="rounded-2xl border border-slate-700/50 border-dashed bg-slate-800/20 p-12 text-center">
           <p className="text-slate-400">No communities to manage yet.</p>
           <p className="mt-2 text-sm text-slate-500">
-            Communities you own or moderate will appear here.
+            Communities you own or moderate will appear here. Create your first community to get started.
           </p>
+          <Link
+            href="/"
+            className="mt-6 inline-block rounded-xl bg-teal-500 px-6 py-3 text-sm font-semibold text-slate-950 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
+          >
+            Explore the platform
+          </Link>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

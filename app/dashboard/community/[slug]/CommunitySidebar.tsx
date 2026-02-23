@@ -8,6 +8,7 @@ import {
   FolderKanban,
   FileText,
   Calendar,
+  Plus,
 } from "lucide-react";
 
 const navItems = [
@@ -29,6 +30,13 @@ export function CommunitySidebar({ slug }: { slug: string }) {
         className="mb-3 flex items-center gap-2 rounded-lg px-4 py-2 text-xs text-slate-500 hover:bg-slate-800/50 hover:text-slate-400"
       >
         ← All communities
+      </Link>
+      <Link
+        href={`/dashboard/community/${slug}/posts/new`}
+        className="mb-3 flex items-center justify-center gap-2 rounded-lg bg-teal-500 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-teal-400"
+      >
+        <Plus className="h-4 w-4" />
+        New Post
       </Link>
       {navItems.map(({ label, href, icon: Icon }) => {
         const url = href ? `${base}/${href}` : base;
