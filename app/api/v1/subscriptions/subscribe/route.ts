@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     });
     if (!creator) return notFound("Creator not found");
 
-    const stripe = new Stripe(stripeKey, { apiVersion: "2024-11-20.acacia" });
+    const stripe = new Stripe(stripeKey, { apiVersion: "2025-02-24.acacia" });
 
     // stripeToken is either a PaymentMethod ID (pm_xxx) or a token (tok_xxx)
     const isPaymentMethod = stripeToken.startsWith("pm_");
