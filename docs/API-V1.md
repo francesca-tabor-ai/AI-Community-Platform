@@ -19,12 +19,23 @@ RESTful API. Base URL: `/api/v1`.
 ### Event Service
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/events` | POST | Create event. Body: `{title, description?, start_time, end_time, location?, ticket_price?, capacity?}`. |
+| `/events` | POST | Create event. Body: `{name?, title?, description?, start_date?, end_date?, start_time?, end_time?, location?, ticket_price?, capacity?, rules?, settings?}`. Returns `{event_id, message}`. |
 | `/events` | GET | List events. Query: `from`, `to`, `limit`, `offset`. |
-| `/events/{eventId}` | GET | Get event. |
-| `/events/{eventId}` | PUT | Update event (organizer only). |
+| `/events/{eventId}` | GET | Get event details. |
+| `/events/{eventId}` | PUT | Update event (organizer only). Returns `{event_id, message}`. |
 | `/events/{eventId}` | DELETE | Delete event (organizer only). |
+| `/events/{eventId}/publish` | POST | Publish event (organizer only). Returns `{event_id, message}`. |
+| `/events/{eventId}/ai-generate-content` | POST | Trigger AI content generation (organizer only). Body: `{content_type}`. Returns `{task_id, message}`. |
 | `/events/{eventId}/rsvp` | POST | RSVP. Body: `{status?: "attending"\|"interested"}`. |
+| `/events/{eventId}/judges` | POST | Add judge (organizer only). Body: `{user_id}`. |
+| `/events/{eventId}/submissions` | POST | Submit project. Body: `{team_id?, title, description?, submission_url?, files?}`. Returns `{submission_id, message}`. |
+| `/events/{eventId}/submissions/{submissionId}` | GET | Get submission details. |
+| `/events/{eventId}/submissions/{submissionId}/score` | POST | Submit score (judge only). Body: `{criteria_id, score, comments?}`. Returns `{score_id, message}`. |
+| `/events/{eventId}/submissions/{submissionId}/ai-evaluate` | POST | Trigger AI evaluation (organizer/judge). Returns `{task_id, message}`. |
+| `/events/{eventId}/teams` | POST | Create team (organizer only). Body: `{name, description?}`. Returns `{team_id, message}`. |
+| `/events/{eventId}/teams/{teamId}/join` | POST | Join team. Returns `{message}`. |
+| `/events/{eventId}/teams/{teamId}/invite` | POST | Invite user to team. Body: `{user_id}`. Returns `{message}`. |
+| `/events/{eventId}/ai-team-recommendations` | GET | Get AI-powered team recommendations. Returns `{recommendations: [{user_id, score}]}`. |
 
 ### Community Service
 | Endpoint | Method | Description |

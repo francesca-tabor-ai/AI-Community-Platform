@@ -7,9 +7,10 @@ import { badRequest } from "@/lib/api-v1/errors";
 import { trackEvent } from "@/lib/analytics/track";
 import type { EventCreatedEvent } from "@/lib/analytics/events";
 
-const createEventSchema = z.object({
-  name: z.string().min(1).max(255).optional(),
-  title: z.string().min(1).max(255).optional(),
+const createEventSchema = z
+  .object({
+  name: z.string().max(255).optional(),
+  title: z.string().max(255).optional(),
   description: z.string().optional(),
   start_date: z.string().datetime().optional(),
   end_date: z.string().datetime().optional(),
@@ -20,7 +21,11 @@ const createEventSchema = z.object({
   capacity: z.number().int().min(1).optional(),
   rules: z.record(z.unknown()).optional(),
   settings: z.record(z.unknown()).optional(),
-});
+})
+  .refine((d) => (d.name?.trim() ?? "").length > 0 || (d.title?.trim() ?? "").length > 0, {
+    message: "name or title is required",
+    path: ["name"],
+  });
 
 export async function POST(req: NextRequest) {
   const authResult = await requireAuth(req);
