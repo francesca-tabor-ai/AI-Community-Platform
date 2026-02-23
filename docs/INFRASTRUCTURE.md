@@ -1,10 +1,32 @@
 # Infrastructure & DevOps Specification
 
-This document defines the cloud architecture, deployment pipeline, environments, monitoring, and backup strategy for the AI Community Platform. The platform is currently deployed on Railway; this spec describes the target production-grade cloud architecture. The primary reference is **AWS**; alternatives for GCP and Azure are noted where applicable.
+This document defines the cloud architecture, deployment pipeline, environments, monitoring, and backup strategy for the AI Community Platform. The platform is currently deployed on Railway; this spec describes the target production-grade cloud architecture.
+
+- **MVP (recommended first):** ECS/Fargate monolithic, Redis, SES — simpler and cost-effective.
+- **Scale-up:** EKS, microservices, NoSQL, CDN — for higher traffic and complexity.
 
 ---
 
-## Cloud Architecture
+## MVP Architecture (Recommended for Launch)
+
+For the MVP, we use **AWS** with a simple, cost-effective stack designed for reliability and minimal operational overhead. **Note:** The database requires PostgreSQL with **pgvector** extension.
+
+| AWS Service | Purpose | Configuration |
+|-------------|---------|----------------|
+| **Amazon ECS (Fargate)** | Container orchestration | Run a monolithic Node.js/Next.js app as a Docker container. Fargate is serverless—no servers to provision or manage. |
+| **Application Load Balancer (ALB)** | Traffic distribution | Distribute traffic across containers. SSL termination, health checks, auto-scaling. |
+| **Amazon RDS for PostgreSQL** | Managed database | Automated backups, patching, scaling. Must enable pgvector extension. |
+| **Amazon S3** | Object storage | User-uploaded assets (images, media). Durable, scalable, cost-effective. |
+| **Amazon ElastiCache (Redis)** | Cache & job queue | BullMQ for background jobs; cache for expensive DB queries. |
+| **Amazon SES** | Email delivery | Newsletters and transactional emails. Scalable, good deliverability. |
+
+### Local Development (MVP)
+
+Use **Docker Compose** to run the app, PostgreSQL, and Redis locally, mirroring the production setup.
+
+---
+
+## Cloud Architecture (Scale-Up)
 
 The platform targets a major cloud provider (AWS, GCP, or Azure) for high availability, fault tolerance, and cost-effectiveness. **Note:** The database requires PostgreSQL with **pgvector** extension.
 
@@ -99,17 +121,29 @@ Implemented with **GitHub Actions**, **Terraform**, and **Helm** for infrastruct
 | **Staging** | Merge PR to `develop` | Build + Test → Manual approval → Deploy to `staging` |
 | **Production** | Merge PR to `main` | Build + Test → Manual approval → Deploy to `prod` |
 
+### MVP Pipeline Flow (Simplified)
+
+1. **Commit** – Developer pushes to a feature branch.
+2. **Pull Request** – PR opened to merge into `main`.
+3. **Build & Test (CI)** – On every PR, GitHub Actions:
+   - Builds the Docker image
+   - Runs unit and integration tests
+   - Runs linting (static analysis)
+4. **Merge** – If checks pass, merge into `main`.
+5. **Deploy to Staging** – Merge to `main` automatically deploys to staging (mirror of production).
+6. **Deploy to Production** – After manual verification on staging, promote the same build to production (manual trigger in GitHub Actions).
+
 ---
 
 ## Environments
 
 Three distinct environments ensure a smooth development and deployment workflow.
 
-| Environment | Purpose | Characteristics | Access |
-|-------------|---------|-----------------|--------|
-| **Development** | Local dev and testing | Lightweight; local DB or mocked services; rapid iteration | Dev team |
-| **Staging** | Integration testing, UAT, performance testing | Mirrors production; realistic data (anonymized if sensitive) | Dev, QA, Product |
-| **Production** | Live end-users | Highly available, scalable, secure; real user data | Restricted; automated deploys and emergency access only |
+| Environment | Purpose | Configuration |
+|-------------|---------|---------------|
+| **Development (Local)** | Local dev and testing | **MVP:** Docker Compose (app, PostgreSQL, Redis). **Scale:** Lightweight; local DB or mocked services. |
+| **Staging** | Pre-production testing | Full AWS environment identical to production; own database and services. Final QA before release. |
+| **Production** | Live end-users | Highly available, scalable, secure; real user data; stricter access controls. |
 
 ---
 
@@ -134,6 +168,13 @@ Three distinct environments ensure a smooth development and deployment workflow.
 | **Alerting** | Alertmanager (Prometheus), PagerDuty, Opsgenie, or cloud-native alerting; notify via email, SMS, Slack |
 | **Tracing** | Jaeger or OpenTelemetry for distributed tracing across microservices |
 
+### MVP Monitoring Setup
+
+- **Metrics & Dashboards:** CloudWatch for CPU, memory, DB connections, etc. Dashboards for system health.
+- **Logging:** Application logs structured JSON to `stdout`; collected by CloudWatch Logs.
+- **Alarms:** CloudWatch Alarms → PagerDuty or Slack for: high CPU/memory, 5xx surge from ALB, high DB connection count, failing health checks.
+- **APM:** Integrate **Datadog** or **New Relic** for distributed tracing and API/DB bottleneck identification.
+
 ---
 
 ## Backup & Recovery
@@ -144,6 +185,12 @@ Three distinct environments ensure a smooth development and deployment workflow.
 | **Object Storage** | Versioning, cross-region backup of critical user uploads (e.g. event images) |
 | **Configuration** | Version-control all IaC (Kubernetes manifests, Helm charts, Terraform) in Git |
 | **Compute** | Stateless services; new instances launch from images; no local persistent state |
+
+### MVP Backup Configuration
+
+- **Database:** RDS automated daily snapshots, 7-day retention. PITR enabled. Copy snapshots to another region for DR.
+- **S3:** Enable versioning on user-upload buckets to protect against accidental deletions or overwrites.
+- **IaC:** Define all infrastructure in **Terraform**. Store Terraform state in an S3 bucket with versioning enabled for quick, reliable recreation.
 
 ### Disaster Recovery
 
@@ -156,12 +203,12 @@ Three distinct environments ensure a smooth development and deployment workflow.
 
 ## Design Principles
 
-- **Managed services first** – RDS, SQS, EKS, S3 to reduce operational load  
+- **Managed services first** – RDS, ElastiCache, ECS/EKS, S3 to reduce operational load  
 - **Infrastructure as Code** – Terraform for consistency and repeatability  
 - **Automation** – CI/CD to minimize manual steps  
 - **Observability** – Monitoring, logging, alerting built in  
 - **Stateless design** – Services scale horizontally; no local session state  
-- **Gradual scaling** – Start simple (e.g. RDS + SQS); add complexity (Kafka, sharding) only when needed  
+- **Gradual scaling** – MVP: ECS + Redis + SES; scale up to EKS, SQS, NoSQL only when needed  
 
 ---
 
