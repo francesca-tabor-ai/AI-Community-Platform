@@ -27,6 +27,7 @@ export async function GET(
       openTo: true,
       role: true,
       createdAt: true,
+      updatedAt: true,
     },
   });
 
@@ -48,7 +49,7 @@ export async function GET(
     profilePhotoUrl: user.image,
     openTo: user.openTo ?? [],
     createdAt: user.createdAt.toISOString(),
-    updatedAt: user.updatedAt?.toISOString?.(),
+    updatedAt: user.updatedAt.toISOString(),
   });
 }
 
