@@ -135,6 +135,50 @@ model User {
   articles            Article[]
   articleRevisions    ArticleRevision[]
   approvedRevisions   ArticleRevision[] @relation("ArticleRevisionApprover")
+
+  organizedPlatformEvents PlatformEvent[] @relation("PlatformEventOrganizer")
+  platformEventRsvps     PlatformEventRsvp[]
+}
+
+// AI-Augmented Event Platform: standalone events (API v1)
+enum PlatformEventRsvpStatus {
+  attending
+  interested
+}
+
+model PlatformEvent {
+  id          String   @id @default(cuid())
+  organizerId String
+  title       String
+  description String?  @db.Text
+  startTime   DateTime
+  endTime     DateTime
+  location    String?
+  ticketPrice Decimal? @db.Decimal(10, 2)
+  capacity    Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  organizer User               @relation("PlatformEventOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  rsvps    PlatformEventRsvp[]
+
+  @@index([organizerId])
+  @@index([startTime])
+}
+
+model PlatformEventRsvp {
+  id        String                @id @default(cuid())
+  userId    String
+  eventId   String
+  status    PlatformEventRsvpStatus @default(attending)
+  createdAt DateTime              @default(now())
+
+  user  User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event PlatformEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@index([eventId])
+  @@index([userId])
 }
 
 // Creator publishing platform: standalone posts by creators (API v1)

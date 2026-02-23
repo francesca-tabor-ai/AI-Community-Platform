@@ -2,6 +2,8 @@
 
 This document maps the [Security Engineer Agent specification](../Specification/Community/Security%20Engineer%20Agent%3A%20Platform%20Security%20for%20a%20Creator%20Publishing%20Platform.md) to the current implementation and identifies gaps.
 
+**Related:** [AI-Augmented Event Platform Security](../Specification/Community/Security%20Engineer%20Agent%3A%20AI-Augmented%20Event%20Platform%20Security.md) — additional event-specific threats (malicious event creation, AI model poisoning, organizer identity verification).
+
 **Last updated:** February 2025
 
 ---

@@ -2,7 +2,12 @@
  * Analytics Event Schema
  * Event tracking schema for product analytics and decision-making.
  * Supports: user_registered, user_logged_in, post_viewed, post_published,
- * comment_submitted, creator_subscribed, payment_succeeded
+ * comment_submitted, creator_subscribed, payment_succeeded,
+ * profile_updated, interest_selected, search_performed,
+ * event_viewed, event_card_clicked, recommendation_feedback_provided,
+ * rsvp_clicked, rsvp_confirmed, ticket_selected, checkout_initiated,
+ * ticket_purchased, add_to_calendar_clicked,
+ * event_created, event_updated, ai_content_generated, promotional_content_generated
  */
 
 import { z } from "zod";
@@ -20,6 +25,8 @@ export const coreEventSchema = z.object({
   browser: z.string(),
   os: z.string(),
   referrer: z.string().optional(),
+  referrer_url: z.string().optional(),
+  page_url: z.string().optional(),
   ip_address: z.string().optional(),
 });
 
