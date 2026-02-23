@@ -99,18 +99,18 @@ export default function ChatWidget() {
     <>
       {/* Chat Panel */}
       <div
-        className={`fixed bottom-20 right-6 z-50 flex flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900 shadow-2xl transition-all duration-300 ease-out ${
+        className={`fixed bottom-20 right-6 z-50 flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl transition-all duration-300 ease-out ${
           isOpen
             ? "h-[420px] w-[380px] opacity-100 sm:h-[480px] sm:w-[400px]"
             : "pointer-events-none h-0 w-0 opacity-0"
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-700/50 bg-slate-800/50 px-4 py-3">
+        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-500/20">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-violet-100">
               <svg
-                className="h-5 w-5 text-teal-400"
+                className="h-5 w-5 text-violet-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -124,13 +124,13 @@ export default function ChatWidget() {
               </svg>
             </div>
             <div>
-              <h3 className="font-semibold text-white">Platform Guide</h3>
-              <p className="text-xs text-slate-400">Ask me anything about the platform</p>
+              <h3 className="font-semibold text-slate-900">Platform Guide</h3>
+              <p className="text-xs text-slate-500">Ask me anything about the platform</p>
             </div>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-700/50 hover:text-white"
+            className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-900"
             aria-label="Close chat"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,9 +143,9 @@ export default function ChatWidget() {
         <div className="flex-1 overflow-y-auto p-4">
           {messages.length === 0 ? (
             <div className="space-y-4">
-              <div className="rounded-xl bg-teal-500/10 px-4 py-3 text-sm text-teal-200">
-                <p className="font-medium">Hi! I&apos;m your platform guide.</p>
-                <p className="mt-1 text-slate-400">
+              <div className="rounded-xl bg-violet-50 px-4 py-3 text-sm">
+                <p className="font-medium text-slate-900">Hi! I&apos;m your platform guide.</p>
+                <p className="mt-1 text-slate-600">
                   Ask me about features, pricing, use cases, or how to get started. Try one of the suggestions below:
                 </p>
               </div>
@@ -156,7 +156,7 @@ export default function ChatWidget() {
                     <button
                       key={probe}
                       onClick={() => handleProbeClick(probe)}
-                      className="rounded-lg border border-slate-600/50 bg-slate-800/30 px-4 py-2.5 text-left text-sm text-slate-300 transition-all hover:border-teal-500/30 hover:bg-teal-500/5 hover:text-teal-400"
+                      className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-left text-sm text-slate-700 transition-all hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700"
                     >
                       {probe}
                     </button>
@@ -174,8 +174,8 @@ export default function ChatWidget() {
                   <div
                     className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
                       msg.role === "user"
-                        ? "bg-teal-500/90 text-slate-950"
-                        : "bg-slate-800 text-slate-200"
+                        ? "bg-violet-500 text-white"
+                        : "bg-slate-100 text-slate-800"
                     }`}
                   >
                     <p className="whitespace-pre-wrap">{msg.content}</p>
@@ -184,11 +184,11 @@ export default function ChatWidget() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="rounded-2xl bg-slate-800 px-4 py-2.5">
+                  <div className="rounded-2xl bg-slate-100 px-4 py-2.5">
                     <div className="flex gap-1.5">
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-teal-400 [animation-delay:-0.3s]" />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-teal-400 [animation-delay:-0.15s]" />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-teal-400" />
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-violet-500 [animation-delay:-0.3s]" />
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-violet-500 [animation-delay:-0.15s]" />
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-violet-500" />
                     </div>
                   </div>
                 </div>
@@ -200,13 +200,13 @@ export default function ChatWidget() {
 
         {/* Quick probes when there are messages */}
         {messages.length > 0 && !isLoading && (
-          <div className="border-t border-slate-700/50 px-4 py-2">
+          <div className="border-t border-slate-200 bg-slate-50 px-4 py-2">
             <div className="flex flex-wrap gap-2">
               {PROMPT_PROBES.slice(0, 3).map((probe) => (
                 <button
                   key={probe}
                   onClick={() => handleProbeClick(probe)}
-                  className="rounded-full border border-slate-600/50 bg-slate-800/30 px-3 py-1 text-xs text-slate-400 transition-colors hover:border-teal-500/30 hover:text-teal-400"
+                  className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600 transition-colors hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700"
                 >
                   {probe}
                 </button>
@@ -216,7 +216,7 @@ export default function ChatWidget() {
         )}
 
         {/* Input */}
-        <form onSubmit={handleSubmit} className="border-t border-slate-700/50 p-4">
+        <form onSubmit={handleSubmit} className="border-t border-slate-200 bg-white p-4">
           <div className="flex gap-2">
             <textarea
               ref={inputRef}
@@ -231,12 +231,12 @@ export default function ChatWidget() {
               placeholder="Ask about the platform..."
               rows={1}
               disabled={isLoading}
-              className="flex-1 resize-none rounded-xl border border-slate-600/50 bg-slate-800/50 px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:border-teal-500/50 focus:outline-none focus:ring-1 focus:ring-teal-500/30 disabled:opacity-50"
+              className="flex-1 resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-500 focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200 disabled:opacity-50"
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500 text-slate-950 transition-colors hover:bg-teal-400 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500 text-white transition-colors hover:bg-violet-600 disabled:cursor-not-allowed disabled:opacity-50"
               aria-label="Send message"
             >
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,7 +250,7 @@ export default function ChatWidget() {
       {/* Floating Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-teal-500 text-slate-950 shadow-lg shadow-teal-500/30 transition-all hover:scale-105 hover:bg-teal-400 active:scale-95"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full gradient-accent text-white shadow-lg shadow-violet-500/25 transition-all hover:scale-105 hover:shadow-violet-500/35 active:scale-95"
         aria-label={isOpen ? "Close chat" : "Open chat"}
       >
         {isOpen ? (

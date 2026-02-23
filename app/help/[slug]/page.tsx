@@ -124,18 +124,18 @@ export default async function HelpArticlePage({ params }: Props) {
   if (!article) notFound();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       <article className="mx-auto max-w-3xl px-6 py-32">
         <Link
           href="/help"
-          className="text-sm font-medium text-teal-400 hover:text-teal-300"
+          className="text-sm font-medium text-violet-600 transition-colors hover:text-violet-700"
         >
           ← Back to Help Center
         </Link>
-        <h1 className="mt-6 text-4xl font-bold text-white sm:text-5xl">
+        <h1 className="mt-6 text-4xl font-bold text-slate-900 sm:text-5xl">
           {article.title}
         </h1>
-        <div className="mt-10 space-y-6 whitespace-pre-line text-slate-400">
+        <div className="mt-10 space-y-6 whitespace-pre-line text-slate-600">
           {article.content.split("\n\n").map((p, i) => (
             <p key={i} className="leading-relaxed">
               {p}
@@ -144,14 +144,14 @@ export default async function HelpArticlePage({ params }: Props) {
         </div>
       </article>
 
-      <section className="border-t border-slate-800/50 py-16">
+      <section className="border-t border-slate-200 py-16">
         <div className="mx-auto max-w-3xl px-6">
-          <p className="text-slate-500">Was this helpful?</p>
+          <p className="text-slate-600">Was this helpful?</p>
           <div className="mt-4 flex gap-4">
-            <button className="rounded-lg border border-slate-600 px-4 py-2 text-sm text-slate-400 hover:border-teal-500/50 hover:text-teal-400">
+            <button className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700">
               Yes
             </button>
-            <button className="rounded-lg border border-slate-600 px-4 py-2 text-sm text-slate-400 hover:border-teal-500/50 hover:text-teal-400">
+            <button className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700">
               No
             </button>
           </div>

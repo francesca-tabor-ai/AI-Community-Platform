@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getArticleUserId } from "@/lib/article-auth";
 import { canAdminCommunity } from "@/lib/community-auth";
-import { slugify } from "@/lib/slug";
+import { generateEmbedding, embeddingToVectorLiteral } from "@/lib/embeddings";
 
 /**
  * GET - Fetch a single article by slug.
@@ -116,6 +116,21 @@ export async function PATCH(
       community: { select: { id: true, name: true, slug: true } },
     },
   });
+
+  const needsEmbedding =
+    body.title !== undefined || body.body !== undefined;
+  if (needsEmbedding) {
+    const text = [updated.title, updated.summary ?? "", updated.body].join("\n\n");
+    const embedding = await generateEmbedding(text);
+    if (embedding) {
+      const vectorLiteral = embeddingToVectorLiteral(embedding);
+      await prisma.$executeRawUnsafe(
+        `UPDATE "Article" SET embedding = $1::vector, "updatedAt" = NOW() WHERE id = $2`,
+        vectorLiteral,
+        updated.id
+      );
+    }
+  }
 
   return NextResponse.json(updated);
 }

@@ -49,7 +49,7 @@ export default function EnterpriseContactForm() {
       onSubmit={handleSubmit}
     >
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="name" className="block text-sm font-medium text-slate-700">
           Name
         </label>
         <input
@@ -57,12 +57,12 @@ export default function EnterpriseContactForm() {
           name="name"
           type="text"
           required
-          className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+          className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-500 focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200"
           placeholder="Your name"
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="email" className="block text-sm font-medium text-slate-700">
           Email
         </label>
         <input
@@ -70,12 +70,12 @@ export default function EnterpriseContactForm() {
           name="email"
           type="email"
           required
-          className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+          className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-500 focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200"
           placeholder="you@company.com"
         />
       </div>
       <div>
-        <label htmlFor="company" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="company" className="block text-sm font-medium text-slate-700">
           Company
         </label>
         <input
@@ -83,30 +83,30 @@ export default function EnterpriseContactForm() {
           name="company"
           type="text"
           required
-          className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+          className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-500 focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200"
           placeholder="Your company"
         />
       </div>
       <div>
-        <label htmlFor="role" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="role" className="block text-sm font-medium text-slate-700">
           Role
         </label>
         <input
           id="role"
           name="role"
           type="text"
-          className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+          className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-500 focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200"
           placeholder="Your role"
         />
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="community-size" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="community-size" className="block text-sm font-medium text-slate-700">
           Community Size
         </label>
         <select
           id="community-size"
           name="communitySize"
-          className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+          className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200"
         >
           <option value="">Select community size</option>
           <option value="1-1000">1 – 1,000</option>
@@ -117,7 +117,7 @@ export default function EnterpriseContactForm() {
         </select>
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="message" className="block text-sm font-medium text-slate-300">
+        <label htmlFor="message" className="block text-sm font-medium text-slate-700">
           Message
         </label>
         <textarea
@@ -125,12 +125,12 @@ export default function EnterpriseContactForm() {
           name="message"
           rows={4}
           required
-          className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+          className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-500 focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200"
           placeholder="Tell us about your community needs..."
         />
       </div>
       {status === "error" && (
-        <div className="sm:col-span-2 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div className="sm:col-span-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
           {errorMessage}
         </div>
       )}
@@ -138,7 +138,7 @@ export default function EnterpriseContactForm() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400 disabled:opacity-50"
+          className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-violet-600 disabled:opacity-50"
         >
           {status === "submitting"
             ? "Submitting..."

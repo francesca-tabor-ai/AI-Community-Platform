@@ -90,7 +90,7 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) notFound();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       <PostViewTracker
         postId={slug}
         creatorId="platform"
@@ -99,18 +99,18 @@ export default async function BlogPostPage({ params }: Props) {
       <article className="mx-auto max-w-3xl px-6 py-32">
         <Link
           href="/blog"
-          className="text-sm font-medium text-teal-400 hover:text-teal-300"
+          className="text-sm font-medium text-violet-600 transition-colors hover:text-violet-700"
         >
           ← Back to Blog
         </Link>
-        <span className="mt-4 block text-sm font-medium text-teal-400">
+        <span className="mt-4 block text-sm font-medium text-violet-600">
           {post.category}
         </span>
-        <h1 className="mt-2 text-4xl font-bold text-white sm:text-5xl">
+        <h1 className="mt-2 text-4xl font-bold text-slate-900 sm:text-5xl">
           {post.title}
         </h1>
-        <p className="mt-4 text-slate-500">{post.date}</p>
-        <div className="mt-10 space-y-6 whitespace-pre-line text-lg leading-relaxed text-slate-400">
+        <p className="mt-4 text-slate-600">{post.date}</p>
+        <div className="mt-10 space-y-6 whitespace-pre-line text-lg leading-relaxed text-slate-600">
           {post.content.split("\n\n").map((p, i) => (
             <p key={i}>{p}</p>
           ))}
@@ -118,11 +118,11 @@ export default async function BlogPostPage({ params }: Props) {
       </article>
       </PostViewTracker>
 
-      <section className="border-t border-slate-800/50 py-16">
+      <section className="border-t border-slate-200 py-16">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <Link
             href="/blog"
-            className="text-teal-400 hover:text-teal-300"
+            className="text-sm font-medium text-violet-600 transition-colors hover:text-violet-700"
           >
             ← Back to all posts
           </Link>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { prisma } from "@/lib/prisma";
 
 const PLATFORM_KNOWLEDGE = `
 You are a helpful, friendly guide for the AI Community Platform. You answer questions about the platform and help users navigate features, pricing, and use cases.
@@ -44,6 +45,37 @@ The AI Community Platform is an AI-native platform for building intelligent comm
 Keep responses concise, helpful, and friendly. When relevant, guide users to specific pages (e.g., "Check out our Pricing page for full details") or suggest next steps.
 `;
 
+async function searchArticles(query: string, limit: number = 5) {
+  if (!query || query.trim().length < 2) return [];
+  const q = query.trim();
+  const words = q.split(/\s+/).filter((w) => w.length > 1);
+  if (words.length === 0) return [];
+
+  const articles = await prisma.article.findMany({
+    where: {
+      status: "published",
+      OR: words.flatMap((word) => [
+        { title: { contains: word, mode: "insensitive" as const } },
+        { body: { contains: word, mode: "insensitive" as const } },
+        { summary: { contains: word, mode: "insensitive" as const } },
+      ]),
+    },
+    select: { slug: true, title: true, summary: true, body: true },
+    take: limit,
+    orderBy: { updatedAt: "desc" },
+  });
+  return articles;
+}
+
+function buildArticleContext(articles: Array<{ slug: string; title: string; summary: string | null; body: string }>): string {
+  if (articles.length === 0) return "";
+  const blocks = articles.map((a) => {
+    const excerpt = (a.summary || a.body).slice(0, 1200);
+    return `### ${a.title}\nSlug: /articles/${a.slug}\n\n${excerpt}${excerpt.length >= 1200 ? "..." : ""}`;
+  });
+  return `\n\n## Relevant Knowledge Base Articles\nUse the following articles to answer the user's question when relevant. Cite the article title and link (e.g., "See [Article Title](/articles/slug)").\n\n${blocks.join("\n\n---\n\n")}`;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
@@ -55,21 +87,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const lastUserMsg = messages.filter((m: { role: string }) => m.role === "user").pop();
+    const userQuery = typeof lastUserMsg?.content === "string" ? lastUserMsg.content : "";
+
     const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
       // Fallback: simple keyword-based responses when OpenAI is not configured
-      const lastMsg = messages[messages.length - 1]?.content?.toLowerCase() ?? "";
-      const reply = getFallbackReply(lastMsg);
+      const reply = getFallbackReply(userQuery.toLowerCase());
       return NextResponse.json({ reply });
     }
 
     const openai = new OpenAI({ apiKey });
 
+    let systemContent = PLATFORM_KNOWLEDGE;
+    const relevantArticles = await searchArticles(userQuery, 5);
+    if (relevantArticles.length > 0) {
+      systemContent += buildArticleContext(relevantArticles);
+    }
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: PLATFORM_KNOWLEDGE },
+        { role: "system", content: systemContent },
         ...messages.map((m: { role: string; content: string }) => ({
           role: m.role as "user" | "assistant" | "system",
           content: m.content,

@@ -62,16 +62,16 @@ const CATEGORIES = [
 
 export default function HelpCenterPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-16">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(45,212,191,0.15),transparent)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a22_1px,transparent_1px),linear-gradient(to_bottom,#0f172a22_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(139,92,246,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_0.5px,transparent_0.5px),linear-gradient(to_bottom,#e2e8f0_0.5px,transparent_0.5px)] bg-[size:4rem_4rem]" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
             Help Center
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
             Guides, tutorials, and support for building and managing intelligent
             communities.
           </p>
@@ -80,11 +80,11 @@ export default function HelpCenterPage() {
               <input
                 type="search"
                 placeholder="Search for help..."
-                className="w-full rounded-xl border border-slate-600 bg-slate-800/50 py-3.5 pl-5 pr-12 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-5 pr-24 text-slate-900 placeholder-slate-500 shadow-sm focus:border-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-200"
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-slate-950"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-violet-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-violet-600"
               >
                 Search
               </button>
@@ -94,22 +94,22 @@ export default function HelpCenterPage() {
       </section>
 
       {/* Categories */}
-      <section className="border-t border-slate-800/50 py-20">
+      <section className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid gap-8 lg:grid-cols-2">
             {CATEGORIES.map((category) => (
               <div
                 key={category.title}
-                className="rounded-2xl border border-slate-700/50 bg-slate-800/20 p-8"
+                className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
               >
-                <h2 className="text-xl font-bold text-white">{category.title}</h2>
-                <p className="mt-2 text-slate-400">{category.description}</p>
+                <h2 className="text-xl font-bold text-slate-900">{category.title}</h2>
+                <p className="mt-2 text-slate-600">{category.description}</p>
                 <ul className="mt-6 space-y-3">
                   {category.articles.map((article) => (
                     <li key={article.slug}>
                       <Link
                         href={`/help/${article.slug}`}
-                        className="text-teal-400 hover:text-teal-300"
+                        className="font-medium text-violet-600 transition-colors hover:text-violet-700"
                       >
                         {article.title}
                       </Link>
@@ -123,18 +123,18 @@ export default function HelpCenterPage() {
       </section>
 
       {/* Contact Support */}
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-t border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-slate-900">
             Still need help?
           </h2>
-          <p className="mt-4 text-slate-400">
+          <p className="mt-4 text-slate-600">
             Our support team is here to assist you.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-violet-600"
             >
               Contact Support
             </Link>

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getArticleUserId } from "@/lib/article-auth";
 import { slugify } from "@/lib/slug";
+import { generateEmbedding, embeddingToVectorLiteral } from "@/lib/embeddings";
 
 /**
  * GET - List articles.
@@ -96,6 +97,18 @@ export async function POST(req: Request) {
       changeSummary: "Initial revision",
     },
   });
+
+  const embedding = await generateEmbedding(
+    [article.title, article.summary ?? "", article.body].join("\n\n")
+  );
+  if (embedding) {
+    const vectorLiteral = embeddingToVectorLiteral(embedding);
+    await prisma.$executeRawUnsafe(
+      `UPDATE "Article" SET embedding = $1::vector, "updatedAt" = NOW() WHERE id = $2`,
+      vectorLiteral,
+      article.id
+    );
+  }
 
   return NextResponse.json(article);
 }
