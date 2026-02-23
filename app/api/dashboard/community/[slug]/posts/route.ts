@@ -50,3 +50,80 @@ export async function GET(
 
   return NextResponse.json(posts);
 }
+
+/**
+ * POST - Create a new post (draft)
+ * Body: { title: string, body: string, spaceId: string, type?: "post" | "article" }
+ */
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
+  const userId = await getCommunityDashboardUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const community = await prisma.community.findUnique({
+    where: { slug },
+    select: {
+      id: true,
+      spaces: { take: 1, orderBy: { createdAt: "asc" }, select: { id: true } },
+    },
+  });
+
+  if (!community) {
+    return NextResponse.json({ community: "Community not found" }, { status: 404 });
+  }
+
+  const canAdmin = await canAdminCommunity(userId, community.id);
+  if (!canAdmin) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  let body: { title: string; body: string; spaceId?: string; type?: "post" | "article" };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const { title, body: content } = body;
+  if (!title || typeof title !== "string" || title.trim().length === 0) {
+    return NextResponse.json({ error: "Title is required" }, { status: 400 });
+  }
+
+  let spaceId = body.spaceId;
+  if (!spaceId) {
+    const firstSpace = community.spaces[0];
+    if (!firstSpace) {
+      return NextResponse.json(
+        { error: "No spaces in community. Create a space first." },
+        { status: 400 }
+      );
+    }
+    spaceId = community.spaces[0].id;
+  }
+
+  const space = await prisma.space.findFirst({
+    where: { id: spaceId, communityId: community.id },
+  });
+  if (!space) {
+    return NextResponse.json({ error: "Space not found" }, { status: 404 });
+  }
+
+  const post = await prisma.post.create({
+    data: {
+      title: title.trim(),
+      body: content ?? "",
+      type: body.type ?? "post",
+      status: "draft",
+      spaceId,
+      communityId: community.id,
+      authorId: userId,
+    },
+  });
+
+  return NextResponse.json(post);
+}

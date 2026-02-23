@@ -1,6 +1,6 @@
 /**
  * Email worker trigger endpoint.
- * Call via cron (e.g. Vercel Cron: */1 * * * * for every minute)
+ * Call via cron (e.g. Vercel Cron: *\/1 * * * * for every minute)
  * or external scheduler. Requires CRON_SECRET for auth.
  */
 
