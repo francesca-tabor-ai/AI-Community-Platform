@@ -357,7 +357,7 @@ export default function FeaturesPage() {
             ].map((item, i) => (
               <li
                 key={i}
-                className="flex items-center gap-3 rounded-xl border border-slate-700/50 bg-slate-800/30 px-6 py-4 text-slate-300"
+                className="flex items-center gap-3 rounded-xl border border-slate-700/50 bg-slate-800/30 px-6 py-4 text-slate-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-600/60"
               >
                 <span className="text-teal-500">✓</span> {item}
               </li>

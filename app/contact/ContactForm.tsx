@@ -5,19 +5,62 @@ import { useState } from "react";
 const inputClass =
   "mt-2 w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500";
 
+const INQUIRY_TYPES = [
+  { value: "customer-support", label: "Customer Support Request" },
+  { value: "bug-report", label: "Bug Report" },
+  { value: "sales", label: "Sales Inquiry" },
+  { value: "demo", label: "Demo Request" },
+  { value: "enterprise", label: "Enterprise Inquiry" },
+  { value: "partnership", label: "Partnership" },
+  { value: "general", label: "General Question" },
+];
+
 export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("submitting");
+    setErrorMessage("");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      company: formData.get("company") || undefined,
+      role: formData.get("role") || undefined,
+      inquiryType: formData.get("inquiryType"),
+      communitySize: formData.get("communitySize") || undefined,
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setStatus("success");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+      setErrorMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    }
+  };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        setStatus("submitting");
-        // Placeholder - wire to your backend/API
-        setTimeout(() => setStatus("success"), 1000);
-      }}
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="firstName" className="block text-sm font-medium text-slate-300">
@@ -87,7 +130,7 @@ export default function ContactForm() {
       </div>
       <div>
         <label htmlFor="inquiryType" className="block text-sm font-medium text-slate-300">
-          Inquiry Type
+          Request Type
         </label>
         <select
           id="inquiryType"
@@ -95,13 +138,12 @@ export default function ContactForm() {
           required
           className={inputClass}
         >
-          <option value="">Select inquiry type</option>
-          <option value="sales">Sales inquiry</option>
-          <option value="demo">Demo request</option>
-          <option value="support">Support</option>
-          <option value="enterprise">Enterprise inquiry</option>
-          <option value="partnership">Partnership</option>
-          <option value="general">General question</option>
+          <option value="">Select request type</option>
+          {INQUIRY_TYPES.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
         </select>
       </div>
       <div>
