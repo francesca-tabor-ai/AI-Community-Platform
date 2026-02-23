@@ -98,7 +98,16 @@ export default function CommunityPostsPage() {
 
       {posts.length === 0 && (
         <div className="rounded-2xl border border-slate-700/50 border-dashed bg-slate-800/20 p-12 text-center">
-          <p className="text-slate-400">No posts yet.</p>
+          <p className="text-slate-400">No posts yet. Start writing your first post!</p>
+          <p className="mt-2 text-sm text-slate-500">
+            Create a post to share with your community members.
+          </p>
+          <Link
+            href={`/dashboard/community/${slug}/posts/new`}
+            className="mt-6 inline-block rounded-xl bg-teal-500 px-6 py-3 text-sm font-semibold text-slate-950 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
+          >
+            New Post
+          </Link>
         </div>
       )}
     </div>

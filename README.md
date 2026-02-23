@@ -81,6 +81,12 @@ The platform includes an admin dashboard at `/admin` for managing contact submis
 
 Contact form submissions are stored in the database and visible in the admin dashboard, in addition to being emailed via Resend.
 
+## Documentation
+
+- [DEPLOYMENT.md](./DEPLOYMENT.md) – Deploy to Railway (and future AWS path)
+- [docs/INFRASTRUCTURE.md](./docs/INFRASTRUCTURE.md) – AWS cloud architecture, CI/CD, monitoring
+- [docs/DATABASE.md](./docs/DATABASE.md) – Database design, indexing, migrations
+
 ## Getting Started
 
 First, run the development server:
