@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/api-v1/auth";
 import { badRequest } from "@/lib/api-v1/errors";
@@ -53,8 +54,6 @@ const updateSchema = z.object({
   last_name: z.string().max(50).optional(),
   profile_picture_url: z.string().url().nullable().optional(),
 });
-
-import { z } from "zod";
 
 export async function PUT(req: NextRequest) {
   const authResult = await requireAuth(req);
