@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import SignupForm from "./SignupForm";
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default function SignupPage() {
             </p>
           </div>
           <div className="mt-10">
-            <SignupForm />
+            <Suspense fallback={<div className="h-64 animate-pulse rounded-lg bg-slate-800/50" />}>
+              <SignupForm />
+            </Suspense>
           </div>
           <p className="mt-8 text-center text-sm text-slate-500">
             Already have an account?{" "}

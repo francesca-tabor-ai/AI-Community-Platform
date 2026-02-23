@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import LoginForm from "./LoginForm";
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default function LoginPage() {
             </p>
           </div>
           <div className="mt-10">
-            <LoginForm />
+            <Suspense fallback={<div className="h-48 animate-pulse rounded-lg bg-slate-800/50" />}>
+              <LoginForm />
+            </Suspense>
           </div>
           <p className="mt-8 text-center text-sm text-slate-500">
             Don&apos;t have an account?{" "}

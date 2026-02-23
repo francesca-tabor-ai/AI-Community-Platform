@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 const NAV_LINKS = [
   { label: "Features", href: "/features" },
@@ -17,6 +18,8 @@ const NAV_LINKS = [
 export default function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated";
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-800/50 bg-slate-950/95 backdrop-blur-sm">
@@ -52,18 +55,35 @@ export default function Header() {
           >
             Dashboard
           </Link>
-          <Link
-            href="/login"
-            className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
-          >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className="rounded-xl bg-teal-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition-all hover:bg-teal-400"
-          >
-            Get Started
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <span className="text-sm text-slate-400">
+                {session?.user?.name ?? session?.user?.email}
+              </span>
+              <button
+                type="button"
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
+              >
+                Log in
+              </Link>
+              <Link
+                href="/signup"
+                className="rounded-xl bg-teal-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition-all hover:bg-teal-400"
+              >
+                Get Started
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -111,20 +131,40 @@ export default function Header() {
               Dashboard
             </Link>
             <div className="mt-4 flex gap-3 border-t border-slate-800/50 pt-4">
-              <Link
-                href="/login"
-                onClick={() => setMobileOpen(false)}
-                className="flex-1 rounded-xl border border-slate-600 py-3 text-center text-sm font-medium text-slate-200"
-              >
-                Log in
-              </Link>
-              <Link
-                href="/signup"
-                onClick={() => setMobileOpen(false)}
-                className="flex-1 rounded-xl bg-teal-500 py-3 text-center text-sm font-semibold text-slate-950"
-              >
-                Get Started
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <span className="flex-1 py-3 text-center text-sm text-slate-400">
+                    {session?.user?.name ?? session?.user?.email}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileOpen(false);
+                      signOut({ callbackUrl: "/" });
+                    }}
+                    className="flex-1 rounded-xl border border-slate-600 py-3 text-center text-sm font-medium text-slate-200"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 rounded-xl border border-slate-600 py-3 text-center text-sm font-medium text-slate-200"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 rounded-xl bg-teal-500 py-3 text-center text-sm font-semibold text-slate-950"
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>

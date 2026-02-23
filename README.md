@@ -70,6 +70,18 @@ Communities require constant effort to operate. This limits their potential—an
 
 ---
 
+## Authentication
+
+The platform uses [Auth.js](https://authjs.dev/) (NextAuth v5) with email/password (Credentials provider) and Prisma.
+
+**Setup:**
+
+1. Ensure `AUTH_SECRET` and `NEXTAUTH_URL` are set in `.env.local` (see `.env.example`).
+2. Run `npm run db:seed` to create demo users: alice@example.com, bob@example.com, carol@example.com (password: `demo1234`).
+3. Or sign up at `/signup` to create a new account.
+
+**Pages:** `/login`, `/signup`. The header shows Sign out when logged in.
+
 ## Admin Dashboard
 
 The platform includes an admin dashboard at `/admin` for managing contact submissions and viewing platform stats.
