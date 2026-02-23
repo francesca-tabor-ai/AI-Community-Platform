@@ -172,6 +172,11 @@ export default function ContactForm() {
           placeholder="How can we help?"
         />
       </div>
+      {status === "error" && (
+        <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {errorMessage}
+        </div>
+      )}
       <div>
         <button
           type="submit"
@@ -185,7 +190,7 @@ export default function ContactForm() {
               : "Send Message"}
         </button>
         <p className="mt-4 text-sm text-slate-500">
-          We typically respond within 24 hours.
+          All submissions are sent to info@francescatabor.com. We typically respond within 24 hours.
         </p>
       </div>
     </form>

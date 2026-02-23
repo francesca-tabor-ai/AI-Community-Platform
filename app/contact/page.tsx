@@ -9,6 +9,18 @@ export const metadata: Metadata = {
 
 const CONTACT_OPTIONS = [
   {
+    title: "Customer Support",
+    desc: "Get help with your account, technical questions, or platform usage.",
+    cta: "Contact Support",
+    href: "#form",
+  },
+  {
+    title: "Bug Reports",
+    desc: "Found an issue? Let us know so we can fix it.",
+    cta: "Report a Bug",
+    href: "#form",
+  },
+  {
     title: "Sales Inquiries",
     desc: "Learn how the AI Community Platform can support your organization.",
     cta: "Contact Sales",
@@ -18,18 +30,6 @@ const CONTACT_OPTIONS = [
     title: "Request a Demo",
     desc: "See how the platform works with a personalized walkthrough.",
     cta: "Book a Demo",
-    href: "#",
-  },
-  {
-    title: "Support",
-    desc: "Get help with your account or technical questions.",
-    cta: "Contact Support",
-    href: "#",
-  },
-  {
-    title: "General Inquiries",
-    desc: "Have questions about the platform, partnerships, or opportunities? Reach out.",
-    cta: "Contact Us",
     href: "#form",
   },
 ];
@@ -202,35 +202,15 @@ export default function ContactPage() {
           <h2 className="text-2xl font-bold text-white sm:text-3xl">
             Email Us
           </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-3">
-            <div>
-              <p className="text-sm text-slate-500">Support</p>
-              <a
-                href="mailto:support@yourplatform.com"
-                className="mt-1 text-teal-400 hover:text-teal-300"
-              >
-                support@yourplatform.com
-              </a>
-            </div>
-            <div>
-              <p className="text-sm text-slate-500">Sales</p>
-              <a
-                href="mailto:sales@yourplatform.com"
-                className="mt-1 text-teal-400 hover:text-teal-300"
-              >
-                sales@yourplatform.com
-              </a>
-            </div>
-            <div>
-              <p className="text-sm text-slate-500">Partnerships</p>
-              <a
-                href="mailto:partners@yourplatform.com"
-                className="mt-1 text-teal-400 hover:text-teal-300"
-              >
-                partners@yourplatform.com
-              </a>
-            </div>
-          </div>
+          <p className="mt-2 text-slate-400">
+            All inquiries—customer support, bug reports, sales, and general questions—go to:
+          </p>
+          <a
+            href="mailto:info@francescatabor.com"
+            className="mt-4 inline-block text-lg font-medium text-teal-400 hover:text-teal-300"
+          >
+            info@francescatabor.com
+          </a>
         </div>
       </section>
 
