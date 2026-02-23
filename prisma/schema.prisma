@@ -205,6 +205,11 @@ model Post {
   community Community @relation("CommunityPosts", fields: [communityId], references: [id], onDelete: Cascade)
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  Comment[]
+
+  @@index([authorId])
+  @@index([communityId])
+  @@index([spaceId])
+  @@index([status, createdAt])
 }
 
 model Comment {
@@ -220,6 +225,10 @@ model Comment {
   author User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   parent Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies Comment[] @relation("CommentReplies")
+
+  @@index([postId])
+  @@index([authorId])
+  @@index([parentId])
 }
 
 model Notification {
