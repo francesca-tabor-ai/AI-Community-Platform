@@ -33,19 +33,19 @@ const FEATURES = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Hero */}
       <section className="relative overflow-hidden pt-24 pb-20 sm:pt-32 sm:pb-28">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(45,212,191,0.15),transparent)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a22_1px,transparent_1px),linear-gradient(to_bottom,#0f172a22_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(139,92,246,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_0.5px,transparent_0.5px),linear-gradient(to_bottom,#e2e8f0_0.5px,transparent_0.5px)] bg-[size:4rem_4rem]" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Build Intelligent Communities{" "}
-            <span className="bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent">
-              Powered by AI
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            Build intelligent communities{" "}
+            <span className="text-gradient-accent">
+              powered by AI
             </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
             The first AI-native platform for communities. Create, grow, and
             monetize with AI that automates management, enhances engagement, and
             delivers personalized experiences at scale.
@@ -53,19 +53,19 @@ export default function Home() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/signup"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
+              className="gradient-accent rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-violet-500/30 active:scale-[0.98]"
             >
               Start Writing
             </Link>
             <Link
               href="/blog"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
+              className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-all duration-200 hover:scale-[1.02] hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98]"
             >
               Explore Creators
             </Link>
             <Link
               href="/contact"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
+              className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-all duration-200 hover:scale-[1.02] hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98]"
             >
               Book a Demo
             </Link>
@@ -78,28 +78,30 @@ export default function Home() {
 
       {/* Features Grid */}
       <LazySection>
-        <section className="border-y border-slate-800/50 bg-slate-900/30 py-20">
+        <section className="border-y border-slate-200 bg-slate-50/50 py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="text-center text-3xl font-bold text-white sm:text-4xl">
-              Everything You Need to Build and Scale
+            <h2 className="text-center text-3xl font-bold text-slate-900 sm:text-4xl">
+              Everything you need to build and scale
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-slate-400">
+            <p className="mx-auto mt-4 max-w-2xl text-center text-slate-600">
               AI-native from the ground up—not bolted on.
             </p>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {FEATURES.map((feature, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-teal-500/30"
+                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
                 >
                   <span className="text-2xl">{feature.icon}</span>
-                  <h3 className="mt-4 font-semibold text-white">
+                  <h3 className="mt-4 font-semibold text-slate-900">
                     {feature.title}
                   </h3>
-                  <p className="mt-2 text-sm text-slate-400">{feature.desc}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                    {feature.desc}
+                  </p>
                   <Link
                     href="/features"
-                    className="mt-4 inline-block text-sm font-medium text-teal-400 hover:text-teal-300"
+                    className="mt-4 inline-block text-sm font-medium text-violet-600 transition-colors hover:text-violet-700"
                   >
                     Learn more →
                   </Link>
@@ -112,12 +114,12 @@ export default function Home() {
 
       {/* Social Proof / Why Choose */}
       <LazySection delay={80}>
-        <section className="border-t border-slate-800/50 py-20">
+        <section className="border-t border-slate-200 py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Why Teams Choose AI Community Platform
+            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
+              Why teams choose AI Community Platform
             </h2>
-            <p className="mt-4 max-w-2xl text-slate-400">
+            <p className="mt-4 max-w-2xl text-slate-600">
               Built for creators, educators, startups, and enterprises.
             </p>
             <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -131,9 +133,9 @@ export default function Home() {
               ].map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-3 rounded-xl border border-slate-700/50 bg-slate-800/30 px-6 py-4 text-slate-300 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-600/60"
+                  className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-4 text-slate-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
                 >
-                  <span className="text-teal-500">✓</span> {item}
+                  <span className="text-violet-500">✓</span> {item}
                 </li>
               ))}
             </ul>
@@ -143,12 +145,12 @@ export default function Home() {
 
       {/* Use Cases Teaser */}
       <LazySection delay={80}>
-        <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+        <section className="border-t border-slate-200 bg-slate-50/50 py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Built for Every Type of Community
+            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
+              Built for every type of community
             </h2>
-            <p className="mt-4 max-w-2xl text-slate-400">
+            <p className="mt-4 max-w-2xl text-slate-600">
               Creators, educators, startups, enterprises—we support them all.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -163,7 +165,7 @@ export default function Home() {
                 <Link
                   key={item}
                   href="/use-cases"
-                  className="rounded-full border border-teal-500/30 bg-teal-500/5 px-5 py-2.5 text-sm font-medium text-teal-400 transition-all duration-200 hover:scale-[1.05] hover:border-teal-500/50 hover:bg-teal-500/10"
+                  className="rounded-full border border-violet-200 bg-violet-50 px-5 py-2.5 text-sm font-medium text-violet-700 transition-all duration-200 hover:scale-[1.05] hover:border-violet-300 hover:bg-violet-100"
                 >
                   {item}
                 </Link>
@@ -175,30 +177,30 @@ export default function Home() {
 
       {/* CTA */}
       <LazySection delay={80}>
-        <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
+        <section className="border-t border-slate-200 bg-slate-50 py-24">
           <div className="mx-auto max-w-4xl px-6 text-center">
-            <h2 className="text-4xl font-bold text-white sm:text-5xl">
-              Ready to Build Your Intelligent Community?
+            <h2 className="text-4xl font-bold text-slate-900 sm:text-5xl">
+              Ready to build your intelligent community?
             </h2>
-            <p className="mt-6 text-lg text-slate-400">
+            <p className="mt-6 text-lg text-slate-600">
               Start for free. No credit card required.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/signup"
-                className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
+                className="gradient-accent rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-violet-500/30 active:scale-[0.98]"
               >
                 Get Started Free
               </Link>
               <Link
                 href="/contact"
-                className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
+                className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-all duration-200 hover:scale-[1.02] hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98]"
               >
                 Book a Demo
               </Link>
               <Link
                 href="/pricing"
-                className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
+                className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-all duration-200 hover:scale-[1.02] hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98]"
               >
                 View Pricing
               </Link>

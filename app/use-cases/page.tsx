@@ -28,45 +28,45 @@ function UseCaseCard({
 }) {
   return (
     <LazySection>
-    <section id={id} className="border-t border-slate-800/50 py-20">
+    <section id={id} className="border-t border-slate-200/50 py-20">
       <div className="mx-auto max-w-6xl px-6">
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">{title}</h2>
-        <p className="mt-2 text-xl font-medium text-teal-400">{subtitle}</p>
+        <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">{title}</h2>
+        <p className="mt-2 text-xl font-medium text-violet-400">{subtitle}</p>
         <p className="mt-4 max-w-3xl text-lg text-slate-400">{description}</p>
 
-        <p className="mt-8 font-medium text-slate-300">Perfect for:</p>
+        <p className="mt-8 font-medium text-slate-700">Perfect for:</p>
         <ul className="mt-3 flex flex-wrap gap-3">
           {perfectFor.map((item, i) => (
             <li
               key={i}
-              className="rounded-full border border-teal-500/30 bg-teal-500/5 px-4 py-2 text-sm text-teal-400 transition-all duration-200 hover:scale-[1.05] hover:border-teal-500/50 active:scale-[0.97]"
+              className="rounded-full border border-violet-500/30 bg-violet-500/5 px-4 py-2 text-sm text-violet-400 transition-all duration-200 hover:scale-[1.05] hover:border-violet-500/50 active:scale-[0.97]"
             >
               {item}
             </li>
           ))}
         </ul>
 
-        <p className="mt-8 font-medium text-slate-300">What you can do:</p>
+        <p className="mt-8 font-medium text-slate-700">What you can do:</p>
         <ul className="mt-3 space-y-2">
           {whatYouCanDo.map((item, i) => (
             <li key={i} className="flex items-center gap-3 text-slate-400">
-              <span className="text-teal-500">✓</span> {item}
+              <span className="text-violet-500">✓</span> {item}
             </li>
           ))}
         </ul>
 
-        <p className="mt-8 font-medium text-slate-300">Key benefits:</p>
+        <p className="mt-8 font-medium text-slate-700">Key benefits:</p>
         <ul className="mt-3 space-y-2">
           {keyBenefits.map((item, i) => (
             <li key={i} className="flex items-center gap-3 text-slate-400">
-              <span className="text-teal-500">✓</span> {item}
+              <span className="text-violet-500">✓</span> {item}
             </li>
           ))}
         </ul>
 
         <a
           href={cta.href}
-          className="mt-8 inline-flex items-center gap-2 font-medium text-teal-400 transition-all duration-200 hover:text-teal-300 hover:gap-3"
+          className="mt-8 inline-flex items-center gap-2 font-medium text-violet-400 transition-all duration-200 hover:text-violet-700 hover:gap-3"
         >
           {cta.text}
         </a>
@@ -241,15 +241,15 @@ const AI_BENEFITS = [
 
 export default function UseCasesPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(45,212,191,0.15),transparent)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a22_1px,transparent_1px),linear-gradient(to_bottom,#0f172a22_1px,transparent_1px)] bg-[size:4rem_4rem]" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
             Built for Every Type of{" "}
-            <span className="bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-violet-400 to-violet-600 bg-clip-text text-transparent">
               Community
             </span>
           </h1>
@@ -260,7 +260,7 @@ export default function UseCasesPage() {
           </p>
           <a
             href="/signup"
-            className="mt-8 inline-block rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
+            className="mt-8 inline-block rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-violet-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-violet-400 active:scale-[0.98]"
           >
             Get Started Free
           </a>
@@ -269,9 +269,9 @@ export default function UseCasesPage() {
 
       {/* Overview */}
       <LazySection delay={80}>
-      <section className="border-y border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-y border-slate-200/50 bg-slate-50/30 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             One platform. Endless possibilities.
           </h2>
           <p className="mt-6 max-w-3xl text-lg text-slate-400">
@@ -300,22 +300,22 @@ export default function UseCasesPage() {
 
       {/* AI Benefits Section */}
       <LazySection delay={80}>
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-t border-slate-200/50 bg-slate-50/30 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             AI makes every use case more powerful
           </h2>
           <p className="mt-4 text-lg text-slate-400">AI helps you:</p>
           <ul className="mt-6 space-y-3">
             {AI_BENEFITS.map((item, i) => (
               <li key={i} className="flex items-center gap-3 text-slate-400">
-                <span className="text-teal-500">✓</span> {item}
+                <span className="text-violet-500">✓</span> {item}
               </li>
             ))}
           </ul>
           <a
             href="/signup"
-            className="mt-8 inline-flex items-center gap-2 font-medium text-teal-400 transition-all duration-200 hover:text-teal-300 hover:gap-3"
+            className="mt-8 inline-flex items-center gap-2 font-medium text-violet-400 transition-all duration-200 hover:text-violet-700 hover:gap-3"
           >
             Get Started Free →
           </a>
@@ -325,9 +325,9 @@ export default function UseCasesPage() {
 
       {/* CTA Section */}
       <LazySection delay={80}>
-      <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
+      <section className="border-t border-slate-200/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-4xl font-bold text-white sm:text-5xl">
+          <h2 className="text-4xl font-bold text-slate-900 sm:text-5xl">
             Ready to build your intelligent community?
           </h2>
           <p className="mt-6 text-lg text-slate-400">
@@ -336,13 +336,13 @@ export default function UseCasesPage() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/signup"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-violet-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-violet-400 active:scale-[0.98]"
             >
               Get Started Free
             </a>
             <a
               href="/contact"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
+              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-violet-500/50 hover:text-violet-400 active:scale-[0.98]"
             >
               Book a Demo
             </a>

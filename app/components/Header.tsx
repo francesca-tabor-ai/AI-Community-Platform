@@ -22,11 +22,11 @@ export default function Header() {
   const isAuthenticated = status === "authenticated";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-800/50 bg-slate-950/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link
           href="/"
-          className="text-lg font-semibold text-white transition-colors hover:text-teal-400"
+          className="text-lg font-semibold text-slate-900 transition-colors hover:text-violet-600"
         >
           AI Community Platform
         </Link>
@@ -39,8 +39,8 @@ export default function Header() {
               href={link.href}
               className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                 pathname === link.href
-                  ? "text-teal-400"
-                  : "text-slate-400 hover:bg-slate-800/50 hover:text-white"
+                  ? "text-violet-600"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
               }`}
             >
               {link.label}
@@ -51,19 +51,19 @@ export default function Header() {
         <div className="hidden items-center gap-4 md:flex">
           <Link
             href="/dashboard"
-            className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
+            className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
           >
             Dashboard
           </Link>
           {isAuthenticated ? (
             <>
-              <span className="text-sm text-slate-400">
+              <span className="text-sm text-slate-500">
                 {session?.user?.name ?? session?.user?.email}
               </span>
               <button
                 type="button"
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
+                className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
               >
                 Sign out
               </button>
@@ -72,13 +72,13 @@ export default function Header() {
             <>
               <Link
                 href="/login"
-                className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
+                className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
               >
                 Log in
               </Link>
               <Link
                 href="/signup"
-                className="rounded-xl bg-teal-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition-all hover:bg-teal-400"
+                className="gradient-accent rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition-all hover:shadow-md"
               >
                 Get Started
               </Link>
@@ -90,7 +90,7 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="rounded-lg p-2 text-slate-400 hover:bg-slate-800/50 hover:text-white md:hidden"
+          className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 md:hidden"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
           {mobileOpen ? (
@@ -107,7 +107,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="border-t border-slate-800/50 bg-slate-950 px-6 py-4 md:hidden">
+        <div className="border-t border-slate-200 bg-white px-6 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <Link
@@ -116,8 +116,8 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
                 className={`rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                   pathname === link.href
-                    ? "text-teal-400"
-                    : "text-slate-400 hover:bg-slate-800/50 hover:text-white"
+                    ? "text-violet-600"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 }`}
               >
                 {link.label}
@@ -126,14 +126,14 @@ export default function Header() {
             <Link
               href="/dashboard"
               onClick={() => setMobileOpen(false)}
-              className="rounded-lg px-4 py-3 text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-white"
+              className="rounded-lg px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
             >
               Dashboard
             </Link>
-            <div className="mt-4 flex gap-3 border-t border-slate-800/50 pt-4">
+            <div className="mt-4 flex gap-3 border-t border-slate-200 pt-4">
               {isAuthenticated ? (
                 <>
-                  <span className="flex-1 py-3 text-center text-sm text-slate-400">
+                  <span className="flex-1 py-3 text-center text-sm text-slate-500">
                     {session?.user?.name ?? session?.user?.email}
                   </span>
                   <button
@@ -142,7 +142,7 @@ export default function Header() {
                       setMobileOpen(false);
                       signOut({ callbackUrl: "/" });
                     }}
-                    className="flex-1 rounded-xl border border-slate-600 py-3 text-center text-sm font-medium text-slate-200"
+                    className="flex-1 rounded-xl border border-slate-300 py-3 text-center text-sm font-medium text-slate-700"
                   >
                     Sign out
                   </button>
@@ -152,14 +152,14 @@ export default function Header() {
                   <Link
                     href="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="flex-1 rounded-xl border border-slate-600 py-3 text-center text-sm font-medium text-slate-200"
+                    className="flex-1 rounded-xl border border-slate-300 py-3 text-center text-sm font-medium text-slate-700"
                   >
                     Log in
                   </Link>
                   <Link
                     href="/signup"
                     onClick={() => setMobileOpen(false)}
-                    className="flex-1 rounded-xl bg-teal-500 py-3 text-center text-sm font-semibold text-slate-950"
+                    className="gradient-accent flex-1 rounded-xl py-3 text-center text-sm font-semibold text-white"
                   >
                     Get Started
                   </Link>

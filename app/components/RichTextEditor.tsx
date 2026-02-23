@@ -27,7 +27,7 @@ const RichTextEditor = ({
     editorProps: {
       attributes: {
         class:
-          "min-h-[200px] max-w-none px-4 py-3 text-slate-100 focus:outline-none [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:text-xl [&_h2]:font-bold [&_h3]:text-lg [&_h3]:font-semibold [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-4 [&_blockquote]:border-teal-500 [&_blockquote]:pl-4 [&_blockquote]:italic [&_pre]:bg-slate-800 [&_pre]:rounded [&_pre]:p-4",
+          "min-h-[200px] max-w-none px-4 py-3 text-slate-900 focus:outline-none [&_h1]:text-2xl [&_h1]:font-bold [&_h2]:text-xl [&_h2]:font-bold [&_h3]:text-lg [&_h3]:font-semibold [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-4 [&_blockquote]:border-violet-500 [&_blockquote]:pl-4 [&_blockquote]:italic [&_pre]:bg-slate-100 [&_pre]:rounded [&_pre]:p-4",
       },
     },
   });
@@ -36,10 +36,10 @@ const RichTextEditor = ({
 
   return (
     <div
-      className={`rounded-xl border border-slate-700/50 bg-slate-800/30 focus-within:border-teal-500/50 ${className}`}
+      className={`rounded-xl border border-slate-200 bg-white shadow-sm focus-within:border-violet-300 focus-within:ring-1 focus-within:ring-violet-200 ${className}`}
     >
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-1 border-b border-slate-700/50 p-2">
+      <div className="flex flex-wrap gap-1 border-b border-slate-200 p-2">
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           isActive={editor.isActive("bold")}
@@ -135,7 +135,7 @@ function ToolbarButton({
       onClick={onClick}
       title={title}
       className={`rounded px-2 py-1.5 text-sm transition-colors ${
-        isActive ? "bg-teal-500/30 text-teal-400" : "text-slate-400 hover:bg-slate-700/50 hover:text-white"
+        isActive ? "bg-violet-100 text-violet-700" : "text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
       }`}
     >
       {children}

@@ -60,13 +60,13 @@ const POSTS = [
 
 export default function BlogPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-16">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(45,212,191,0.15),transparent)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a22_1px,transparent_1px),linear-gradient(to_bottom,#0f172a22_1px,transparent_1px)] bg-[size:4rem_4rem]" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
             Blog
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
@@ -77,25 +77,25 @@ export default function BlogPage() {
       </section>
 
       {/* Posts */}
-      <section className="border-t border-slate-800/50 py-20">
+      <section className="border-t border-slate-200/50 py-20">
         <div className="mx-auto max-w-4xl px-6">
           <div className="space-y-12">
             {POSTS.map((post) => (
               <article
                 key={post.slug}
-                className="group border-b border-slate-800/50 pb-12 last:border-0 last:pb-0"
+                className="group border-b border-slate-200/50 pb-12 last:border-0 last:pb-0"
               >
-                <span className="text-sm font-medium text-teal-400">
+                <span className="text-sm font-medium text-violet-600">
                   {post.category}
                 </span>
-                <h2 className="mt-2 text-2xl font-bold text-white transition-colors group-hover:text-teal-400 sm:text-3xl">
+                <h2 className="mt-2 text-2xl font-bold text-slate-900 transition-colors group-hover:text-violet-600 sm:text-3xl">
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h2>
                 <p className="mt-2 text-slate-500">{post.date}</p>
                 <p className="mt-4 text-slate-400">{post.excerpt}</p>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-teal-400 hover:text-teal-300"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-violet-600 hover:text-teal-300"
                 >
                   Read more →
                 </Link>
@@ -106,14 +106,14 @@ export default function BlogPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-16">
+      <section className="border-t border-slate-200/50 bg-slate-900/30 py-16">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-slate-900">
             Ready to build your intelligent community?
           </h2>
           <a
             href="/signup"
-            className="mt-6 inline-block rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
+            className="mt-6 inline-block rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-teal-400"
           >
             Get Started Free
           </a>

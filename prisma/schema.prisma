@@ -132,6 +132,9 @@ model User {
   creatorPostComments CreatorPostComment[]
   creatorSubscriptionsAsSubscriber CreatorSubscription[] @relation("CreatorSubscriptionSubscriber")
   creatorSubscriptionsAsCreator   CreatorSubscription[] @relation("CreatorSubscriptionCreator")
+  articles            Article[]
+  articleRevisions    ArticleRevision[]
+  approvedRevisions   ArticleRevision[] @relation("ArticleRevisionApprover")
 }
 
 // Creator publishing platform: standalone posts by creators (API v1)
@@ -225,6 +228,7 @@ model Community {
   spaces Space[]
   members Member[]
   posts  Post[]   @relation("CommunityPosts")
+  articles Article[]
   events Event[]
   subscriptionTiers SubscriptionTier[]
 }
@@ -468,6 +472,67 @@ model EmailUnsubscribe {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+// Wikipedia-style knowledge articles with revision history
+model Article {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  title       String
+  body        String     @db.Text
+  summary     String?    @db.Text
+  communityId String?
+  authorId    String
+  status      PostStatus @default(draft)
+  embedding   Unsupported("vector(1536)")?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  community   Community?        @relation(fields: [communityId], references: [id], onDelete: SetNull)
+  author      User              @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  revisions   ArticleRevision[]
+  citations   ArticleCitation[]
+
+  @@index([authorId])
+  @@index([communityId])
+  @@index([status])
+  @@index([slug])
+}
+
+model ArticleRevision {
+  id            String    @id @default(cuid())
+  articleId     String
+  body          String    @db.Text
+  authorId      String
+  changeSummary String?
+  approvedAt   DateTime?
+  approvedById  String?
+  createdAt     DateTime  @default(now())
+
+  article   Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  approver  User?      @relation("ArticleRevisionApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  citations ArticleCitation[]
+
+  @@index([articleId])
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+model ArticleCitation {
+  id         String   @id @default(cuid())
+  articleId  String
+  revisionId String?
+  url        String   @db.Text
+  title      String?
+  quote      String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  article  Article         @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  revision ArticleRevision? @relation(fields: [revisionId], references: [id], onDelete: SetNull)
+
+  @@index([articleId])
+  @@index([revisionId])
 }
 
 // Analytics: raw event storage for product analytics and dashboards

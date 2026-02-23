@@ -136,13 +136,13 @@ export default function PricingClient() {
       {/* Billing Toggle */}
       <section className="pb-8">
         <div className="flex justify-center">
-          <div className="inline-flex rounded-xl border border-slate-700/50 bg-slate-800/30 p-1 transition-shadow duration-200 hover:border-slate-600/60">
+          <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-1 transition-shadow duration-200 hover:border-slate-300">
             <button
               onClick={() => setBillingCycle("monthly")}
               className={`rounded-lg px-6 py-2.5 text-sm font-medium transition-all duration-200 ease-out active:scale-[0.97] ${
                 billingCycle === "monthly"
-                  ? "bg-teal-500 text-slate-950 shadow-md shadow-teal-500/20"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-violet-500 text-white shadow-md shadow-violet-500/20"
+                  : "text-slate-500 hover:text-slate-900"
               }`}
             >
               Monthly
@@ -151,11 +151,11 @@ export default function PricingClient() {
               onClick={() => setBillingCycle("yearly")}
               className={`rounded-lg px-6 py-2.5 text-sm font-medium transition-all duration-200 ease-out active:scale-[0.97] ${
                 billingCycle === "yearly"
-                  ? "bg-teal-500 text-slate-950 shadow-md shadow-teal-500/20"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-violet-500 text-white shadow-md shadow-violet-500/20"
+                  : "text-slate-500 hover:text-slate-900"
               }`}
             >
-              Yearly <span className="text-teal-400">(Save 20%)</span>
+              Yearly <span className="text-violet-400">(Save 20%)</span>
             </button>
           </div>
         </div>
@@ -188,25 +188,25 @@ export default function PricingClient() {
                   key={key}
                   className={`relative rounded-2xl border p-8 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl ${
                     plan.popular
-                      ? "border-teal-500/50 bg-teal-500/5 shadow-lg shadow-teal-500/10 hover:shadow-teal-500/20"
-                      : "border-slate-700/50 bg-slate-800/20 hover:border-slate-600/60"
+                      ? "border-violet-300 bg-violet-50 shadow-lg shadow-violet-500/10 hover:shadow-violet-500/20"
+                      : "border-slate-200 bg-white hover:border-slate-300 shadow-sm"
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-teal-500 px-4 py-1 text-xs font-semibold text-slate-950">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-violet-500 px-4 py-1 text-xs font-semibold text-white">
                       Most Popular
                     </div>
                   )}
-                  <h3 className="text-xl font-bold text-white">{plan.name}</h3>
+                  <h3 className="text-xl font-bold text-slate-900">{plan.name}</h3>
                   <p className="mt-1 text-sm text-slate-400">Best for: {plan.bestFor}</p>
                   <div className="mt-6 flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-white">{price}</span>
+                    <span className="text-4xl font-bold text-slate-900">{price}</span>
                     <span className="text-slate-500">{period}</span>
                   </div>
                   <ul className="mt-6 space-y-3">
                     {plan.features.map((f, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm text-slate-400">
-                        <span className="mt-0.5 text-teal-500">✓</span>
+                        <span className="mt-0.5 text-violet-500">✓</span>
                         <span>{f}</span>
                       </li>
                     ))}
@@ -215,8 +215,8 @@ export default function PricingClient() {
                     href={key === "enterprise" ? "/contact" : "/signup"}
                     className={`mt-8 block w-full rounded-xl py-3.5 text-center text-sm font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] ${
                       plan.ctaVariant === "primary"
-                        ? "bg-teal-500 text-slate-950 hover:bg-teal-400"
-                        : "border border-slate-600 text-slate-200 hover:border-teal-500/50 hover:text-teal-400"
+                        ? "bg-violet-500 text-white hover:bg-violet-600"
+                        : "border border-slate-300 text-slate-700 hover:border-violet-500/50 hover:text-violet-400"
                     }`}
                   >
                     {plan.cta}
@@ -231,15 +231,15 @@ export default function PricingClient() {
 
       {/* Feature Comparison Table */}
       <LazySection delay={80}>
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-t border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             Feature Comparison
           </h2>
           <div className="mt-8 overflow-x-auto">
             <table className="w-full min-w-[600px] border-collapse">
               <thead>
-                <tr className="border-b border-slate-700/50">
+                <tr className="border-b border-slate-200/50">
                   <th className="py-4 pr-4 text-left text-sm font-medium text-slate-400">
                     Feature
                   </th>
@@ -261,9 +261,9 @@ export default function PricingClient() {
                 {COMPARISON.map((row, i) => (
                   <tr
                     key={i}
-                    className="border-b border-slate-800/50 transition-colors duration-150 last:border-0 hover:bg-slate-800/30"
+                    className="border-b border-slate-100/50 transition-colors duration-150 last:border-0 hover:bg-slate-100/30"
                   >
-                    <td className="py-4 pr-4 text-slate-300">{row.feature}</td>
+                    <td className="py-4 pr-4 text-slate-700">{row.feature}</td>
                     <td className="py-4 px-4 text-center text-slate-400">
                       {row.free}
                     </td>
@@ -287,9 +287,9 @@ export default function PricingClient() {
 
       {/* Monetization Section */}
       <LazySection delay={120}>
-      <section className="border-t border-slate-800/50 py-20">
+      <section className="border-t border-slate-200 py-20">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             Only pay when you earn
           </h2>
           <p className="mt-4 text-slate-400">
@@ -298,28 +298,28 @@ export default function PricingClient() {
           <ul className="mt-4 space-y-2">
             {TRANSACTION_FEES.map((item, i) => (
               <li key={i} className="flex items-center gap-3 text-slate-400">
-                <span className="text-teal-500">•</span>
-                <span className="font-medium text-slate-300">{item.plan}:</span>
+                <span className="text-violet-500">•</span>
+                <span className="font-medium text-slate-700">{item.plan}:</span>
                 {item.fee}
               </li>
             ))}
           </ul>
-          <p className="mt-6 font-medium text-teal-400">No hidden fees.</p>
+          <p className="mt-6 font-medium text-violet-400">No hidden fees.</p>
         </div>
       </section>
       </LazySection>
 
       {/* FAQ */}
       <LazySection delay={160}>
-      <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
+      <section className="border-t border-slate-200 bg-slate-50 py-20">
         <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
             Frequently Asked Questions
           </h2>
           <dl className="mt-10 space-y-8">
             {FAQ.map((item, i) => (
               <div key={i}>
-                <dt className="text-lg font-medium text-white">{item.q}</dt>
+                <dt className="text-lg font-medium text-slate-900">{item.q}</dt>
                 <dd className="mt-2 text-slate-400">{item.a}</dd>
               </div>
             ))}
@@ -330,9 +330,9 @@ export default function PricingClient() {
 
       {/* CTA Section */}
       <LazySection delay={80}>
-      <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
+      <section className="border-t border-slate-200 bg-slate-50 py-24">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-4xl font-bold text-white sm:text-5xl">
+          <h2 className="text-4xl font-bold text-slate-900 sm:text-5xl">
             Start building your intelligent community today
           </h2>
           <p className="mt-6 text-lg text-slate-400">
@@ -341,13 +341,13 @@ export default function PricingClient() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/signup"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-violet-600 active:scale-[0.98]"
             >
               Get Started Free
             </a>
             <a
               href="/contact"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
+              className="rounded-xl border border-slate-300 px-8 py-4 text-base font-semibold text-slate-700 transition-all duration-200 hover:scale-[1.02] hover:border-violet-500/50 hover:text-violet-400 active:scale-[0.98]"
             >
               Contact Sales
             </a>
