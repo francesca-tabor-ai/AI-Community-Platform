@@ -39,6 +39,12 @@ export default function DevelopersPage() {
               App Marketplace
             </Link>
             <Link
+              href="/marketplace/apply"
+              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
+            >
+              Build an App
+            </Link>
+            <Link
               href="/signup"
               className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
             >
@@ -143,6 +149,7 @@ curl -X GET https://api.yourplatform.com/v1/communities \\
             {[
               { label: "API Reference", href: "/api-docs" },
               { label: "App Marketplace", href: "/marketplace" },
+              { label: "Build an App", href: "/marketplace/apply" },
               { label: "Authentication Guide", href: "/help/account-security" },
               { label: "Webhooks", href: "/api-docs" },
               { label: "Rate Limits", href: "/api-docs" },

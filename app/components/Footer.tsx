@@ -10,6 +10,7 @@ const FOOTER_LINKS = {
   developers: [
     { label: "API Docs", href: "/api-docs" },
     { label: "App Marketplace", href: "/marketplace" },
+    { label: "Build an App", href: "/marketplace/apply" },
     { label: "Developers", href: "/developers" },
   ],
   resources: [

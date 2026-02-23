@@ -255,7 +255,7 @@ export default function MarketplacePage() {
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
-              href="/developers"
+              href="/marketplace/apply"
               className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
             >
               Build an App
@@ -343,10 +343,10 @@ export default function MarketplacePage() {
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
-              href="/developers"
+              href="/marketplace/apply"
               className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 transition-all hover:bg-teal-400"
             >
-              Developer Docs
+              Apply to Build an App
             </Link>
             <Link
               href="/contact"
