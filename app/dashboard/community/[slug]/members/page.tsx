@@ -77,63 +77,62 @@ export default function CommunityMembersPage() {
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/20">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-slate-700/50">
-                <th className="px-6 py-4 text-left text-sm font-medium text-slate-400">Member</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-slate-400">Role</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-slate-400">Joined</th>
-              </tr>
-            </thead>
-            <tbody>
-              {members.map((m) => (
-                <tr
-                  key={m.id}
-                  className="border-b border-slate-700/30 transition-colors hover:bg-slate-800/50"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      {m.user.image ? (
-                        <img
-                          src={m.user.image}
-                          alt=""
-                          className="h-9 w-9 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-500/20 text-sm font-medium text-teal-400">
-                          {(m.user.profile?.displayName || m.user.name || m.user.email || "?")
-                            .charAt(0)
-                            .toUpperCase()}
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-medium text-white">
-                          {m.user.profile?.displayName || m.user.name || "Unknown"}
-                        </p>
-                        {m.user.email && (
-                          <p className="text-sm text-slate-500">{m.user.email}</p>
-                        )}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Member</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Joined</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {members.map((m) => (
+              <TableRow key={m.id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    {m.user.image ? (
+                      <img
+                        src={m.user.image}
+                        alt=""
+                        className="h-9 w-9 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-500/20 text-sm font-medium text-teal-400">
+                        {(m.user.profile?.displayName || m.user.name || m.user.email || "?")
+                          .charAt(0)
+                          .toUpperCase()}
                       </div>
+                    )}
+                    <div>
+                      <p className="font-medium text-white">
+                        {m.user.profile?.displayName || m.user.name || "Unknown"}
+                      </p>
+                      {m.user.email && (
+                        <p className="text-sm text-slate-500">{m.user.email}</p>
+                      )}
                     </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${
-                        roleColors[m.role] ?? roleColors.member
-                      }`}
-                    >
-                      {m.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-slate-400">
-                    {format(new Date(m.joinedAt), "MMM d, yyyy")}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    variant={
+                      m.role === "owner"
+                        ? "owner"
+                        : m.role === "moderator"
+                          ? "moderator"
+                          : "secondary"
+                    }
+                  >
+                    {m.role}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-slate-400">
+                  {format(new Date(m.joinedAt), "MMM d, yyyy")}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

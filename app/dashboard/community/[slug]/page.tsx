@@ -9,6 +9,13 @@ import {
   Calendar,
   TrendingUp,
 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
+import { Skeleton } from "@/app/components/ui/skeleton";
 
 type Stats = {
   community: { id: string; name: string; slug: string };
@@ -31,18 +38,20 @@ function StatCard({
   sub?: string;
 }) {
   return (
-    <div className="rounded-xl border border-slate-700/50 bg-slate-800/20 p-6">
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-500/20 text-teal-400">
-          <Icon className="h-5 w-5" />
+    <Card>
+      <CardContent className="pt-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-500/20 text-teal-400">
+            <Icon className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-sm text-slate-500">{label}</p>
+            <p className="text-2xl font-bold text-white">{value}</p>
+            {sub && <p className="text-xs text-slate-400">{sub}</p>}
+          </div>
         </div>
-        <div>
-          <p className="text-sm text-slate-500">{label}</p>
-          <p className="text-2xl font-bold text-white">{value}</p>
-          {sub && <p className="text-xs text-slate-400">{sub}</p>}
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -66,8 +75,17 @@ export default function CommunityOverviewPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-teal-500 border-t-transparent" />
+      <div className="space-y-8">
+        <div>
+          <Skeleton className="h-9 w-48" />
+          <Skeleton className="mt-2 h-5 w-64" />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-24" />
+          ))}
+        </div>
+        <Skeleton className="h-24" />
       </div>
     );
   }
@@ -99,11 +117,14 @@ export default function CommunityOverviewPage() {
         <StatCard label="Events" value={stats.eventCount} icon={Calendar} />
       </div>
 
-      <div className="rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6">
-        <h2 className="flex items-center gap-2 font-semibold text-white">
-          <TrendingUp className="h-5 w-5 text-teal-400" />
-          Quick stats
-        </h2>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <TrendingUp className="h-5 w-5 text-teal-400" />
+            Quick stats
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
         <p className="mt-2 text-sm text-slate-400">
           {stats.newMembersThisWeek > 0 ? (
             <>
@@ -114,7 +135,8 @@ export default function CommunityOverviewPage() {
             "No new members in the last 7 days."
           )}
         </p>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
