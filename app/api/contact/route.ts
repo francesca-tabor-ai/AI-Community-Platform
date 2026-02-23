@@ -82,22 +82,24 @@ export async function POST(req: NextRequest) {
 
     const subject = `[${inquiryLabels[data.inquiryType]}] From ${data.firstName} ${data.lastName}`;
 
+    // Escape all user-provided data to prevent XSS in email HTML
+    const e = escapeHtml;
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #0f172a;">New Contact Form Submission</h2>
         <p style="color: #64748b; margin-bottom: 24px;">Request type: <strong>${inquiryLabels[data.inquiryType]}</strong></p>
         
         <table style="width: 100%; border-collapse: collapse;">
-          <tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Name</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">${data.firstName} ${data.lastName}</td></tr>
-          <tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Email</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
-          ${data.company ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Company</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">${data.company}</td></tr>` : ""}
-          ${data.role ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Role</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">${data.role}</td></tr>` : ""}
-          ${data.communitySize ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Community Size</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">${data.communitySize}</td></tr>` : ""}
+          <tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Name</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">${e(data.firstName)} ${e(data.lastName)}</td></tr>
+          <tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Email</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"><a href="mailto:${e(data.email)}">${e(data.email)}</a></td></tr>
+          ${data.company ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Company</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">${e(data.company)}</td></tr>` : ""}
+          ${data.role ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Role</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">${e(data.role)}</td></tr>` : ""}
+          ${data.communitySize ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Community Size</td><td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">${e(data.communitySize)}</td></tr>` : ""}
         </table>
         
         <div style="margin-top: 24px; padding: 16px; background: #f8fafc; border-radius: 8px;">
           <p style="color: #64748b; margin: 0 0 8px 0;">Message:</p>
-          <p style="white-space: pre-wrap; margin: 0; color: #0f172a;">${escapeHtml(data.message)}</p>
+          <p style="white-space: pre-wrap; margin: 0; color: #0f172a;">${e(data.message)}</p>
         </div>
       </div>
     `;
