@@ -18,7 +18,13 @@ export async function GET(
       id: true,
       email: true,
       username: true,
+      name: true,
       bio: true,
+      image: true,
+      headline: true,
+      location: true,
+      industry: true,
+      openTo: true,
       role: true,
       createdAt: true,
     },
@@ -26,13 +32,23 @@ export async function GET(
 
   if (!user) return notFound("User not found");
 
+  const [firstName, ...rest] = (user.name ?? "").split(" ");
+  const lastName = rest.join(" ") || null;
+
   return Response.json({
     id: user.id,
     email: user.email,
     username: user.username,
+    firstName: firstName || null,
+    lastName: lastName || null,
+    headline: user.headline,
     bio: user.bio,
-    role: user.role,
-    created_at: user.createdAt.toISOString(),
+    location: user.location,
+    industry: user.industry,
+    profilePhotoUrl: user.image,
+    openTo: user.openTo ?? [],
+    createdAt: user.createdAt.toISOString(),
+    updatedAt: user.updatedAt?.toISOString?.(),
   });
 }
 

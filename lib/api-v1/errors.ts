@@ -43,3 +43,16 @@ export function conflict(detail: string): NextResponse {
 export function internalError(detail = "Internal server error"): NextResponse {
   return apiError(500, detail, { code: "INTERNAL_ERROR" });
 }
+
+/** VibeNet error format: { error: { code, message, details } } */
+export function vibenetError(
+  status: number,
+  code: string,
+  message: string,
+  details?: Record<string, unknown>
+): NextResponse {
+  return NextResponse.json(
+    { error: { code, message, ...(details && { details }) } },
+    { status }
+  );
+}
