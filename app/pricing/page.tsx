@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
-import PricingClient from "./PricingClient";
+import dynamic from "next/dynamic";
+
+const PricingClient = dynamic(() => import("./PricingClient"), {
+  loading: () => (
+    <div className="flex min-h-[400px] items-center justify-center py-24">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-teal-500 border-t-transparent" />
+    </div>
+  ),
+});
 
 export const metadata: Metadata = {
   title: "Pricing | AI Community Platform",

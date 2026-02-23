@@ -24,3 +24,42 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Micro-interactions: subtle, polished feedback */
+@layer utilities {
+  /* Button press feedback */
+  .interactive-scale {
+    @apply transition-transform duration-150 ease-out;
+  }
+  .interactive-scale:hover {
+    @apply scale-[1.02];
+  }
+  .interactive-scale:active {
+    @apply scale-[0.98];
+  }
+
+  /* Card hover lift */
+  .interactive-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+  .interactive-lift:hover {
+    @apply -translate-y-1 shadow-xl;
+  }
+
+  /* Link/button with subtle underline growth */
+  .interactive-underline {
+    @apply relative transition-colors duration-200;
+  }
+  .interactive-underline::after {
+    content: "";
+    @apply absolute bottom-0 left-0 h-0.5 w-0 bg-current transition-all duration-300;
+  }
+  .interactive-underline:hover::after {
+    @apply w-full;
+  }
+
+  /* Focus ring for accessibility */
+  .focus-ring {
+    @apply outline-none ring-2 ring-slate-400/50 ring-offset-2 ring-offset-slate-950;
+  }
+}

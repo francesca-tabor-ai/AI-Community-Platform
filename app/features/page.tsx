@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LazySection } from "../components/LazySection";
 
 export const metadata: Metadata = {
   title: "Features | AI Community Platform",
@@ -24,6 +25,7 @@ function FeatureSection({
   cta?: { href: string; text: string };
 }) {
   return (
+    <LazySection>
     <section id={id} className="border-t border-slate-800/50 py-20">
       <div className="mx-auto max-w-6xl px-6">
         {badge && (
@@ -64,13 +66,14 @@ function FeatureSection({
         {cta && (
           <a
             href={cta.href}
-            className="mt-8 inline-flex items-center gap-2 font-medium text-teal-400 transition-colors hover:text-teal-300"
+            className="mt-8 inline-flex items-center gap-2 font-medium text-teal-400 transition-all duration-200 hover:text-teal-300 hover:gap-3"
           >
             {cta.text}
           </a>
         )}
       </div>
     </section>
+    </LazySection>
   );
 }
 
@@ -94,7 +97,7 @@ export default function FeaturesPage() {
           </p>
           <a
             href="#"
-            className="mt-8 inline-block rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all hover:bg-teal-400"
+            className="mt-8 inline-block rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
           >
             Get Started Free
           </a>
@@ -102,6 +105,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* Overview */}
+      <LazySection delay={80}>
       <section className="border-y border-slate-800/50 bg-slate-900/30 py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
@@ -132,7 +136,7 @@ export default function FeaturesPage() {
               <a
                 key={id}
                 href={`#${id}`}
-                className="rounded-full border border-teal-500/30 bg-teal-500/5 px-5 py-2.5 text-sm font-medium text-teal-400 transition-colors hover:bg-teal-500/10"
+                className="rounded-full border border-teal-500/30 bg-teal-500/5 px-5 py-2.5 text-sm font-medium text-teal-400 transition-all duration-200 hover:scale-[1.05] hover:bg-teal-500/10 hover:border-teal-500/50 active:scale-[0.97]"
               >
                 {name}
               </a>
@@ -140,6 +144,7 @@ export default function FeaturesPage() {
           </div>
         </div>
       </section>
+      </LazySection>
 
       {/* AI Assistant */}
       <FeatureSection
@@ -336,6 +341,7 @@ export default function FeaturesPage() {
       />
 
       {/* Platform Benefits Summary */}
+      <LazySection delay={80}>
       <section className="border-t border-slate-800/50 bg-slate-900/30 py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
@@ -359,6 +365,7 @@ export default function FeaturesPage() {
           </ul>
         </div>
       </section>
+      </LazySection>
 
       {/* CTA Section */}
       <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
@@ -372,19 +379,20 @@ export default function FeaturesPage() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="#"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all hover:bg-teal-400"
+              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
             >
               Get Started Free
             </a>
             <a
               href="#"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-colors hover:border-teal-500/50 hover:text-teal-400"
+              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-teal-500/50 hover:text-teal-400 active:scale-[0.98]"
             >
               Book a Demo
             </a>
           </div>
         </div>
       </section>
+      </LazySection>
     </div>
   );
 }
