@@ -28,18 +28,18 @@ function UseCaseCard({
 }) {
   return (
     <LazySection>
-    <section id={id} className="border-t border-slate-200/50 py-20">
+      <section id={id} className="border-t border-slate-200 py-20">
       <div className="mx-auto max-w-6xl px-6">
         <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">{title}</h2>
-        <p className="mt-2 text-xl font-medium text-violet-400">{subtitle}</p>
-        <p className="mt-4 max-w-3xl text-lg text-slate-400">{description}</p>
+        <p className="mt-2 text-xl font-medium text-violet-600">{subtitle}</p>
+        <p className="mt-4 max-w-3xl text-lg text-slate-600">{description}</p>
 
         <p className="mt-8 font-medium text-slate-700">Perfect for:</p>
         <ul className="mt-3 flex flex-wrap gap-3">
           {perfectFor.map((item, i) => (
             <li
               key={i}
-              className="rounded-full border border-violet-500/30 bg-violet-500/5 px-4 py-2 text-sm text-violet-400 transition-all duration-200 hover:scale-[1.05] hover:border-violet-500/50 active:scale-[0.97]"
+              className="rounded-full border border-violet-200 bg-violet-50 px-4 py-2 text-sm font-medium text-violet-700 transition-all duration-200 hover:border-violet-300 hover:bg-violet-100 active:scale-[0.97]"
             >
               {item}
             </li>
@@ -49,7 +49,7 @@ function UseCaseCard({
         <p className="mt-8 font-medium text-slate-700">What you can do:</p>
         <ul className="mt-3 space-y-2">
           {whatYouCanDo.map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-slate-400">
+            <li key={i} className="flex items-center gap-3 text-slate-600">
               <span className="text-violet-500">✓</span> {item}
             </li>
           ))}
@@ -58,7 +58,7 @@ function UseCaseCard({
         <p className="mt-8 font-medium text-slate-700">Key benefits:</p>
         <ul className="mt-3 space-y-2">
           {keyBenefits.map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-slate-400">
+            <li key={i} className="flex items-center gap-3 text-slate-600">
               <span className="text-violet-500">✓</span> {item}
             </li>
           ))}
@@ -66,7 +66,7 @@ function UseCaseCard({
 
         <a
           href={cta.href}
-          className="mt-8 inline-flex items-center gap-2 font-medium text-violet-400 transition-all duration-200 hover:text-violet-700 hover:gap-3"
+          className="mt-8 inline-flex items-center gap-2 font-medium text-violet-600 transition-colors hover:text-violet-700 hover:gap-3"
         >
           {cta.text}
         </a>
@@ -244,23 +244,23 @@ export default function UseCasesPage() {
     <div className="min-h-screen bg-white text-slate-900">
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(45,212,191,0.15),transparent)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a22_1px,transparent_1px),linear-gradient(to_bottom,#0f172a22_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(139,92,246,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_0.5px,transparent_0.5px),linear-gradient(to_bottom,#e2e8f0_0.5px,transparent_0.5px)] bg-[size:4rem_4rem]" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
             Built for Every Type of{" "}
-            <span className="bg-gradient-to-r from-violet-400 to-violet-600 bg-clip-text text-transparent">
+            <span className="text-gradient-accent">
               Community
             </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
             From creators and startups to enterprises and educators, the AI
             Community Platform helps you build intelligent, scalable, and
             monetizable communities.
           </p>
           <a
             href="/signup"
-            className="mt-8 inline-block rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-violet-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-violet-400 active:scale-[0.98]"
+            className="mt-8 inline-block rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/20 transition-all duration-200 hover:bg-violet-600 hover:shadow-violet-500/30 active:scale-[0.98]"
           >
             Get Started Free
           </a>
@@ -269,12 +269,12 @@ export default function UseCasesPage() {
 
       {/* Overview */}
       <LazySection delay={80}>
-      <section className="border-y border-slate-200/50 bg-slate-50/30 py-20">
+      <section className="border-y border-slate-200 bg-slate-50/50 py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             One platform. Endless possibilities.
           </h2>
-          <p className="mt-6 max-w-3xl text-lg text-slate-400">
+          <p className="mt-6 max-w-3xl text-lg text-slate-600">
             Whether you&apos;re building a creator community, managing customers,
             running courses, or scaling an organization, our AI-native platform
             provides the tools and intelligence you need.
@@ -300,22 +300,22 @@ export default function UseCasesPage() {
 
       {/* AI Benefits Section */}
       <LazySection delay={80}>
-      <section className="border-t border-slate-200/50 bg-slate-50/30 py-20">
+      <section className="border-t border-slate-200 bg-slate-50/50 py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
             AI makes every use case more powerful
           </h2>
-          <p className="mt-4 text-lg text-slate-400">AI helps you:</p>
+          <p className="mt-4 text-lg text-slate-600">AI helps you:</p>
           <ul className="mt-6 space-y-3">
             {AI_BENEFITS.map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-slate-400">
+              <li key={i} className="flex items-center gap-3 text-slate-600">
                 <span className="text-violet-500">✓</span> {item}
               </li>
             ))}
           </ul>
           <a
             href="/signup"
-            className="mt-8 inline-flex items-center gap-2 font-medium text-violet-400 transition-all duration-200 hover:text-violet-700 hover:gap-3"
+            className="mt-8 inline-flex items-center gap-2 font-medium text-violet-600 transition-colors hover:text-violet-700 hover:gap-3"
           >
             Get Started Free →
           </a>
@@ -325,24 +325,25 @@ export default function UseCasesPage() {
 
       {/* CTA Section */}
       <LazySection delay={80}>
-      <section className="border-t border-slate-200/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-4xl font-bold text-slate-900 sm:text-5xl">
+      <section className="relative overflow-hidden border-t border-slate-200 py-24">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#334155_0%,#0f172a_100%)]" />
+        <div className="relative mx-auto max-w-4xl px-6 text-center">
+          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Ready to build your intelligent community?
           </h2>
-          <p className="mt-6 text-lg text-slate-400">
+          <p className="mx-auto mt-6 max-w-xl text-lg text-slate-300">
             Start for free today.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/signup"
-              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-violet-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-violet-400 active:scale-[0.98]"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/30 transition-all duration-200 hover:bg-violet-600 hover:shadow-violet-500/40 active:scale-[0.98]"
             >
               Get Started Free
             </a>
             <a
               href="/contact"
-              className="rounded-xl border border-slate-600 px-8 py-4 text-base font-semibold text-slate-200 transition-all duration-200 hover:scale-[1.02] hover:border-violet-500/50 hover:text-violet-400 active:scale-[0.98]"
+              className="rounded-xl border border-slate-400 bg-slate-700/80 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:border-slate-300 hover:bg-slate-600/80 active:scale-[0.98]"
             >
               Book a Demo
             </a>
