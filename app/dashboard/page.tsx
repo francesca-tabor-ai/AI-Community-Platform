@@ -19,14 +19,31 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/dashboard/communities")
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+    fetch("/api/dashboard/communities", {
+      credentials: "include",
+      signal: controller.signal,
+    })
       .then((res) => {
+        if (res.status === 401) {
+          window.location.href = "/login?callbackUrl=" + encodeURIComponent("/dashboard");
+          return;
+        }
         if (!res.ok) throw new Error("Failed to load communities");
         return res.json();
       })
-      .then(setCommunities)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        if (data !== undefined) setCommunities(data);
+      })
+      .catch((err) =>
+        setError(err.name === "AbortError" ? "Request timed out. Please try again." : err.message)
+      )
+      .finally(() => {
+        clearTimeout(timeoutId);
+        setLoading(false);
+      });
   }, []);
 
   if (loading) {
