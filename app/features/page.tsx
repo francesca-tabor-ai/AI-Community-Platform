@@ -369,24 +369,25 @@ export default function FeaturesPage() {
 
       {/* CTA Section */}
       <LazySection delay={80}>
-      <section className="border-t border-slate-800/50 bg-gradient-to-b from-slate-900/50 to-slate-950 py-24">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <h2 className="text-4xl font-bold text-white sm:text-5xl">
+      <section className="relative overflow-hidden border-t border-slate-200 py-24">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#334155_0%,#0f172a_100%)]" />
+        <div className="relative mx-auto max-w-4xl px-6 text-center">
+          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Ready to Build an Intelligent Community?
           </h2>
-          <p className="mt-6 text-lg text-slate-400">
+          <p className="mx-auto mt-6 max-w-xl text-lg text-slate-300">
             Launch your community in minutes.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/signup"
-              className="rounded-xl bg-teal-500 px-8 py-4 text-base font-semibold text-slate-950 shadow-lg shadow-teal-500/25 transition-all duration-200 hover:scale-[1.02] hover:bg-teal-400 active:scale-[0.98]"
+              className="rounded-xl bg-violet-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-violet-500/30 transition-all duration-200 hover:bg-violet-600 hover:shadow-violet-500/40 active:scale-[0.98]"
             >
               Get Started Free
             </a>
             <a
               href="/contact"
-              className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-base font-semibold text-slate-700 transition-all duration-200 hover:scale-[1.02] hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98]"
+              className="rounded-xl border border-slate-400 bg-white px-8 py-4 text-base font-semibold text-slate-800 transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
             >
               Book a Demo
             </a>
