@@ -14,11 +14,16 @@ export default async function DashboardLayout({
     redirect("/login?callbackUrl=/dashboard");
   }
 
-  const profile = await prisma.profile.findUnique({
-    where: { userId: session.user.id },
-  });
+  let profile = null;
+  try {
+    profile = await prisma.profile.findUnique({
+      where: { userId: session.user.id },
+    });
+  } catch {
+    // DB unavailable — skip profile check to prevent redirect loop
+  }
 
-  if (!profile?.displayName || profile.displayName.trim() === "") {
+  if (profile !== null && (!profile?.displayName || profile.displayName.trim() === "")) {
     redirect("/onboarding");
   }
 

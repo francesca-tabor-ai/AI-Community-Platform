@@ -2,12 +2,12 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const variantClasses: Record<string, string> = {
-  default: "border-transparent bg-teal-500/20 text-teal-400",
-  secondary: "border-transparent bg-slate-600/30 text-slate-400",
-  destructive: "border-transparent bg-red-500/20 text-red-400",
-  outline: "border-slate-600/50 bg-transparent text-slate-400",
-  owner: "border-amber-500/30 bg-amber-500/20 text-amber-400",
-  moderator: "border-teal-500/30 bg-teal-500/20 text-teal-400",
+  default: "border-transparent bg-violet-100 text-violet-700",
+  secondary: "border-transparent bg-slate-100 text-slate-700",
+  destructive: "border-transparent bg-red-100 text-red-700",
+  outline: "border-slate-300 bg-transparent text-slate-700",
+  owner: "border-amber-200 bg-amber-100 text-amber-700",
+  moderator: "border-violet-200 bg-violet-100 text-violet-700",
 };
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {

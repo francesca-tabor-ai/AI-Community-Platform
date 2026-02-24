@@ -49,7 +49,7 @@ export default function SignupForm() {
         if (result?.error) {
           setStatus("idle");
           setError("Account created. Please log in.");
-          router.push("/login");
+          router.push(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
           return;
         }
 

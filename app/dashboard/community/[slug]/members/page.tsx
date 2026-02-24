@@ -63,8 +63,8 @@ export default function CommunityMembersPage() {
 
   if (error) {
     return (
-      <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-6">
-        <p className="text-amber-200">{error}</p>
+      <div className="rounded-xl border border-amber-200 bg-amber-50 p-6">
+        <p className="text-amber-800">{error}</p>
       </div>
     );
   }
@@ -72,11 +72,11 @@ export default function CommunityMembersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-white">Members</h1>
-        <p className="mt-1 text-slate-400">{members.length} members in this community</p>
+        <h1 className="text-3xl font-bold text-slate-900">Members</h1>
+        <p className="mt-1 text-slate-600">{members.length} members in this community</p>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/20">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
@@ -97,14 +97,14 @@ export default function CommunityMembersPage() {
                         className="h-9 w-9 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-500/20 text-sm font-medium text-teal-400">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-violet-100 text-sm font-medium text-violet-600">
                         {(m.user.profile?.displayName || m.user.name || m.user.email || "?")
                           .charAt(0)
                           .toUpperCase()}
                       </div>
                     )}
                     <div>
-                      <p className="font-medium text-white">
+                      <p className="font-medium text-slate-900">
                         {m.user.profile?.displayName || m.user.name || "Unknown"}
                       </p>
                       {m.user.email && (
@@ -126,7 +126,7 @@ export default function CommunityMembersPage() {
                     {m.role}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-slate-400">
+                <TableCell className="text-slate-600">
                   {format(new Date(m.joinedAt), "MMM d, yyyy")}
                 </TableCell>
               </TableRow>

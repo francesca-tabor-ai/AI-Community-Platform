@@ -89,12 +89,12 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-6">
-        <h2 className="font-semibold text-amber-200">Unable to load communities</h2>
-        <p className="mt-2 text-sm text-slate-400">{error}</p>
-        <p className="mt-4 text-sm text-slate-500">
+      <div className="rounded-xl border border-amber-200 bg-amber-50 p-6">
+        <h2 className="font-semibold text-amber-800">Unable to load communities</h2>
+        <p className="mt-2 text-sm text-amber-700">{error}</p>
+        <p className="mt-4 text-sm text-amber-700">
           Make sure you&apos;ve run{" "}
-          <code className="rounded bg-slate-200 px-1">npm run db:seed</code> and
+          <code className="rounded bg-amber-100 px-1">npm run db:seed</code> and
           have memberships as owner or moderator.
         </p>
         <Link

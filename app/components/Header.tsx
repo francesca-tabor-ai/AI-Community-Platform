@@ -60,18 +60,14 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
-          <Link
-            href="/dashboard"
-            className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/communities"
-            className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
-          >
-            Communities
-          </Link>
+          {isAuthenticated && (
+            <Link
+              href="/dashboard"
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
+            >
+              Dashboard
+            </Link>
+          )}
           {isAuthenticated ? (
             <>
               <NotificationBell />

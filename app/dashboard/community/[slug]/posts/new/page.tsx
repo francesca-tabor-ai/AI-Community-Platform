@@ -83,12 +83,12 @@ export default function NewPostPage() {
         <div>
           <Link
             href={`/dashboard/community/${slug}/posts`}
-            className="text-sm text-slate-400 hover:text-violet-400"
+            className="text-sm text-slate-500 hover:text-violet-600"
           >
             ← Back to posts
           </Link>
           <h1 className="mt-2 text-3xl font-bold text-slate-900">New Post</h1>
-          <p className="mt-1 text-slate-400">Create a new post for your community</p>
+          <p className="mt-1 text-slate-600">Create a new post for your community</p>
         </div>
       </div>
 
@@ -109,7 +109,7 @@ export default function NewPostPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter post title"
-            className="w-full rounded-xl border border-slate-200/50 bg-slate-100/30 px-4 py-3 text-slate-900 placeholder-slate-500 focus:border-violet-500/50 focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-200"
           />
         </div>
 
@@ -124,7 +124,7 @@ export default function NewPostPage() {
           <button
             onClick={handleSaveDraft}
             disabled={status === "saving" || status === "publishing"}
-            className="rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-all duration-200 hover:border-violet-500/50 hover:text-violet-400 active:scale-[0.98] disabled:opacity-50"
+            className="rounded-xl border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-all duration-200 hover:border-violet-400 hover:text-violet-600 active:scale-[0.98] disabled:opacity-50"
           >
             {status === "saving" ? "Saving…" : "Save Draft"}
           </button>
@@ -148,7 +148,7 @@ export default function NewPostPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg font-semibold text-slate-900">Publish this post?</h3>
-            <p className="mt-2 text-slate-400">
+            <p className="mt-2 text-slate-600">
               Your post will be visible to community members. You can edit it later.
             </p>
             <div className="mt-6 flex gap-3">
