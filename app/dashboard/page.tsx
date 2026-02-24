@@ -3,6 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+type Activity = {
+  id: string;
+  type: string;
+  targetType: string;
+  targetId: string;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+  user: { name: string | null; profile?: { displayName: string | null } | null };
+};
+
 type Community = {
   id: string;
   name: string;
@@ -15,6 +25,7 @@ type Community = {
 
 export default function DashboardPage() {
   const [communities, setCommunities] = useState<Community[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,20 +33,22 @@ export default function DashboardPage() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-    fetch("/api/dashboard/communities", {
-      credentials: "include",
-      signal: controller.signal,
-    })
-      .then((res) => {
-        if (res.status === 401) {
+    Promise.all([
+      fetch("/api/dashboard/communities", { credentials: "include", signal: controller.signal }),
+      fetch("/api/activity?limit=10", { credentials: "include", signal: controller.signal }),
+    ])
+      .then(async ([commRes, activityRes]) => {
+        if (commRes.status === 401) {
           window.location.href = "/login?callbackUrl=" + encodeURIComponent("/dashboard");
           return;
         }
-        if (!res.ok) throw new Error("Failed to load communities");
-        return res.json();
-      })
-      .then((data) => {
-        if (data !== undefined) setCommunities(data);
+        const commData = await commRes.json();
+        if (Array.isArray(commData)) setCommunities(commData);
+
+        if (activityRes.ok) {
+          const { activities: actData } = await activityRes.json();
+          setActivities(actData ?? []);
+        }
       })
       .catch((err) =>
         setError(err.name === "AbortError" ? "Request timed out. Please try again." : err.message)
@@ -45,6 +58,26 @@ export default function DashboardPage() {
         setLoading(false);
       });
   }, []);
+
+  const activityLabel = (a: Activity) => {
+    const name = a.user?.profile?.displayName || a.user?.name || "Someone";
+    if (a.type === "create_post")
+      return (
+        <>
+          <strong>{name}</strong> created a post
+          {a.metadata?.title && `: "${String(a.metadata.title).slice(0, 40)}..."`}
+        </>
+      );
+    if (a.type === "comment") return <><strong>{name}</strong> commented on a post</>;
+    if (a.type === "join_community")
+      return <><strong>{name}</strong> joined a community</>;
+    return <><strong>{name}</strong> did something</>;
+  };
+
+  const activityLink = (a: Activity) => {
+    if (a.targetType === "post") return `/posts/${a.targetId}`;
+    return "/dashboard";
+  };
 
   if (loading) {
     return (
@@ -75,29 +108,30 @@ export default function DashboardPage() {
   }
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white">Your communities</h1>
-        <p className="mt-1 text-slate-400">
-          Select a community to manage members, spaces, posts, and events.
-        </p>
-      </div>
+    <div className="grid gap-8 lg:grid-cols-3">
+      <div className="lg:col-span-2">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-900">Your communities</h1>
+          <p className="mt-1 text-slate-600">
+            Select a community to manage members, spaces, posts, and events.
+          </p>
+        </div>
 
-      {communities.length === 0 ? (
+        {communities.length === 0 ? (
         <div className="rounded-2xl border border-slate-200 border-dashed bg-white p-12 text-center shadow-sm">
           <p className="text-slate-600">No communities to manage yet.</p>
           <p className="mt-2 text-sm text-slate-500">
             Communities you own or moderate will appear here. Create your first community to get started.
           </p>
           <Link
-            href="/"
+            href="/communities"
             className="mt-6 inline-block rounded-xl bg-violet-500 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-violet-600 active:scale-[0.98]"
           >
-            Explore the platform
+            Explore communities
           </Link>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2">
           {communities.map((c) => (
             <Link
               key={c.id}
@@ -130,6 +164,30 @@ export default function DashboardPage() {
           ))}
         </div>
       )}
+      </div>
+
+      <div>
+        <h2 className="mb-4 text-lg font-semibold text-slate-900">Recent activity</h2>
+        {activities.length === 0 ? (
+          <p className="text-sm text-slate-500">No recent activity</p>
+        ) : (
+          <ul className="space-y-3">
+            {activities.map((a) => (
+              <li key={a.id}>
+                <Link
+                  href={activityLink(a)}
+                  className="block rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-600 transition-colors hover:border-violet-200 hover:bg-violet-50/50"
+                >
+                  {activityLabel(a)}
+                  <span className="mt-1 block text-xs text-slate-400">
+                    {new Date(a.createdAt).toLocaleDateString()}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }

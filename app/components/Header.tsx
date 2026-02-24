@@ -5,8 +5,10 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
+import NotificationBell from "./NotificationBell";
 
 const NAV_LINKS = [
+  { label: "Communities", href: "/communities" },
   { label: "Features", href: "/features" },
   { label: "Pricing", href: "/pricing" },
   { label: "Use Cases", href: "/use-cases" },
@@ -64,8 +66,15 @@ export default function Header() {
           >
             Dashboard
           </Link>
+          <Link
+            href="/communities"
+            className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
+          >
+            Communities
+          </Link>
           {isAuthenticated ? (
             <>
+              <NotificationBell />
               <span className="text-sm text-slate-500">
                 {session?.user?.name ?? session?.user?.email}
               </span>

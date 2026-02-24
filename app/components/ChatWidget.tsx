@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 interface Message {
   id: string;
@@ -19,6 +20,8 @@ const PROMPT_PROBES = [
 ];
 
 export default function ChatWidget() {
+  const pathname = usePathname();
+  const communitySlug = pathname?.match(/^\/communities\/([^/]+)/)?.[1];
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -48,7 +51,7 @@ export default function ChatWidget() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -56,6 +59,7 @@ export default function ChatWidget() {
             role: m.role,
             content: m.content,
           })),
+          ...(communitySlug && { communitySlug }),
         }),
       });
 

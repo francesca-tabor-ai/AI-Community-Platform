@@ -1,10 +1,27 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import SignOutButton from "./SignOutButton";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    redirect("/login?callbackUrl=/dashboard");
+  }
+
+  const profile = await prisma.profile.findUnique({
+    where: { userId: session.user.id },
+  });
+
+  if (!profile?.displayName || profile.displayName.trim() === "") {
+    redirect("/onboarding");
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 px-6 py-4 backdrop-blur-sm">
@@ -28,6 +45,7 @@ export default function DashboardLayout({
             >
               ← Back to site
             </Link>
+            <SignOutButton />
           </nav>
         </div>
       </header>
